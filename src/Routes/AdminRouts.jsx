@@ -1,0 +1,53 @@
+import React, { useContext } from 'react';
+import Layout from '../Admin/Component/Layout/Layout';
+import { Route, Routes } from 'react-router-dom';
+import Category from '../Admin/Container/Category/Category';
+import SubCategory from '../Admin/Container/SubCategory/SubCategory';
+import Course from '../Admin/Container/Course/Course';
+import Dashboard from '../Admin/Container/Dashboard/Dashboard';
+import CategoryPage from '../Admin/Container/Category/CategoryPage';
+// import { ThemeProvider } from '../context/theme.context';
+import {  ThemeProvider } from '@mui/material';
+import { ThemeContext } from '../context/theme.context';
+import { createTheme } from '@mui/material/styles';
+
+function AdminRouts(props) {
+   
+
+const themeData = useContext(ThemeContext);
+  console.log(themeData);
+
+
+
+const theme = createTheme({
+  palette: {
+    mode:themeData.theme,
+    primary: {
+      main: '#2764DD',
+    
+    },
+    secondary: {
+      main: '#F7C32E',
+     
+    },
+  },
+});
+    return (
+        <ThemeProvider theme={theme}>
+            <Layout>
+                <Routes>
+                    <Route path='admin/category' element={<Category />} ></Route>
+                     {/* <Route path='/category/:id' element={<CategoryPage />} ></Route> */}
+                    <Route path='admin/subcategory' element={<SubCategory />} ></Route>
+                    <Route path='admin/course' element={<Course />} > </Route>
+                    <Route path='admin/' element={<Dashboard />}></Route>
+
+                </Routes>
+
+            </Layout>
+            </ThemeProvider>
+        
+    );
+}
+
+export default AdminRouts;
