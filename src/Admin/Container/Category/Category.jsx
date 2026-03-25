@@ -96,7 +96,7 @@ function Category(props) {
                 // <img src={`${IMAGE_URL}${param.row.category_img}`} style={{ objectFit: 'cover', width: "50px", height: "50px" }} />
                 
                  <img src={`${IMAGE_URL}${param.row.category_img.url}`} style={{ objectFit: 'cover', width: "50px", height: "50px" }} />
-             
+            
             )
         },
         {
