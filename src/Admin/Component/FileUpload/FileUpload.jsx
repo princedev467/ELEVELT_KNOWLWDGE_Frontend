@@ -27,7 +27,7 @@ function FileUpload(props) {
 
     //  filepath = '/public/assets/images/courses/4by3/' + field.value;
 
-    if (typeof field.value === 'string') {
+    if (typeof field.value?.url === 'string') {
         filepath = IMAGE_URL + field.value;
         
     } else if (typeof  field.value === 'object' && field.value !== null) {
