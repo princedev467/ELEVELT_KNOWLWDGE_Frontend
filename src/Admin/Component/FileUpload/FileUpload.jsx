@@ -30,10 +30,12 @@ function FileUpload(props) {
     if (typeof field.value?.url === 'string') {
         filepath = IMAGE_URL + field.value;
         
-    } else if (typeof  field.value === 'object' && field.value !== null) {
+    } else if (typeof  field.value?.url === 'object' && field.value !== null) {
         filepath = URL.createObjectURL(field.value)
                 
     }
+
+    
     // console.log(filepath);
 
     // console.log(field);

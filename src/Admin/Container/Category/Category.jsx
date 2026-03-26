@@ -125,7 +125,7 @@ function Category(props) {
         category_img: mixed()
             .test("profile_pic", "only allowed png and jpeg formate", function (val) {
                 console.log(val);
-                if (typeof val === 'string') {
+                if (typeof val?.url === 'string') {
                     return true;
                 }
 
@@ -138,7 +138,7 @@ function Category(props) {
         .test("profile_pic", "less than 2 MB file is allowed", function (val) {
             console.log(val?.size);
 
-            if (typeof val === 'string') {
+            if (typeof val?.url === 'string') {
                 return true;
             }
 
