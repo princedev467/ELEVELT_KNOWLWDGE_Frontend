@@ -36,7 +36,7 @@ function FileUpload(props) {
     }
 
     
-    // console.log(filepath);
+    console.log("filepath",filepath);
 
     // console.log(field);
 
