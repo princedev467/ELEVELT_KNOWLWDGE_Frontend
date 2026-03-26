@@ -33,7 +33,7 @@ function CategoryData() {
               component="img"
               width='280px'
               height="100"
-              image={`${IMAGE_URL}${v.category_img}`}
+              image={`${v.category_img.url}`}
               alt={v.name}
             />
 
