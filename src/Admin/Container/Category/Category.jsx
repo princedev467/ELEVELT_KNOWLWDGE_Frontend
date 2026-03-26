@@ -152,7 +152,7 @@ function Category(props) {
         console.log('updatedata:', updatedata);
 
         if (Object.keys(updatedata).length > 0) {
-            if (typeof val.category_img === 'object') {
+            if (typeof val.category_img.url === 'object') {
                 dispatch(updateCategory(val));
             } else {
                 dispatch(updateCategory(val));
