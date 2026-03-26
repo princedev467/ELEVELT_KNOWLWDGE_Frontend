@@ -196,7 +196,7 @@ function Category(props) {
                             }}
                             validationSchema={categorySchema}
                             onSubmit={(values, { resetForm }) => {
-                                console.log(values);
+                                console.log("add_data",values);
                                 handlesubmit(values)
 
                                 resetForm()
