@@ -33,7 +33,7 @@ function CategoryData() {
     <Box sx={{ paddingTop: 5, paddingLeft: 22, paddingBottom: 5 }}>
       <div>
         <input type="text" onChange={(e)=>{setSearch(e.target.value)}}   placeholder="Search..."
-        value={search} style={{backgroundColor:'#24292e'}}/>
+        value={search} style={{backgroundColor:'#24292e' ,color:'#fff'}}/>
       </div>
       <br /><br />
       {
