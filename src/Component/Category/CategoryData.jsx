@@ -25,6 +25,8 @@ function CategoryData() {
         v.name.toLowerCase().includes(search.toLowerCase())
       );
     }
+
+    let catfilter=search?categoryFilter:category
   return (
 
 
@@ -35,7 +37,7 @@ function CategoryData() {
       </div>
       {
          <Grid container spacing={4} >
-        {search?category:categoryFilter?.map((v) => (
+        {catfilter?.map((v) => (
 
           <Card
             sx={{
