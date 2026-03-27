@@ -11,7 +11,7 @@ function Home(props) {
     const themeData = useContext(ThemeContext);
     console.log(themeData);
 
-    let isDark=themeData.theme==='light'
+    let isDark=themeData.theme==='dark'
   
   return (
     <main>
