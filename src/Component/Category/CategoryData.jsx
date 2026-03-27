@@ -18,8 +18,10 @@ function CategoryData() {
   const { category = [] } = useSelector((state) => state.category);
   console.log(search);
   
+   let  categoryFilter
+   
  if (search.trim() !== "") {
-    let  categoryFilter= category.filter(v =>
+    categoryFilter= category.filter(v =>
         v.name.toLowerCase().includes(searchValue.toLowerCase())
       );
     }
