@@ -35,7 +35,7 @@ function CategoryData() {
       </div>
       {
          <Grid container spacing={4} >
-        {categoryFilter?.map((v) => (
+        {search?category:categoryFilter?.map((v) => (
 
           <Card
             sx={{
