@@ -22,7 +22,7 @@ function CategoryData() {
    
  if (search.trim() !== "") {
     categoryFilter= category.filter(v =>
-        v.name.toLowerCase().includes(searchValue.toLowerCase())
+        v.name.toLowerCase().includes(name.toLowerCase())
       );
     }
   return (
