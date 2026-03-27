@@ -33,8 +33,9 @@ function CategoryData() {
     <Box sx={{ paddingTop: 5, paddingLeft: 22, paddingBottom: 5 }}>
       <div>
         <input type="text" onChange={(e)=>{setSearch(e.target.value)}}   placeholder="Search..."
-        value={search}/>
+        value={search} style={{backgroundColor:'#24292e'}}/>
       </div>
+      <br /><br />
       {
          <Grid container spacing={4} >
         {catfilter?.map((v) => (
