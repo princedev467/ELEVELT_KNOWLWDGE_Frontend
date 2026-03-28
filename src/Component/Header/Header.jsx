@@ -187,7 +187,10 @@ function Header(props) {
                   {/* Dropdown submenu */}
                   <li className="dropdown-submenu dropend">
                     <a className="dropdown-item dropdown-toggle" href="#">Course</a>
+                      
                     <ul className="dropdown-menu dropdown-menu-start" data-bs-popper="none">
+                      <li>  <NavLink className="dropdown-item" to={'/course'}>  Course Data</NavLink></li>
+                    
                       <li>  <NavLink className="dropdown-item" to={'/Course_Grid_Classic'}>  Course Grid Classic</NavLink></li>
                       <li> <NavLink className="dropdown-item" to={'/Course_Grid_Minimal'}>  Course Grid Minimal</NavLink> </li>
                       <li> <hr className="dropdown-divider" /></li>
