@@ -1,7 +1,3 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getCategory } from '../../Redux/slice/CategorySlice';
-import { useParams } from 'react-router-dom';
 import { Card, CardActions, CardContent, CardMedia, Button, Typography, Grid, Box } from '@mui/material';
 import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
 
