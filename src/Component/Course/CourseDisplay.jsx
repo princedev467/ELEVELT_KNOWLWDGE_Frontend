@@ -29,7 +29,7 @@ function CourseDisplay(props) {
       <br /><br />
       {
          <Grid container spacing={4} >
-        {carfilter?.map((v) => (
+        {carfilter.map((v) => (
 
           <Card
             sx={{
