@@ -113,7 +113,7 @@ function Course(props) {
                 //     param.row.course_img :
                 //     IMAGE_URL + param.row.course_img}
                 //     style={{ objectFit: 'cover', width: "50px", height: "50px" }} />
-                  <img src={param.row.course_img.url}
+                  <img src={param.row.course_img.includes('blob')?param.row.course_img.url: param.row.course_img}
                     style={{ objectFit: 'cover', width: "50px", height: "50px" }} />
 
             )
@@ -202,7 +202,7 @@ function Course(props) {
                 console.log(formData);
 
             }
-            
+
         } else {
 
             // dispatch(addCategory(val));
