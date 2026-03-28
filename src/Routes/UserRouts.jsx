@@ -57,6 +57,7 @@ import NotificationDemo from '../Component/NotificationDemo/NotificationDemo';
 import { useDispatch } from 'react-redux';
 import { userCheck } from '../Redux/slice/auth.slice';
 import { ThemeContext } from '../context/theme.context';
+import CourseDisplay from '../Component/Course/CourseDisplay';
 // import Category from '../Component/Category/CategoryData';
 
 
@@ -79,6 +80,8 @@ function UserRouts(props) {
                  {/* <Route path='/CategoryPage' element={<CategoryPage/>} ></Route> */}
                   <Route path='/category' element={<CategoryData/>} ></Route>
                  <Route path='/category/:id' element={<CategoryData/>} ></Route>
+
+                  <Route path='/course' element={<CourseDisplay/>} ></Route>
                  {/* <Route path='/category/:id' element={<CategoryPage />} /> */}
                 <Route path='/about' element={< About />} ></Route>
                  <Route path='/chat' element={<Chat />} ></Route>
