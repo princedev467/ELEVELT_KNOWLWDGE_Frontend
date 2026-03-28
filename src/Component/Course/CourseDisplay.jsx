@@ -7,16 +7,16 @@ import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
 
 
 
-    const { coursedata } = useGetCourseQuery(); //get Data
+    const { data } = useGetCourseQuery(); //get Data
  
    let  categoryFilter
    
  if (search.trim() !== "") {
-    courseFilter= coursedata.filter(v =>
+    courseFilter= data.filter(v =>
         v.name.toLowerCase().includes(search.toLowerCase()) 
       );
     }
-   let carfilter=search?courseFilter:coursedata
+   let carfilter=search?courseFilter:data
 
 
 
@@ -43,7 +43,7 @@ function CourseDisplay(props) {
               component="img"
               width='280px'
               height="100"
-              image={`${v.category_img.url}`}
+              image={`${v.course_img.url}`}
               alt={v.name}
             />
 
