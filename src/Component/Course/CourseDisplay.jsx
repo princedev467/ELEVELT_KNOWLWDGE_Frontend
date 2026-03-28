@@ -3,6 +3,10 @@ import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
 
 
 
+
+function CourseDisplay(props) {
+  
+
     const { data } = useGetCourseQuery(); //get Data
  
    let  courseFilter
@@ -14,9 +18,6 @@ import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
     }
    let carfilter=search?courseFilter:data
 
-
-
-function CourseDisplay(props) {
     return (
           <Box sx={{ paddingTop: 5, paddingLeft: 22, paddingBottom: 5 }}>
       <div>
