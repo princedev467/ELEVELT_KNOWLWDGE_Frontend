@@ -202,6 +202,7 @@ function Course(props) {
                 console.log(formData);
 
             }
+            
         } else {
 
             // dispatch(addCategory(val));
