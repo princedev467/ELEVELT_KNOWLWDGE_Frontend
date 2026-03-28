@@ -156,7 +156,7 @@ function Course(props) {
         course_img: mixed()
             .test("profile_pic", "only allowed png and jpeg formate", function (val) {
                 console.log(val);
-                if (typeof val === 'string') {
+                if (typeof val?.url === 'string') {
                     return true;
                 }
 
@@ -193,7 +193,7 @@ function Course(props) {
         if (Object.keys(updatedata).length > 0) {
             formData.append('_id', val._id);
             updata(formData)
-            if (typeof val.course_img === 'object') {
+            if (typeof val?.course_img === 'object') {
                 // console.log("formData",formData);
                 updata(formData)
             } else {
