@@ -43,18 +43,18 @@ function CourseDisplay(props) {
               component="img"
               width='280px'
               height="100"
-              image={`${v.course_img.url}`}
-              alt={v.name}
+              image={`${v?.course_img.url}`}
+              alt={v?.name}
             />
 
             <CardContent sx={{ flexGrow: 1 }}>
               <Typography variant="h6" fontWeight="bold" gutterBottom>
-                {v.name}
+                {v?.name}
               </Typography>
 
 
     <Typography variant="body2" color="text.secondary">
-                {v.description}
+                {v?.description}
               </Typography>
             </CardContent>
 
