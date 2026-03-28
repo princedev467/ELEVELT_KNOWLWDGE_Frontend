@@ -183,59 +183,6 @@ export const userCheck = createAsyncThunk(
     }
 )
 
-
-// export const deleteCategory = createAsyncThunk(
-//     'category/deleteCategory',
-//     async (id) => {
-//         try {
-//             const responce = await fetch(`${BASE_URL}category/deleteCategory/${id}`, {
-//                 method: 'DELETE',
-//             });
-
-
-//             return id;
-
-
-//         } catch (error) {
-//       return rejectWithValue(error.message);
-
-//   console.log(responce)
-//         }
-
-//     }
-
-// )
-
-// export const updateCategory = createAsyncThunk(
-//     'category/updateCategory',
-//     async (data) => {
-//         console.log("------------",data);
-
-//         try {
-
-//             let formData = new FormData();
-
-//             formData.set('name', data.name);
-//             formData.set('description', data.description);
-//             formData.set('category_img', data.category_img)
-
-//             const responce = await fetch(`${BASE_URL}category/updateCategory/${data._id}`, {
-//                 method: 'PUT',
-//                 body: formData
-//             });
-
-//             const rdata = await responce.json()
-
-
-//             return data;
-
-//         } catch (error) {
-//             console.log(error);
-
-//         }
-//     }
-// )
-
 const authSlice = createSlice({
     name: 'auth',
     initialState: initialState,
