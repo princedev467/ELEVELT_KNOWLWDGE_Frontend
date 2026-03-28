@@ -21,7 +21,7 @@ function CategoryData() {
    let  categoryFilter
    
  if (search.trim() !== "") {
-    categoryFilter= category.filter(v =>
+    categoryFilter= category?.filter(v =>
         v.name.toLowerCase().includes(search.toLowerCase())
       );
     }
