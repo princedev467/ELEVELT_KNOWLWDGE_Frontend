@@ -9,7 +9,7 @@ import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
 
     const { data } = useGetCourseQuery(); //get Data
  
-   let  categoryFilter
+   let  courseFilter
    
  if (search.trim() !== "") {
     courseFilter= data.filter(v =>
