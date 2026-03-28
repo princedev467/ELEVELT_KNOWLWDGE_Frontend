@@ -16,8 +16,7 @@ import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
         v.name.toLowerCase().includes(search.toLowerCase()) 
       );
     }
-
-    let carfilter=search?courseFilter:coursedata
+   let carfilter=search?courseFilter:coursedata
 
 
 
