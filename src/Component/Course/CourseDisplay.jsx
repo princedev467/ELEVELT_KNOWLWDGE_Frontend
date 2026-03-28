@@ -53,7 +53,8 @@ function CourseDisplay(props) {
                 {v.name}
               </Typography>
 
-              <Typography variant="body2" color="text.secondary">
+
+    <Typography variant="body2" color="text.secondary">
                 {v.description}
               </Typography>
             </CardContent>
