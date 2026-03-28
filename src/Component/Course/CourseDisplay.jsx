@@ -1,5 +1,6 @@
 import { Card, CardActions, CardContent, CardMedia, Button, Typography, Grid, Box } from '@mui/material';
 import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
+import { useState } from 'react';
 
 
 
@@ -7,6 +8,7 @@ import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
 function CourseDisplay(props) {
   
 
+  const [search, setSearch]=useState('');
     const { data } = useGetCourseQuery(); //get Data
  
    let  courseFilter
