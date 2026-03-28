@@ -66,7 +66,7 @@ function Course(props) {
 
 
     const handledelete = async (id) => {
-        console.log(id);
+        console.log("handle delete_id:",id);
         delData(id)
     }
 
