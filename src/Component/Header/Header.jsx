@@ -69,8 +69,8 @@ function Header(props) {
             {/* Nav category menu START */}
             <ul className="navbar-nav navbar-nav-scroll me-auto">
               {/* Nav item 1 Demos */}
-              <li className="nav-item dropdown dropdown-menu-shadow-stacked">
-                <a className="nav-link bg-primary bg-opacity-10 rounded-3 text-primary px-3 py-3 py-xl-0" href="#" id="categoryMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="bi bi-ui-radios-grid me-2" /><span>Category</span></a>
+              <li className="nav-item dropdown">
+                <a className="nav-link dropdown-toggle active" href="#" id="categoryMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="bi bi-ui-radios-grid me-2" /><span>Category</span></a>
                 <ul className=" dropdown-menu" aria-labelledby="categoryMenu">
                   {
                     firstcategory?.map((v) => {
