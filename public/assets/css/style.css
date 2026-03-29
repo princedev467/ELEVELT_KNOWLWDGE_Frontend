@@ -22374,6 +22374,9 @@ html[dir=rtl] .choices__input {
 
     color: #ffffff !important;
 }
+.dark .card-title {
+   color: #ffffff !important;
+}
 
 .dark h1  h2  h3  h4  h5  h6{
    color: #ffffff !important;
