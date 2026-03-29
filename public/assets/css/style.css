@@ -22350,7 +22350,7 @@ html[dir=rtl] .choices__input {
  background-color: #24292e !important;
    color: #ffffff !important;
 }
-.dark .dropdown-item{
+.dark  li .dropdown-item{
    background-color: #24292e !important;
     color: #ffffff !important;
 }
@@ -22360,6 +22360,7 @@ html[dir=rtl] .choices__input {
     color: #ffffff !important;
 }
 .light 
+li
 .dropdown-menu {
  background-color: #ffffff !important;
   color: #000000 !important;
@@ -22377,6 +22378,7 @@ html[dir=rtl] .choices__input {
 .dark .card-title a{
    color: #ffffff !important;
 }
+
 
 .dark h1  h2  h3  h4  h5  h6{
    color: #ffffff !important;
