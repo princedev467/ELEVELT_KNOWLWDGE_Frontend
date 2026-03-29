@@ -8,11 +8,11 @@ function CourseDisplay(props) {
 
     
         const { data } = useGetCourseQuery(); //get Data
-        console.log("course",data.data);
+        console.log("course",data);
 
         let course=data.data
         
-         let  courseFilter
+         let courseFilter
    
  if (search.trim() !== "") {
     courseFilter = course?.filter(v =>
