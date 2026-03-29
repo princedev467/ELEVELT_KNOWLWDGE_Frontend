@@ -8,7 +8,7 @@ function CourseDisplay(props) {
 
     
         const { data } = useGetCourseQuery(); //get Data
-        console.log("course",data);
+        console.log("course",data.data);
 
         let course=data.data
         
