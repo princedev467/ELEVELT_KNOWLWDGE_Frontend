@@ -7,7 +7,7 @@ function CourseDisplay(props) {
     const [search, setSearch]=useState('')
 
     
-        const { data, isLoading, isError } = useGetCourseQuery(); //get Data
+        const { data , isLoading, isError } = useGetCourseQuery(); //get Data
         console.log("course",data);
 
         let course=data?.data
