@@ -4,29 +4,28 @@ import { getCategory } from '../../Redux/slice/CategorySlice';
 import { useParams } from 'react-router-dom';
 import { Card, CardActions, CardContent, CardMedia, Button, Typography, Grid, Box } from '@mui/material';
 import { IMAGE_URL } from '../../utility/url';
+import WithReduxFetch from '../../Hoc/WithReduxFetch';
 
-function CategoryData() {
+function CategoryData({category}) {
   const { id } = useParams();
-  const dispatch = useDispatch();
   
   const [search, setSearch]=useState('')
 
-  useEffect(() => {
-    dispatch(getCategory());
-  }, [dispatch]);
-
-  const { category = [] } = useSelector((state) => state.category);
   console.log(search);
+  
+  console.log(category);
   
    let  categoryFilter
    
  if (search.trim() !== "") {
-    categoryFilter= category?.filter(v =>
+    categoryFilter=category?.filter(v =>
         v.name.toLowerCase().includes(search.toLowerCase())
       );
     }
 
     let catfilter=search?categoryFilter:category
+
+
   return (
 
 
@@ -122,4 +121,4 @@ function CategoryData() {
   );
 }
 
-export default CategoryData;
+export default WithReduxFetch(CategoryData,getCategory,(state) => state.category) ;

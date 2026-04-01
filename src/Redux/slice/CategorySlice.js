@@ -46,7 +46,7 @@ export const addCategory = createAsyncThunk(
 
 export const getCategory = createAsyncThunk(
     'category/getCategory',
-    async () => {
+    async (_,{rejectWithValue}) => {
         try {
             const responce = await axios.get(BASE_URL + 'category/getAllCategory');
             console.log(responce);
@@ -55,6 +55,8 @@ export const getCategory = createAsyncThunk(
 
         } catch (error) {
             console.log(error);
+ 
+            return rejectWithValue(error.message);
 
         }
     }
@@ -115,10 +117,20 @@ const categorySlice = createSlice({
     name: 'category',
     initialState,
     extraReducers: (builder) => {
-        builder.addCase(getCategory.fulfilled, (state, action) => {
-            state.category = action.payload
+         builder.addCase(getCategory.pending, (state, action) => {
+            state.isloading =true;
         })
 
+        builder.addCase(getCategory.fulfilled, (state, action) => {
+             state.isloading =false;
+            state.category = action.payload;
+        })
+
+          builder.addCase(getCategory.rejected, (state, action) => {
+             state.isloading =false,
+            state.category = [];
+            state.error =action.payload;
+        })
         builder.addCase(addCategory.fulfilled, (state, action) => {
             state.category.push(action.payload)
         })
