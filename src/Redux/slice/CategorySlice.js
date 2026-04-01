@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 import { BASE_URL } from "../../utility/url";
 import axios from "axios";
+import { axiosinstance } from "../../utility/Axios_interceptor";
 
 
 const initialState = {
@@ -28,7 +29,7 @@ export const addCategory = createAsyncThunk(
             
 
 
-            const responce = await axios.post(BASE_URL + 'category/addCategory', formData, {
+            const responce = await axiosinstance.post('category/addCategory', formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             console.log("formData", formData);
@@ -36,6 +37,7 @@ export const addCategory = createAsyncThunk(
             console.log(responce);
 
             return responce.data.data
+            
         } catch (error) {
             console.log(error);
 
@@ -48,7 +50,7 @@ export const getCategory = createAsyncThunk(
     'category/getCategory',
     async (_,{rejectWithValue}) => {
         try {
-            const responce = await axios.get(BASE_URL + 'category/getAllCategory');
+            const responce = await axiosinstance.get('category/getAllCategory');
             console.log(responce);
 
             return responce.data.data
@@ -66,7 +68,7 @@ export const deleteCategory = createAsyncThunk(
     'category/deleteCategory',
     async (id, { rejectWithValue }) => {
         try {
-            const responce = await axios.delete(`${BASE_URL}category/deleteCategory/${id}`);
+            const responce = await axiosinstance.delete(`category/deleteCategory/${id}`);
 
 
             return id;
