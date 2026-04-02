@@ -14,7 +14,7 @@ export const addSubCategory = createAsyncThunk(
         
         try {
 
-            const responce = await axios.post('http://localhost:3000/SubCategory',data)
+            const responce = await axios.post('http://localhost:3000/SubCategory',data)  
            
             console.log(data);
 
