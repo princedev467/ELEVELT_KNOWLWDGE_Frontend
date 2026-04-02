@@ -72,7 +72,7 @@ export const deleteCategory = createAsyncThunk(
 
 
             return id;
-
+c
 
         } catch (error) {
             console.log(error);
