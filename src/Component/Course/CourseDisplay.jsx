@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Card, CardActions, CardContent, CardMedia, Button, Typography, Grid, Box } from '@mui/material';
 import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
+import useSearch from '../../hook/useSearch';
 
 function CourseDisplay(props) {
   
-    const [search, setSearch]=useState('')
+    // const [search, setSearch]=useState('')
 
     
         const { data , isLoading, isError } = useGetCourseQuery(); //get Data
@@ -12,16 +13,20 @@ function CourseDisplay(props) {
 
         let course=data?.data
         
-         let courseFilter
+        
    
- if (search.trim() !== "") {
-    courseFilter = course?.filter(v =>
-        v.name.toLowerCase().includes(search.toLowerCase())
-      );
-    }
+ const { search,setSearch,filterData}=  useSearch(course,["name","description"])
+ 
 
-    let filterCourse=search?courseFilter:course
+    // let catfilter=search?filterData:category
+
+
+    let filterCourse=search?filterData:course
   return (
+    <main>
+  <section className="pt-5">
+    <div className="container">
+      <div className="row">
     <Box sx={{ paddingTop: 5, paddingLeft: 22, paddingBottom: 5 }}>
           <div>
             <input type="text" onChange={(e)=>{setSearch(e.target.value)}}   placeholder="Search..."
@@ -33,6 +38,7 @@ function CourseDisplay(props) {
             {filterCourse?.map((v) => (
     
               <Card
+              className='col-4'
                 sx={{
                   width: '280px',
                   justifyContent: 'space-between',
@@ -72,6 +78,10 @@ function CourseDisplay(props) {
           }
           
         </Box>
+        </div>
+        </div>
+        </section>
+        </main>
   );
 }
 

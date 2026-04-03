@@ -16,16 +16,16 @@ function CategoryData({category}) {
   
   console.log(category);
   
-   let  categoryFilter
+  //  let  categoryFilter
 
-   const handleFilter= () =>{
-    if (search.trim() !== "") {
-    categoryFilter=category?.filter(v =>
-        v.name?.toLowerCase()?.includes(search.toLowerCase()) ||
-         v.description?.toLowerCase()?.includes(search.toLowerCase())
-      );
-    }
-   }
+  //  const handleFilter= () =>{
+  //   if (search.trim() !== "") {
+  //   categoryFilter=category?.filter(v =>
+  //       v.name?.toLowerCase()?.includes(search.toLowerCase()) ||
+  //        v.description?.toLowerCase()?.includes(search.toLowerCase())
+  //     );
+  //   }
+  //  }
    
    const { search,setSearch,filterData}=  useSearch(category,["name","description"])
  
