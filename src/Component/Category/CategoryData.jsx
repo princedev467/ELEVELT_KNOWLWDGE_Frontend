@@ -19,7 +19,8 @@ function CategoryData({category}) {
    
  if (search.trim() !== "") {
     categoryFilter=category?.filter(v =>
-        v.name.toLowerCase().includes(search.toLowerCase())
+        v.name?.toLowerCase()?.includes(search.toLowerCase()) ||
+         v.description?.toLowerCase()?.includes(search.toLowerCase())
       );
     }
 
@@ -28,7 +29,10 @@ function CategoryData({category}) {
 
   return (
 
-
+  <main>
+  <section className="pt-5">
+    <div className="container">
+      <div className="row">
     <Box sx={{ paddingTop: 5, paddingLeft: 22, paddingBottom: 5 }}>
       <div>
         <input type="text" onChange={(e)=>{setSearch(e.target.value)}}   placeholder="Search..."
@@ -40,6 +44,7 @@ function CategoryData({category}) {
         {catfilter?.map((v) => (
 
           <Card
+          className='col-4'
             sx={{
               width: '280px',
               justifyContent: 'space-between',
@@ -118,6 +123,10 @@ function CategoryData({category}) {
         ))}
       </Grid> */}
     </Box>
+    </div>
+    </div>
+    </section>
+    </main>
   );
 }
 
