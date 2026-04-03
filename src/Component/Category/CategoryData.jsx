@@ -5,26 +5,32 @@ import { useParams } from 'react-router-dom';
 import { Card, CardActions, CardContent, CardMedia, Button, Typography, Grid, Box } from '@mui/material';
 import { IMAGE_URL } from '../../utility/url';
 import WithReduxFetch from '../../Hoc/WithReduxFetch';
+import useSearch from '../../hook/useSearch';
 
 function CategoryData({category}) {
   const { id } = useParams();
   
-  const [search, setSearch]=useState('')
+  // const [search, setSearch]=useState('')
 
-  console.log(search);
+  // console.log(search);
   
   console.log(category);
   
    let  categoryFilter
-   
- if (search.trim() !== "") {
+
+   const handleFilter= () =>{
+    if (search.trim() !== "") {
     categoryFilter=category?.filter(v =>
         v.name?.toLowerCase()?.includes(search.toLowerCase()) ||
          v.description?.toLowerCase()?.includes(search.toLowerCase())
       );
     }
+   }
+   
+   const { search,setSearch,filterData}=  useSearch(category,["name","description"])
+ 
 
-    let catfilter=search?categoryFilter:category
+    let catfilter=search?filterData:category
 
 
   return (
