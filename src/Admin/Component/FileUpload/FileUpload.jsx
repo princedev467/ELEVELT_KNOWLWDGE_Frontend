@@ -18,27 +18,36 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 
-function FileUpload(props) {
+function FileUpload({type,...props}) {
     const [field, meta, helper] = useField(props)
 
     const { setValue } = helper;
 
-    let filepath = '';
+    let filepath
 
-    //  filepath = '/public/assets/images/courses/4by3/' + field.value;
-
-    if (typeof field.value?.url === 'string') {
-        filepath = field.value?.url;
-        
-    } else if (typeof  field.value === 'object' && field.value !== null) {
-        filepath = URL.createObjectURL(field.value)
-                
+    if (field?.value) {
+        filepath = Array.from(field?.value);
     }
+    console.log("filepath:",filepath);
 
+    const ImageData = filepath?.map((v) => {
+        console.log(v);
+
+        if (typeof v === 'string') {
+            return (filepath = v)
+        } else if (typeof v === 'object' && v !== null) {
+            return (filepath = URL.createObjectURL(v))
+        }
+    })
     
-    console.log("filepath",filepath);
+    console.log("ImageData:", ImageData);
 
-    // console.log(field);
+
+        
+        console.log("filepath",filepath);
+
+        // // console.log(field);
+        
 
     
     return (
@@ -54,18 +63,33 @@ function FileUpload(props) {
                 Upload file
                 <VisuallyHiddenInput
                     type="file"
-                    onChange={(event) =>
-                        setValue(event.target.files[0])
+                    onChange={(event) =>{
+                        const files = Array.from(event.target.files || []);
+                        setValue(files);
+                            event.target.value = null;
+
                     }
+                    
+                    }
+                    multiple
                 // onBlur={handleBlur}
                 />
             </Button>
 
-            <img src={filepath} alt="" width={'50px'} height={'50px'} />
+
+             {type==='image'?( ImageData?.map((v) => (
+                    <img src={v} width={'50px'} height={'50px'} />
+                ))):( ImageData?.map((v) => (
+                    <video >
+                         <source src={v} type="video/mp4" />
+                    </video>
+                )))
+               
+            }
             {
                 <p style={{ color: 'red' }}>{meta.error && meta.touched ? meta.error : null}</p>
             }
-        </>
+           </>
     );
 }
 

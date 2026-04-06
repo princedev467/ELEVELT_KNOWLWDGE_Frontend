@@ -22,6 +22,7 @@ export const courseApi = createApi({
         console.log("data", data);
         let temp_id = crypto.randomUUID()
 
+        const ImageData = data.getAll('course_img');
 
         const patchResult = dispatch(
 
@@ -32,7 +33,13 @@ export const courseApi = createApi({
               name: data.get('name'),
               description: data.get('description'),
               category_id: data.get('category_id'),
-              course_img: URL.createObjectURL(data.get('course_img'))
+              price: data.get('price'),
+              week: data.get('week'),
+              course_img: ImageData?.map(v => ({
+                url: URL.createObjectURL(v)
+              })),
+              // Preview_url: data.get('Preview_url')
+
             })
 
           }),
@@ -84,7 +91,11 @@ export const courseApi = createApi({
                 name: data.get('name'),
                 description: data.get('description'),
                 category_id: data.get('category_id'),
-                course_img: typeof data.get('course_img') === 'string' ? data.get('course_img') : URL.createObjectURL(data.get('course_img'))
+                price: data.get('price'),
+                week: data.get('week'),
+                course_img: typeof data.get('course_img') === 'string' ? data.get('course_img') : URL.createObjectURL(data.get('course_img')),
+            //  Preview_url: data.get('Preview_url')
+
               }
             }
 
@@ -128,7 +139,7 @@ export const courseApi = createApi({
       },
       // invalidatesTags: ['course']
     }),
-     ActiveCourse: builder.mutation({
+    ActiveCourse: builder.mutation({
       query: (data) => ({
         url: `course/activeCourses/${data._id}`,
         method: 'PUT',
@@ -147,11 +158,11 @@ export const courseApi = createApi({
             console.log(index);
 
             if (index !== -1) {
-               draft.data[index]=data
-        
+              draft.data[index] = data
+
             }
 
-           }),
+          }),
         )
         try {
           await queryFulfilled
@@ -173,4 +184,4 @@ export const {
   useAddCourseMutation,
   useUpdateCourseMutation,
   useDeleteCourseMutation,
-  useActiveCourseMutation    } = courseApi
+  useActiveCourseMutation } = courseApi

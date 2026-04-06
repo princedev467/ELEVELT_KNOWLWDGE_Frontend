@@ -145,10 +145,10 @@ export default function Layout({ children }) {
   };
 
   const listBox = [
-    { label: 'Dashboard', icon: <DashboardIcon  />, to: 'admin/' },
-    { label: 'Category', icon: <CategoryIcon  />, to: 'admin/category' },
-    { label: 'subCategory', icon: <AppsIcon  />, to: 'admin/subcategory' },
-    { label: 'Course', icon: <FoundationIcon  />, to: 'admin/course' }
+    { label: 'Dashboard', icon: <DashboardIcon  />, to: '/admin/Dashboard' },
+    { label: 'Category', icon: <CategoryIcon  />, to: '/admin/category' },
+    { label: 'subCategory', icon: <AppsIcon  />, to: '/admin/subcategory' },
+    { label: 'Course', icon: <FoundationIcon  />, to: '/admin/course' }
   ]
 
   return (

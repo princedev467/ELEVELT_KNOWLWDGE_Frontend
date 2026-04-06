@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userCheck, userLogout } from '../../Redux/slice/auth.slice';
 import { ThemeContext } from '../../context/theme.context';
 import { Switch } from '@mui/material';
+import Course from '../../Admin/Container/Course/Course';
 
 function Header(props) {
   const [data, setData] = useState()
@@ -529,6 +530,7 @@ function Header(props) {
                     onChange={handleChange}
                     slotProps={{ input: { 'aria-label': 'controlled' } }}
                   />
+
                   <span>Dark mode</span>
                 </div>
               </li>

@@ -7,7 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextForm from '../../Component/TextForm/TextForm';
 import FileUpload from '../../Component/FileUpload/FileUpload';
 import { Form, Formik } from 'formik';
-import { mixed, object, string } from 'yup';
+import { mixed, number, object, string } from 'yup';
 import { DataGrid } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Stack from '@mui/material/Stack';
@@ -18,9 +18,10 @@ import { getCategory } from '../../../Redux/slice/CategorySlice';
 import { useActiveCourseMutation, useAddCourseMutation, useDeleteCourseMutation, useGetCourseQuery, useUpdateCourseMutation } from '../../../Redux/Api/Course.Api';
 import { IMAGE_URL } from '../../../utility/url';
 import SwitchBtn from '../../Component/SwitchBtn/SwitchBtn';
+import { userCheck } from '../../../Redux/slice/auth.slice';
 
 
-function Course(props) {
+function Course() {
     const [open, setOpen] = useState(false);
     const [updatedata, setUpdateData] = useState({})
 
@@ -28,13 +29,22 @@ function Course(props) {
 
     const display = () => {
         dispatch(getCategory())
+        dispatch(userCheck())
     }
+
+
+    const auth = useSelector(state => state.auth)
+    console.log("auth", auth);
+
+
 
     useEffect(() => {
         display()
     }, [])
 
     const { data } = useGetCourseQuery(); //get Data
+    console.log("data:",data);
+    
 
     const [adddata] = useAddCourseMutation() // add Data
 
@@ -42,7 +52,7 @@ function Course(props) {
 
     const [delData] = useDeleteCourseMutation()  //delete Data
 
-    const [actData]= useActiveCourseMutation()  // switch btn Data
+    const [actData] = useActiveCourseMutation()  // switch btn Data
 
     console.log("courseData", data?.data);
 
@@ -66,7 +76,7 @@ function Course(props) {
 
 
     const handledelete = async (id) => {
-        console.log("handle delete_id:",id);
+        console.log("handle delete_id:", id);
         delData(id)
     }
 
@@ -80,11 +90,11 @@ function Course(props) {
 
     }
 
-    const handleSwitch =(check,data)=>{
+    const handleSwitch = (check, data) => {
 
         console.log(data);
-        
-        actData({...data,isActive:check});
+
+        actData({ ...data, isActive: check });
     }
 
     const paginationModel = { page: 0, pageSize: 5 };
@@ -93,6 +103,11 @@ function Course(props) {
 
         { field: 'name', headerName: 'Name', width: 130 },
         { field: 'description', headerName: 'Description', width: 200 },
+
+        { field: 'price', headerName: 'price', width: 80 },
+        { field: 'week', headerName: 'week', width: 80 },
+
+        { field: 'Instructor_id', headerName: 'Instructor_id', width: 260 },
         {
             field: 'category_id', headerName: 'parentCategory', width: 200,
             renderCell: (params) => {
@@ -109,15 +124,41 @@ function Course(props) {
             field: 'course_img', headerName: 'Category_image', width: 130,
             renderCell: (param) => (
 
+                <div>
+                    {
+                        param.row.course_img.map((v)=>(
+                               <img src={v.url} style={{ objectFit: 'cover', width: "50px", height: "50px" }} />
+                        ))
+                    }
+                 
+                    
+                </div>
                 // <img src={param.row.course_img.includes('blob') ?
                 //     param.row.course_img :
                 //     IMAGE_URL + param.row.course_img}
                 //     style={{ objectFit: 'cover', width: "50px", height: "50px" }} />
-                  <img src={ param.row.course_img.url}
-                    style={{ objectFit: 'cover', width: "50px", height: "50px" }} />
+                  
+                
 
             )
         },
+        // {
+        //     field: 'course_video', headerName: 'course_video', width: 130,
+        //     renderCell: (param) => (
+
+        //         // <img src={param.row.course_img.includes('blob') ?
+        //         //     param.row.course_img :
+        //         //     IMAGE_URL + param.row.course_img}
+        //         //     style={{ objectFit: 'cover', width: "50px", height: "50px" }} />
+        //         // <video src={param.row.course_video?.url}
+        //         //     width="50"
+        //         //     height="50" 
+        //         //     controls
+        //         //     />
+
+
+        //     )
+        // },
         {
             field: '', headerName: 'Action', width: 170, renderCell: (parem) => (
                 <Stack direction="row" spacing={1}>
@@ -132,11 +173,11 @@ function Course(props) {
             )
         },
         {
-           field:'isActive', headerName: 'Active/Inactive', width: 200,
+            field: 'isActive', headerName: 'Active/Inactive', width: 200,
             renderCell: (params) => {
                 return (
                     <FormGroup>
-                        <FormControlLabel control={<Switch  checked={params.row?.isActive} onChange={(e)=>handleSwitch(e.target.checked,params.row)} />} style={{margin:'0 0 0 25px'}} />
+                        <FormControlLabel control={<Switch checked={params.row?.isActive} onChange={(e) => handleSwitch(e.target.checked, params.row)} />} style={{ margin: '0 0 0 25px' }} />
                     </FormGroup>
                 )
 
@@ -152,19 +193,35 @@ function Course(props) {
         description: string()
             .matches(/^[A-Za-z]{2,90}$/, "Description can only contain alphabet")
             .required('Description field is required'),
+
         category_id: string().required('please select category'),
-        course_img: mixed()
-            .test("profile_pic", "only allowed png and jpeg formate", function (val) {
-                console.log(val);
-                if (typeof val?.url === 'string') {
-                    return true;
-                }
 
-                let filetype = ['image/jpeg', 'image/png', 'image/jpg']
+        price: number().required('please enter price'),
 
-                return filetype.includes(val?.type?.toLowerCase());
-            })
-            .required('photo is required')
+        week: number().required('please enter week'),
+        // course_video: mixed().test("profile_pic", "only allowed png and jpeg formate", function (val) {
+        //     console.log(val);
+        //     if (typeof val?.url === 'string') {
+        //         return true;
+        //     }
+
+        //     let filetype = ['video/mp4']
+
+        //     return filetype.includes(val?.type?.toLowerCase());
+        // })
+        //     .required('photo is required'),
+        course_img: mixed().required()
+        // .test("profile_pic", "only allowed png and jpeg formate", function (val) {
+        //     console.log(val);
+        //     if (typeof val?.url === 'string') {
+        //         return true;
+        //     }
+
+        //     let filetype = ['image/jpeg', 'image/png', 'image/jpg']
+
+        //     return filetype.includes(val?.type?.toLowerCase());
+        // })
+        // .required('photo is required')
 
     })
     // .test("profile_pic", "less than 2 MB file is allowed", function (val) {
@@ -188,7 +245,18 @@ function Course(props) {
         formData.append('name', val.name);
         formData.append('description', val.description);
         formData.append('category_id', val.category_id);
-        formData.append('course_img', val.course_img);
+        val.course_img.forEach((v) => {
+            formData.append('course_img', v);
+        });
+        // formData.append('course_img', val.course_img);
+        formData.append('week', val.week);
+        formData.append('price', val.price);
+        formData.append('Preview_url', val.Preview_url);
+
+        if (auth.auth?.role === 'Instructor') {
+            formData.append('Instructor_id', auth.auth._id);
+
+        }
 
         if (Object.keys(updatedata).length > 0) {
             formData.append('_id', val._id);
@@ -239,7 +307,11 @@ function Course(props) {
                                 name: '',
                                 description: '',
                                 category_id: '',
-                                course_img: null,
+                                course_img: [],
+                                Instructor_id: null,
+                                week: '',
+                                price: '',
+                                Preview_url: null
 
                             }}
                             enableReinitialize={true}
@@ -254,10 +326,6 @@ function Course(props) {
 
                         >
                             <Form id="subscription-form">
-                                <TextForm name='name' id='name' label='Name' />
-
-                                <TextForm name='description' id='Description' label='Description' />
-
                                 <TextForm
                                     name='category_id'
                                     id="category_id"
@@ -266,7 +334,20 @@ function Course(props) {
                                     label="Select"
                                     style={{ margin: '0', padding: '0' }}
                                 />
-                                <FileUpload name='course_img' />
+                                <TextForm name='name' id='name' label='Name' />
+
+                                <TextForm name='description' id='Description' label='Description' />
+
+                                <TextForm name='price' id='price' label='price' />
+
+                                <TextForm name='week' id='week' label='week' />
+
+
+
+                                <FileUpload name='course_img' type='image' />
+
+
+                                <FileUpload name='Preview_url'  type='video' />
 
 
 

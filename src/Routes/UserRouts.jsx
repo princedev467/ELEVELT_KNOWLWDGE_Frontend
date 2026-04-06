@@ -54,13 +54,12 @@ import Chat from '../Container/Chat/Chat';
 
 import Auth from '../Component/Register/Auth';
 import NotificationDemo from '../Component/NotificationDemo/NotificationDemo';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { userCheck } from '../Redux/slice/auth.slice';
 import { ThemeContext } from '../context/theme.context';
 import CourseDisplay from '../Component/Course/CourseDisplay';
 // import Category from '../Component/Category/CategoryData';
-
-
+import AdminRouts  from './AdminRouts';
 
 function UserRouts(props) {
     const themeData = useContext(ThemeContext);
@@ -72,6 +71,9 @@ function UserRouts(props) {
       dispatch(userCheck())
     
     }, [])
+
+    
+  
     return (
         <div className={themeData.theme==='light'?'dark':'light'}>
             <Header />
@@ -139,10 +141,12 @@ function UserRouts(props) {
               <Route path='*' element={<Error_404 />}></Route>
         </Route>
 
+
                 <Route element={<PrivateRouts />}>
                     <Route path='/Student_Dashboard' element={<Student_Dashboard />}></Route>
                     <Route path='/Instructor_Dashboard' element={< Instructor_Dashboard />} ></Route>
                 </Route>
+                
 
             </Routes>
             <Footer />

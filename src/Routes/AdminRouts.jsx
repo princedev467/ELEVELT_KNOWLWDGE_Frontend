@@ -10,6 +10,7 @@ import CategoryPage from '../Admin/Container/Category/CategoryPage';
 import {  ThemeProvider } from '@mui/material';
 import { ThemeContext } from '../context/theme.context';
 import { createTheme } from '@mui/material/styles';
+import { useDispatch, useSelector } from 'react-redux';
 
 function AdminRouts(props) {
    
@@ -17,6 +18,8 @@ function AdminRouts(props) {
 const themeData = useContext(ThemeContext);
   console.log(themeData);
 
+    const auth = useSelector(state => state.auth)
+      console.log("auth",auth.auth);
 
 
 const theme = createTheme({
@@ -36,12 +39,12 @@ const theme = createTheme({
         <ThemeProvider theme={theme}>
             <Layout>
                 <Routes>
-                    <Route path='admin/category' element={<Category />} ></Route>
+                   <Route path='/Dashboard' element={<Dashboard />}></Route>
+                    <Route path='/category' element={<Category />} ></Route>
                      {/* <Route path='/category/:id' element={<CategoryPage />} ></Route> */}
-                    <Route path='admin/subcategory' element={<SubCategory />} ></Route>
-                    <Route path='admin/course' element={<Course />} > </Route>
-                    <Route path='admin/' element={<Dashboard />}></Route>
-
+                    <Route path='/subcategory' element={<SubCategory />} ></Route>
+                    <Route path='/course' element={<Course />} > </Route>
+                   
                 </Routes>
 
             </Layout>
