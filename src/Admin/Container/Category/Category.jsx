@@ -123,27 +123,27 @@ function Category(props) {
             .matches(/^[A-Za-z]{2,90}$/, "Description can only contain alphabet")
             .required('Description field is required'),
         category_img: mixed()
-            .test("profile_pic", "only allowed png and jpeg formate", function (val) {
-                console.log(val);
-                if (typeof val?.url === 'string') {
-                    return true;
-                }
+            // .test("profile_pic", "only allowed png and jpeg formate", function (val) {
+            //     console.log(val);
+            //     if (typeof val?.url === 'string') {
+            //         return true;
+            //     }
 
-                let filetype = ['image/jpeg', 'image/png', 'image/jpg']
+            //     let filetype = ['image/jpeg', 'image/png', 'image/jpg']
 
-                return filetype.includes(val?.type?.toLowerCase());
-            })
+            //     return filetype.includes(val?.type?.toLowerCase());
+            // })
             .required('photo is required')
     })
-        .test("profile_pic", "less than 2 MB file is allowed", function (val) {
-            console.log(val?.size);
+        // .test("profile_pic", "less than 2 MB file is allowed", function (val) {
+        //     console.log(val?.size);
 
-            if (typeof val?.url === 'string') {
-                return true;
-            }
+        //     if (typeof val?.url === 'string') {
+        //         return true;
+        //     }
 
-            return val?.size <= 2 * 1024 * 1024
-        })
+        //     return val?.size <= 2 * 1024 * 1024
+        // })
 
 
 

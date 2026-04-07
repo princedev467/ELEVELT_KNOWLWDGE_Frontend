@@ -25,6 +25,7 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-loader-spinner": "^8.0.2",
+    "react-material-ui-carousel": "^3.4.2",
     "react-redux": "^9.2.0",
     "react-router-dom": "^6.28.2",
     "socket.io-client": "^4.8.3",

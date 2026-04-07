@@ -81,9 +81,12 @@ export const courseApi = createApi({
 
             console.log("data._id", data._id);
 
-
-            const index = draft.data.findIndex((v) => v._id === data.get('_id'))
-            console.log(index);
+            
+        const ImageData = data.getAll('course_img');
+        
+  
+            const index = draft?.data?.findIndex((v) => v._id === data.get('_id'))
+            console.log(index,ImageData);
 
             if (index !== -1) {
               draft.data[index] = {
@@ -93,8 +96,12 @@ export const courseApi = createApi({
                 category_id: data.get('category_id'),
                 price: data.get('price'),
                 week: data.get('week'),
-                course_img: typeof data.get('course_img') === 'string' ? data.get('course_img') : URL.createObjectURL(data.get('course_img')),
-            //  Preview_url: data.get('Preview_url')
+               course_img: ImageData.length > 0
+              ? ImageData.map((v) => ({
+                  url: URL.createObjectURL(v)
+                }))
+              : draft.data[index].course_img         
+            //  Preview_url: da.ta.get('Preview_url')
 
               }
             }

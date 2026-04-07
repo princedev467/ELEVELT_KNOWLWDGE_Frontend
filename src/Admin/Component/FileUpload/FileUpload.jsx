@@ -18,26 +18,34 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 
-function FileUpload({type,...props}) {
+function FileUpload(props) {
     const [field, meta, helper] = useField(props)
 
     const { setValue } = helper;
 
     let filepath
 
+    let filepaths
     if (field?.value) {
-        filepath = Array.from(field?.value);
+        filepaths = Array.from(field?.value);
     }
     console.log("filepath:",filepath);
 
-    const ImageData = filepath?.map((v) => {
+    const ImageData = filepaths?.map((v) => {
         console.log(v);
 
-        if (typeof v === 'string') {
-            return (filepath = v)
-        } else if (typeof v === 'object' && v !== null) {
-            return (filepath = URL.createObjectURL(v))
+        if(v?.url){
+            return v.url
+        } else {
+            return URL.createObjectURL(v);
         }
+        // if (typeof v === 'string') {
+        //     return (filepath = v)
+        
+        // } else if (typeof v === 'object' && v !== null) {
+            
+        //     return (filepath = URL.createObjectURL(v))
+        // }
     })
     
     console.log("ImageData:", ImageData);
@@ -64,9 +72,9 @@ function FileUpload({type,...props}) {
                 <VisuallyHiddenInput
                     type="file"
                     onChange={(event) =>{
-                        const files = Array.from(event.target.files || []);
+                        const files = Array.from(event.target.files|| []);
                         setValue(files);
-                            event.target.value = null;
+                        event.target.value = null;
 
                     }
                     
@@ -77,13 +85,10 @@ function FileUpload({type,...props}) {
             </Button>
 
 
-             {type==='image'?( ImageData?.map((v) => (
-                    <img src={v} width={'50px'} height={'50px'} />
-                ))):( ImageData?.map((v) => (
-                    <video >
-                         <source src={v} type="video/mp4" />
-                    </video>
-                )))
+             {ImageData?.map((v) => (
+                       <img src={v} width={'50px'} height={'50px'} />
+                
+                ))
                
             }
             {

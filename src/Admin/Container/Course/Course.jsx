@@ -87,6 +87,8 @@ function Course() {
         handleClickOpen();
 
         setUpdateData(val);
+        console.log(val);
+        
 
     }
 
@@ -251,17 +253,21 @@ function Course() {
         // formData.append('course_img', val.course_img);
         formData.append('week', val.week);
         formData.append('price', val.price);
-        formData.append('Preview_url', val.Preview_url);
+        // formData.append('Preview_url', val.Preview_url);
 
         if (auth.auth?.role === 'Instructor') {
             formData.append('Instructor_id', auth.auth._id);
 
         }
 
+
         if (Object.keys(updatedata).length > 0) {
             formData.append('_id', val._id);
+            console.log(val.course_img);
+            
             updata(formData)
-            if (typeof val?.course_img === 'object') {
+           
+            if (typeof val.course_img === 'object') {
                 // console.log("formData",formData);
                 updata(formData)
             } else {
@@ -270,7 +276,7 @@ function Course() {
                 console.log(formData);
 
             }
-
+     
         } else {
 
             // dispatch(addCategory(val));
@@ -311,7 +317,7 @@ function Course() {
                                 Instructor_id: null,
                                 week: '',
                                 price: '',
-                                Preview_url: null
+                                // Preview_url: []
 
                             }}
                             enableReinitialize={true}
@@ -344,10 +350,10 @@ function Course() {
 
 
 
-                                <FileUpload name='course_img' type='image' />
+                                <FileUpload name='course_img'  />
 
 
-                                <FileUpload name='Preview_url'  type='video' />
+                                {/* <FileUpload name='Preview_url'  type='video' /> */}
 
 
 
