@@ -21,7 +21,7 @@ export const addCategory = createAsyncThunk(
 
             formData.append('name', data.name);
             formData.append('description', data.description);
-            formData.append('category_img', data.category_img);
+            formData.append('category_img', data.category_img[0]);
 
             if (data.parent_category_id) {
                 formData.append('parent_category_id', data.parent_category_id);
@@ -97,7 +97,7 @@ export const updateCategory = createAsyncThunk(
 
             formData.set('name', data.name);
             formData.set('description', data.description);
-            formData.set('category_img', data.category_img)
+            formData.set('category_img', data.category_img[0])
             // formData.set('parent_category_id', data.parent_category_id);
 
             const responce = await axios.put(`${BASE_URL}category/updateCategory/${data._id}`, formData) 

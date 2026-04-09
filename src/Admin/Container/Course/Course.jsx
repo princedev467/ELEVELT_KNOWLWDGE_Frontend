@@ -110,18 +110,18 @@ function Course() {
         { field: 'week', headerName: 'week', width: 80 },
 
         { field: 'Instructor_id', headerName: 'Instructor_id', width: 260 },
-        {
-            field: 'category_id', headerName: 'parentCategory', width: 200,
-            renderCell: (params) => {
+        // {
+        //     field: 'category_id', headerName: 'parentCategory', width: 200,
+        //     renderCell: (params) => {
 
-                const parent_category = Categorydata.category.find(
-                    (v) => v._id === params.row.category_id
-                );
+        //         const parent_category = Categorydata.category.find(
+        //             (v) => v._id === params.row.category_id
+        //         );
 
 
-                return parent_category ? parent_category.name : null;
-            }
-        },
+        //         return parent_category ? parent_category.name : null;
+        //     }
+        // },
         {
             field: 'course_img', headerName: 'Category_image', width: 130,
             renderCell: (param) => (
