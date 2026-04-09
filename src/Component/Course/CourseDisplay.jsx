@@ -29,16 +29,16 @@ function CourseDisplay(props) {
         <div className="container">
           <div className="row">
             <div className="col-12">
-              <div className="bg-light p-4 text-center rounded-3">
+              <div className="bg-light p-4 text-center rounded-3  shadow">
                 <h1 className="m-0">Course</h1>
                 {/* Breadcrumb */}
                 <div className="d-flex justify-content-center">
-                  <nav aria-label="breadcrumb">
+                  {/* <nav aria-label="breadcrumb">
                     <ol className="breadcrumb breadcrumb-dots mb-0">
                       <li className="breadcrumb-item"><a href="#">Home</a></li>
                       <li className="breadcrumb-item active" aria-current="page">Course minimal</li>
                     </ol>
-                  </nav>
+                  </nav> */}
                 </div>
               </div>
             </div>
@@ -133,7 +133,7 @@ function CourseDisplay(props) {
                                 style={{
                                   width: "100%",
                                   height: "240px",
-                                  objectFit: "cover",   // 🔥 important
+                                  objectFit: "cover",   
                                   borderRadius: "8px"
                                 }} />
 

@@ -14,8 +14,9 @@ import Stack from '@mui/material/Stack';
 import EditIcon from '@mui/icons-material/Edit';
 import { IconButton } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { addSubCategory, deleteSubCategory, getSubCategory, updateSubCategory } from '../../../Redux/slice/SubCategorySlice';
+// import { addSubCategory, deleteSubCategory, getSubCategory, updateSubCategory } from '../../../Redux/slice/SubCategorySlice';
 import { getCategory } from '../../../Redux/slice/CategorySlice';
+import { useAddSectionMutation, useDeleteSectionMutation, useUpdateSectionMutation } from '../../../Redux/Api/Section.Api';
 
 
 
@@ -23,18 +24,26 @@ function SubCategory(props) {
     const [open, setOpen] = useState(false);
     const [updatedata, setUpdateData] = useState({})
 
+    const {data}=useGetSectionQuery();
+      console.log("course", data);
 
-    const dispatch = useDispatch()
+      const {addData} =useAddSectionMutation();
 
-    const display = () => {
-        dispatch(getSubCategory())
-    }
+      const {updateData}= useUpdateSectionMutation();
 
-    useEffect(() => {
-        display();
+      const {deleteData} = useDeleteSectionMutation();
 
-        dispatch(getCategory())
-    }, [])
+    // const dispatch = useDispatch()
+
+    // const display = () => {
+    //     dispatch(getSubCategory())
+    // }
+
+    // useEffect(() => {
+    //     display();
+
+    //     dispatch(getCategory())
+    // }, [])
 
 
     const handleClickOpen = () => {
@@ -54,9 +63,9 @@ function SubCategory(props) {
     console.log(Categorydata.category);
 
 
-    const subcategorydata = useSelector(state => state.SubCategory)
-    console.log(subcategorydata.subCategory);
-    console.log(subcategorydata);
+    // const subcategorydata = useSelector(state => state.SubCategory)
+    // console.log(subcategorydata.subCategory);
+    // console.log(subcategorydata);
 
     const handleClose = () => {
         setOpen(false);
@@ -67,7 +76,8 @@ function SubCategory(props) {
     const handledelete = async (id) => {
         console.log(id);
 
-        dispatch(deleteSubCategory(id));
+        deleteData(id);
+        // dispatch(deleteSubCategory(id));
     }
 
 
@@ -124,27 +134,6 @@ function SubCategory(props) {
             .matches(/^[A-Za-z]{2,90}$/, "Description can only contain alphabet")
             .required('Description field is required'),
         category: string().required('select is required'),
-        photo: mixed()
-            .test("profile_pic", "only allowed png and jpeg formate", function (val) {
-                console.log(val);
-                if (typeof val === 'string') {
-                    return true;
-                }
-
-                let filetype = ['image/jpeg', 'image/png', 'image/jpg']
-
-                return filetype.includes(val?.type?.toLowerCase());
-            })
-            .required('photo is required')
-    })
-        .test("profile_pic", "less than 2 MB file is allowed", function (val) {
-            console.log(val?.size);
-
-            if (typeof val === 'string') {
-                return true;
-            }
-
-            return val?.size <= 2 * 1024 * 1024
         })
 
 
@@ -154,13 +143,15 @@ function SubCategory(props) {
 
 
         if (Object.keys(updatedata).length > 0) {
-            if (typeof val.photo === 'object') {
-                dispatch(updateSubCategory({ ...val, photo: val.photo.name }));
-            } else {
-                dispatch(updateSubCategory(val));
-            }
+            updateData(val)
+            // if (typeof val.photo === 'object') {
+            //     dispatch(updateSubCategory({ ...val, photo: val.photo.name }));
+            // } else {
+            //     dispatch(updateSubCategory(val));
+            // }
         } else {
-            dispatch(addSubCategory({ ...val, photo: val.photo.name }));
+            addData(val)
+            // dispatch(addSubCategory({ ...val, photo: val.photo.name }));
         }
 
 
@@ -184,7 +175,7 @@ function SubCategory(props) {
                                 name: '',
                                 Description: '',
                                 category: '',
-                                photo: null
+                              
                             }}
                             validationSchema={subcategorySchema}
                             onSubmit={(values, { resetForm }) => {
@@ -209,7 +200,7 @@ function SubCategory(props) {
 
                                 <TextForm name='Description' id='Description' label='Description' />
 
-                                <FileUpload name='photo' />
+                                {/* <FileUpload name='photo' /> */}
 
 
 

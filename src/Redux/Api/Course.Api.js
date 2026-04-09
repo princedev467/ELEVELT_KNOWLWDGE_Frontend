@@ -75,18 +75,27 @@ export const courseApi = createApi({
       }),
       async onQueryStarted(data, { dispatch, queryFulfilled }) {
 
+        let id = data.get('_id');
+
 
         const patchResult = dispatch(
           courseApi.util.updateQueryData('getCourse', undefined, (draft) => {
 
-            console.log("data._id", data._id);
+            // console.log("data._id", data._id);
+            console.log(id);
 
-            
-        const ImageData = data.getAll('course_img');
-        
-  
+
+            const ImageData = [];
+            for (let v of data.getAll('course_img')) {
+              if (v instanceof File) {
+                ImageData.push({ url: URL.createObjectURL(v) });
+              } else {
+                ImageData.push({ url: v }); 
+              }
+            }
+
             const index = draft?.data?.findIndex((v) => v._id === data.get('_id'))
-            console.log(index,ImageData);
+            console.log(index, ImageData);
 
             if (index !== -1) {
               draft.data[index] = {
@@ -96,12 +105,8 @@ export const courseApi = createApi({
                 category_id: data.get('category_id'),
                 price: data.get('price'),
                 week: data.get('week'),
-               course_img: ImageData.length > 0
-              ? ImageData.map((v) => ({
-                  url: URL.createObjectURL(v)
-                }))
-              : draft.data[index].course_img         
-            //  Preview_url: da.ta.get('Preview_url')
+                course_img:ImageData
+                //  Preview_url: da.ta.get('Preview_url')
 
               }
             }
@@ -110,7 +115,9 @@ export const courseApi = createApi({
         )
         try {
           await queryFulfilled
-        } catch {
+
+        } catch (err) {
+          console.error(err);
           patchResult.undo()
 
 

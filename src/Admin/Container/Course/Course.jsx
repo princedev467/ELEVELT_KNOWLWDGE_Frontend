@@ -43,8 +43,8 @@ function Course() {
     }, [])
 
     const { data } = useGetCourseQuery(); //get Data
-    console.log("data:",data);
-    
+    console.log("data:", data);
+
 
     const [adddata] = useAddCourseMutation() // add Data
 
@@ -88,7 +88,7 @@ function Course() {
 
         setUpdateData(val);
         console.log(val);
-        
+
 
     }
 
@@ -128,19 +128,19 @@ function Course() {
 
                 <div>
                     {
-                        param.row.course_img.map((v)=>(
-                               <img src={v.url} style={{ objectFit: 'cover', width: "50px", height: "50px" }} />
+                        param.row.course_img.map((v) => (
+                            <img src={v.url} style={{ objectFit: 'cover', width: "50px", height: "50px" }} />
                         ))
                     }
-                 
-                    
+
+
                 </div>
                 // <img src={param.row.course_img.includes('blob') ?
                 //     param.row.course_img :
                 //     IMAGE_URL + param.row.course_img}
                 //     style={{ objectFit: 'cover', width: "50px", height: "50px" }} />
-                  
-                
+
+
 
             )
         },
@@ -248,7 +248,11 @@ function Course() {
         formData.append('description', val.description);
         formData.append('category_id', val.category_id);
         val.course_img.forEach((v) => {
-            formData.append('course_img', v);
+            if (v instanceof File) {
+                formData.append('course_img', v);
+            } else {
+                formData.append('course_img', v.url);
+            }
         });
         // formData.append('course_img', val.course_img);
         formData.append('week', val.week);
@@ -263,12 +267,16 @@ function Course() {
 
         if (Object.keys(updatedata).length > 0) {
             formData.append('_id', val._id);
-            console.log(val.course_img);
-            
+            // console.log(val.course_img);
+
             updata(formData)
-           
+            console.log("updatedata", formData);
+
+
             if (typeof val.course_img === 'object') {
-                // console.log("formData",formData);
+                console.log("formData", formData);
+               
+
                 updata(formData)
             } else {
                 // dispatch(updateCategory(val));
@@ -276,8 +284,9 @@ function Course() {
                 console.log(formData);
 
             }
-     
-        } else {
+
+            } else {
+           
 
             // dispatch(addCategory(val));
             adddata(formData)
@@ -350,7 +359,7 @@ function Course() {
 
 
 
-                                <FileUpload name='course_img'  />
+                                <FileUpload name='course_img' />
 
 
                                 {/* <FileUpload name='Preview_url'  type='video' /> */}
