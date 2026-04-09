@@ -83,16 +83,26 @@ export const courseApi = createApi({
 
             // console.log("data._id", data._id);
             console.log(id);
-
+            let newImg=data.getAll('course_img');
 
             const ImageData = [];
-            for (let v of data.getAll('course_img')) {
+            //using for
+            for (let v  of newImg) {
               if (v instanceof File) {
                 ImageData.push({ url: URL.createObjectURL(v) });
               } else {
                 ImageData.push({ url: v }); 
               }
             }
+
+            // using forEach
+            //  newImg.forEach((v)=> {
+            //   if (v instanceof File) {
+            //     ImageData.push({ url: URL.createObjectURL(v) });
+            //   } else {
+            //     ImageData.push({ url: v }); 
+            //   }
+            // })
 
             const index = draft?.data?.findIndex((v) => v._id === data.get('_id'))
             console.log(index, ImageData);
