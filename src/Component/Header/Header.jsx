@@ -78,7 +78,7 @@ function Header(props) {
                       let secondCat = Categorydata.category.filter((v1) => v1.parent_category_id === v._id)
                       return (
                         <li className={secondCat.length > 0 ? "dropdown-submenu dropend" : ''}>
-                          <a className={secondCat.length > 0 ? "dropdown-item dropdown-toggle" : "dropdown-item"} href="#">{v.name}</a>
+                          <a className={secondCat.length > 0 ? "dropdown-item dropdown-toggle" : "dropdown-item"} href="#"> <NavLink className="nav-link" to={secondCat.length > 0 ? `/category/${v._id}` : `/course/${v._id}`}>{v.name}</NavLink></a>
                           {/* Sub Category List */}
                           {
                             secondCat && (
@@ -87,14 +87,14 @@ function Header(props) {
                                   let thirdCat = Categorydata.category.filter((v4) => v4.parent_category_id === v3._id)
                                   return (
                                     <li className={thirdCat.length > 0 ? "dropdown-submenu dropend" : ''}>
-                                      <a className={thirdCat.length > 0 ? "dropdown-item dropdown-toggle" : "dropdown-item"} to={`/category/${v3._id}`} >{v3.name}</a>
+                                      <a className={thirdCat.length > 0 ? "dropdown-item dropdown-toggle" : "dropdown-item"} ><NavLink className="nav-link" to={thirdCat.length > 0 ? `/category/${v3._id}` : `/course/${v3._id}`}>{v3.name}</NavLink></a>
                                       {
                                         thirdCat && (
                                           <ul className="dropdown-menu" data-bs-popper="none">
                                             {
                                               thirdCat.map((v5) => (
                                                 <li>
-                                                  <a className="dropdown-item" to={`/category/${v5._id}`} >{v5.name}</a>
+                                                  <a className="dropdown-item"  ><NavLink className="nav-link" to={ `/course/${v5._id}`}>{v5.name}</NavLink></a>
                                                 </li>
                                               )
                                               )

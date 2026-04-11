@@ -77,18 +77,18 @@ function Category(props) {
 
         { field: 'name', headerName: 'Name', width: 130 },
         { field: 'description', headerName: 'Description', width: 200 },
-        // {
-        //     field: 'parent_category_id', headerName: 'parentCategory', width: 200,
-        //     renderCell: (params) => {
+        {
+            field: 'parent_category_id', headerName: 'parentCategory', width: 200,
+            renderCell: (params) => {
 
-        //         const parent_category = Categorydata.category.find(
-        //             (v) => v._id === params.row.parent_category_id
-        //         );
+                const parent_category = Categorydata.category.find(
+                    (v) => v._id === params.row.parent_category_id
+                );
 
 
-        //         return parent_category ? parent_category.name : null;
-        //     }
-        // },
+                return parent_category ? parent_category.name : null;
+            }
+        },
         {
             field: 'category_img', headerName: 'Category_image', width: 130,
             renderCell: (param) => (
@@ -173,14 +173,14 @@ function Category(props) {
 
     }
 
-    // let subData=[
-    //     {value:'',label:'--select Category--'}
-    // ]
+    let subData=[
+        {value:'',label:'--select Category--'}
+    ]
 
     
-    // Categorydata.category.map((v)=>(
-    //         subData.push({value:v._id,label:v.name})
-    // ));
+    Categorydata.category.map((v)=>(
+            subData.push({value:v._id,label:v.name})
+    ));
     
 
     // console.log("subData:",subData);
@@ -199,7 +199,7 @@ function Category(props) {
                             initialValues={Object.keys(updatedata).length > 0 ? updatedata : {
                                 name: '',
                                 description: '',
-                                // parent_category_id:null,
+                                parent_category_id:null,
                                 category_img: [],
 
                             }}
@@ -218,14 +218,14 @@ function Category(props) {
 
                                 <TextForm name='description' id='Description' label='Description' />
 
-                                {/* <TextForm
+                                <TextForm
                                 name='parent_category_id'
                                     id="parent_category_id"
                                     select
                                     data={subData}
                                     label="Select"
                                     style={{ margin: '0', padding: '0' }}
-                                /> */}
+                                />
                                 
                                 <FileUpload name='category_img' />
 

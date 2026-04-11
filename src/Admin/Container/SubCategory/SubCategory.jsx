@@ -16,22 +16,29 @@ import { IconButton } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 // import { addSubCategory, deleteSubCategory, getSubCategory, updateSubCategory } from '../../../Redux/slice/SubCategorySlice';
 import { getCategory } from '../../../Redux/slice/CategorySlice';
-import { useAddSectionMutation, useDeleteSectionMutation, useUpdateSectionMutation } from '../../../Redux/Api/Section.Api';
+import { useAddSectionMutation, useDeleteSectionMutation, useGetSectionQuery, useUpdateSectionMutation } from '../../../Redux/Api/Section.Api';
+import { useGetCourseQuery } from '../../../Redux/Api/Course.Api';
 
 
 
 function SubCategory(props) {
+
     const [open, setOpen] = useState(false);
     const [updatedata, setUpdateData] = useState({})
 
-    const {data}=useGetSectionQuery();
-      console.log("course", data);
+       const {data:course,error:courseerror,isLoading:corseLoading} = useGetCourseQuery(); //get Data
+      console.log("course", course);
 
-      const {addData} =useAddSectionMutation();
+    const {data:section}=useGetSectionQuery();
+ console.log("section", section);
+    
+   
 
-      const {updateData}= useUpdateSectionMutation();
+      const [addData] =useAddSectionMutation();
 
-      const {deleteData} = useDeleteSectionMutation();
+      const [updateData]= useUpdateSectionMutation();
+
+      const [deleteData] = useDeleteSectionMutation();
 
     // const dispatch = useDispatch()
 
@@ -50,17 +57,22 @@ function SubCategory(props) {
         setOpen(true);
     };
 
-    const Categorydata = useSelector(state => state.category)
+    // const Categorydata = useSelector(state => state.category)
 
-    const catdrop = [{ value:'', label: '---Select Category--' }];
+    const catdrop = [{ value:'', label: '---Select Course--' }];
 
-     Categorydata.category.map((v) => {
-        catdrop.push({ value: v.id , label: v.name })
+     course?.data?.map((v) => (
+        catdrop.push({ value: v._id , label: v.name })
 
-    });
+     ));
 
+       let data
+     if(section?.data.length > 0){
+        data=section?.data
+     }
+  
     console.log(catdrop);
-    console.log(Categorydata.category);
+    // console.log(Categorydata.category);
 
 
     // const subcategorydata = useSelector(state => state.SubCategory)
@@ -91,8 +103,8 @@ function SubCategory(props) {
 
     const paginationModel = { pae: 0, pageSize: 5 };
     const columns = [
-        { field: 'category', headerName: 'Category', width: 200 ,renderCell:(parem)=>{
-              const c=  Categorydata.category.find((v)=>v.id===parem.row.category);
+        { field: 'course', headerName: 'Category', width: 200 ,renderCell:(parem)=>{
+              const c=  course.find((v)=>v.id===parem.row.course);
 
               console.log(c);
               
@@ -101,14 +113,7 @@ function SubCategory(props) {
         { field: 'name', headerName: 'Name', width: 130 },
         { field: 'Description', headerName: 'Description', width: 200 },
         
-        {
-            field: 'photo', headerName: 'SubCategory_image', width: 200,
-            renderCell: (parem) => (
-
-                <img src={`/public/assets/images/courses/4by3/${parem.row.photo}`} style={{ objectFit: 'cover', width: "50px", height: "50px" }} />
-
-            )
-        },
+      
         {
             headerName: 'Action', width: 170, renderCell: (parem) => (
                 <Stack direction="row" spacing={1}>
@@ -133,7 +138,7 @@ function SubCategory(props) {
         Description: string()
             .matches(/^[A-Za-z]{2,90}$/, "Description can only contain alphabet")
             .required('Description field is required'),
-        category: string().required('select is required'),
+        course: string().required('select is required'),
         })
 
 
@@ -174,7 +179,7 @@ function SubCategory(props) {
                             initialValues={Object.keys(updatedata).length > 0 ? updatedata : {
                                 name: '',
                                 Description: '',
-                                category: '',
+                                course: '',
                               
                             }}
                             validationSchema={subcategorySchema}
@@ -191,9 +196,9 @@ function SubCategory(props) {
 
                                 <TextForm
                                     select
-                                    name='category'
+                                    name='course'
                                     data={catdrop}
-                                    label='Category'
+                                    label='course'
                                     
                                 />
                                 <TextForm name='name' id='name' label='Name' />
@@ -219,7 +224,7 @@ function SubCategory(props) {
                 </Dialog>
                 <br /><br />
                 <DataGrid
-                    rows={subcategorydata.subCategory}
+                    rows={section}
                     columns={columns}
                     initialState={{ pagination: { paginationModel } }}
                     pageSizeOptions={[5, 10]}

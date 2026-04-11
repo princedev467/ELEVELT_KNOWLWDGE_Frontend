@@ -80,10 +80,13 @@ function UserRouts(props) {
             <Routes>
                 <Route path='/' element={<Home />} ></Route>
                  {/* <Route path='/CategoryPage' element={<CategoryPage/>} ></Route> */}
+                 {/* category */}
                   <Route path='/category' element={<CategoryData/>} ></Route>
                  <Route path='/category/:id' element={<CategoryData/>} ></Route>
 
+                {/* course */}
                   <Route path='/course' element={<CourseDisplay/>} ></Route>
+                   <Route path='/course/:id' element={<CourseDisplay/>} ></Route>
                  {/* <Route path='/category/:id' element={<CategoryPage />} /> */}
                 <Route path='/about' element={< About />} ></Route>
                  <Route path='/chat' element={<Chat />} ></Route>

@@ -19925,8 +19925,9 @@ fieldset:disabled .btn {
   content: "\f107";
   font-family: "Font Awesome 5 Free";
   margin-left: 0.35rem;
-  font-weight: 900;
-  vertical-align: middle;
+  font-weight:900;
+  
+  /* vertical-align: middle; */
   border: none;
 }
 
@@ -19934,6 +19935,8 @@ fieldset:disabled .btn {
   content: "\f141";
   font-family: "Font Awesome 5 Free";
   right: 1rem;
+  
+  vertical-align: middle;
 }
 
 .navbar-expand-xl .dropdown-submenu.dropstart .dropdown-toggle:before {
@@ -19941,6 +19944,8 @@ fieldset:disabled .btn {
   margin-right: 0;
   font-family: "Font Awesome 5 Free";
   right: 1rem;
+  
+  vertical-align: middle;
   position: absolute;
 }
 
@@ -20003,6 +20008,7 @@ fieldset:disabled .btn {
 
   .navbar-expand-xl .dropdown-menu .dropdown-toggle:after {
     position: absolute;
+    vertical-align: center;
   }
 
   .navbar-expand-xl .dropdown-menu-shadow-stacked {
@@ -22424,3 +22430,10 @@ li
   
  background-color: #24292e !important;
 }
+
+.nav-row {
+ display: block;
+}
+.active {
+   font-weight: bold;
+   }

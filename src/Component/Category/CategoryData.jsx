@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategory } from '../../Redux/slice/CategorySlice';
-import { useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { Card, CardActions, CardContent, CardMedia, Button, Typography, Grid, Box } from '@mui/material';
 import { IMAGE_URL } from '../../utility/url';
 import WithReduxFetch from '../../Hoc/WithReduxFetch';
@@ -9,6 +9,7 @@ import useSearch from '../../hook/useSearch';
 
 function CategoryData({category}) {
   const { id } = useParams();
+  console.log(id);
   
   // const [search, setSearch]=useState('')
 
@@ -31,6 +32,15 @@ function CategoryData({category}) {
  
 
     let catfilter=search?filterData:category
+
+
+    let finalData;
+
+if (!id) {
+  finalData = catfilter?.filter(v => v.parent_category_id === null);
+} else {
+  finalData = catfilter?.filter(v => v.parent_category_id == id);
+}
 
 
   return (
@@ -129,18 +139,20 @@ function CategoryData({category}) {
                 {/* Main content START */}
                 <div className="col-12">
                   {/* Course Grid START */}
-                  <div className="row g-4">
+                  <div className="row g-4 " style={{display:'block'}}>
                     {/* Card item START */}
     
                     {
-                      catfilter?.map((v) => (
-                        <div className="col-sm-6 col-lg-4 col-xl-3">
+                      finalData?.map((v) => (
+                        <NavLink to={v.parent_category_id?`/category/${v._id}`:`/course/${v._id}`}  >
+                        <div className="col-sm-6 col-lg-4 col-xl-3" >
+                          
                           <div className="card shadow h-100">
                             {/* Image */}
                          
-                             
-                                
-                                  <img src={v.category_img.url} className="card-img-top" alt="course image"
+                           {  
+                                v.category_img.map(v => (
+                                  <img src={v.url} className="card-img-top" alt="course image"
                                     style={{
                                       width: "100%",
                                       height: "240px",
@@ -148,7 +160,8 @@ function CategoryData({category}) {
                                       borderRadius: "8px"
                                     }} />
     
-                        
+                                ))
+                                }
     
                           
                             {/* Card body */}
@@ -181,6 +194,7 @@ function CategoryData({category}) {
                             </div>
                           </div>
                         </div>
+                         </NavLink>
                       ))
                     }
                     {/* Card item END */}

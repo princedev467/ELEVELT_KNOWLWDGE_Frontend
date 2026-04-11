@@ -3,10 +3,14 @@ import { Card, CardActions, CardContent, CardMedia, Button, Typography, Grid, Bo
 import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
 import useSearch from '../../hook/useSearch';
 import Carousel from 'react-material-ui-carousel';
+import { useParams } from 'react-router-dom';
 
 function CourseDisplay(props) {
 
   // const [search, setSearch]=useState('')
+
+  const { id } = useParams();
+  console.log(id);
 
 
   const { data, isLoading, isError } = useGetCourseQuery(); //get Data
@@ -14,15 +18,22 @@ function CourseDisplay(props) {
 
   let course = data?.data
 
+  let filterCourseData
+  if (id) {
+    filterCourseData = course?.filter((v)=> v.category_id=== id)
 
+  } else{
+    filterCourseData = course
+  }
 
-  const { search, setSearch, filterData } = useSearch(course, ["name", "description"])
+  const { search, setSearch, filterData } = useSearch(filterCourseData, ["name", "description"])
 
 
   // let catfilter=search?filterData:category
 
 
-  let filterCourse = search ? filterData : course
+  let filterCourse = search ? filterData : filterCourseData
+
   return (
     <main>
       <section className="py-4">
@@ -133,7 +144,7 @@ function CourseDisplay(props) {
                                 style={{
                                   width: "100%",
                                   height: "240px",
-                                  objectFit: "cover",   
+                                  objectFit: "cover",
                                   borderRadius: "8px"
                                 }} />
 
