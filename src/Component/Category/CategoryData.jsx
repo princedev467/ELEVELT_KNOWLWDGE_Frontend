@@ -147,61 +147,61 @@ function CategoryData({ category }) {
                 {
                   finalData?.map((v) => {
                     const subCat = category?.some(
-                      (c) => c.parent_category_id == v._id
+                      (v1) => v1.parent_category_id == v._id
                     );
 
-                    return(
-                    <NavLink to={subCat ? `/category/${v._id}` : `/course/${v._id}`}  >
-                      <div className="col-sm-6 col-lg-4 col-xl-3 " >
+                    return (
+                      <div key={v._id} className="col-sm-6 col-lg-4 col-xl-3 " >
+                        <NavLink to={subCat ? `/category/${v._id}` : `/course/${v._id}`}  >
+                          <div className="card shadow h-100">
+                            {/* Image */}
 
-                        <div className="card shadow h-100">
-                          {/* Image */}
+                            {
+                              v.category_img.map(v => (
+                                <img src={v.url} className="card-img-top" alt="course image"
+                                  style={{
+                                    width: "100%",
+                                    height: "240px",
+                                    objectFit: "cover",
+                                    borderRadius: "8px"
+                                  }} />
 
-                          {
-                            v.category_img.map(v => (
-                              <img src={v.url} className="card-img-top" alt="course image"
-                                style={{
-                                  width: "100%",
-                                  height: "240px",
-                                  objectFit: "cover",
-                                  borderRadius: "8px"
-                                }} />
-
-                            ))
-                          }
+                              ))
+                            }
 
 
-                          {/* Card body */}
-                          <div className="card-body pb-0">
-                            {/* Badge and favorite */}
-                            <div className="d-flex justify-content-between mb-2">
-                              <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
-                              <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
+                            {/* Card body */}
+                            <div className="card-body pb-0">
+                              {/* Badge and favorite */}
+                              <div className="d-flex justify-content-between mb-2">
+                                <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
+                                <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
+                              </div>
+                              {/* Title */}
+                              <h5 className="card-title"><a href="#"> {v.name}</a></h5>
+                              <p class="mb-2 text-truncate-2">{v.description}</p>
+                              {/* Rating star */}
+                              <ul className="list-inline mb-0">
+                                <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
+                                <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
+                                <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
+                                <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
+                                <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
+                                <li className="list-inline-item ms-2 h6 fw-light mb-0">4.0/5.0</li>
+                              </ul>
                             </div>
-                            {/* Title */}
-                            <h5 className="card-title"><a href="#"> {v.name}</a></h5>
-                            <p class="mb-2 text-truncate-2">{v.description}</p>
-                            {/* Rating star */}
-                            <ul className="list-inline mb-0">
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                              <li className="list-inline-item ms-2 h6 fw-light mb-0">4.0/5.0</li>
-                            </ul>
-                          </div>
-                          {/* Card footer */}
-                          <div className="card-footer pt-0 pb-3">
-                            <hr />
-                            <div className="d-flex justify-content-between">
-                              <span className="h6 fw-light mb-0"><i className="far fa-clock text-danger me-2" />12h 56m</span>
-                              <span className="h6 fw-light mb-0"><i className="fas fa-table text-orange me-2" />15 lectures</span>
+                            {/* Card footer */}
+                            <div className="card-footer pt-0 pb-3">
+                              <hr />
+                              <div className="d-flex justify-content-between">
+                                <span className="h6 fw-light mb-0"><i className="far fa-clock text-danger me-2" />12h 56m</span>
+                                <span className="h6 fw-light mb-0"><i className="fas fa-table text-orange me-2" />15 lectures</span>
+                              </div>
                             </div>
                           </div>
-                        </div>
+
+                        </NavLink>
                       </div>
-                    </NavLink>
                     )
                   })
                 }
