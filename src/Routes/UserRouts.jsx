@@ -87,6 +87,11 @@ function UserRouts(props) {
                 {/* course */}
                   <Route path='/course' element={<CourseDisplay/>} ></Route>
                    <Route path='/course/:id' element={<CourseDisplay/>} ></Route>
+
+                  {/* course Detail*/}  
+                <Route path='/Course_Detail' element={<Course_Detail />}></Route>
+                 <Route path='/Course_Detail/:id' element={<Course_Detail />}></Route>
+            
                  {/* <Route path='/category/:id' element={<CategoryPage />} /> */}
                 <Route path='/about' element={< About />} ></Route>
                  <Route path='/chat' element={<Chat />} ></Route>
@@ -101,7 +106,6 @@ function UserRouts(props) {
                 <Route path='/Contact_us' element={<Contact_us />}></Route>
                 <Route path='/Checkout' element={<Checkout />}></Route>
                 <Route path='/Course_Added' element={<Course_Added />}></Route>
-                <Route path='/Course_Detail' element={<Course_Detail />}></Route>
                 <Route path='/Course_Detail_Advance' element={<Course_Detail_Advance />} ></Route>
                 <Route path='/Course_Detail_Minimal' element={< Course_Detail_Minimal />} ></Route>
                 <Route path='/Course_List_Minimal' element={< Course_List_Minimal />} ></Route>

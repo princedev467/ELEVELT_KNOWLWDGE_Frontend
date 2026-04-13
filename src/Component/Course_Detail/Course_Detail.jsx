@@ -1,37 +1,86 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import { useParams } from 'react-router-dom';
+import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
+import Carousel from 'react-material-ui-carousel';
+import { ThemeContext } from '../../context/theme.context';
 
 function Course_Detail(props) {
+   const themeData = useContext(ThemeContext);
+      console.log(themeData);
+  
+      let isDark=themeData.theme==='light'
+  const { id } = useParams();
+  console.log("id", id);
+
+
+  const { data, isLoading, isError } = useGetCourseQuery(); //get Data
+  console.log("course", data);
+
+  let course = data?.data
+
+  let filterCourseData
+  if (id) {
+    filterCourseData = course?.filter((v) => v._id === id)
+
+  } else {
+    filterCourseData = course
+  }
+
   return (
     <main>
       {/* =======================
 Page intro START */}
       <section className="bg-light py-0 py-sm-5">
-        <div className="container">
-          <div className="row py-5">
-            <div className="col-lg-8">
-              {/* Badge */}
-              <h6 className="mb-3 font-base bg-primary text-white py-2 px-4 rounded-2 d-inline-block">Digital
-                Marketing</h6>
-              {/* Title */}
-              <h1>The Complete Digital Marketing Course - 12 Courses in 1</h1>
-              <p>Satisfied conveying a dependent contented he gentleman agreeable do be. Warrant private
-                blushes removed an in equally totally if. Delivered dejection necessary objection do Mr
-                prevailed. Mr feeling does chiefly cordial in do.</p>
-              {/* Content */}
-              <ul className="list-inline mb-0">
-                <li className="list-inline-item h6 me-3 mb-1 mb-sm-0"><i className="fas fa-star text-warning me-2" />4.5/5.0</li>
-                <li className="list-inline-item h6 me-3 mb-1 mb-sm-0"><i className="fas fa-user-graduate text-orange me-2" />12k Enrolled</li>
-                <li className="list-inline-item h6 me-3 mb-1 mb-sm-0"><i className="fas fa-signal text-success me-2" />All levels</li>
-                <li className="list-inline-item h6 me-3 mb-1 mb-sm-0"><i className="bi bi-patch-exclamation-fill text-danger me-2" />Last updated 09/2021</li>
-                <li className="list-inline-item h6 mb-0"><i className="fas fa-globe text-info me-2" />English</li>
-              </ul>
-            </div>
+        <div className="container" >
+          <div className="row py-5 ">
+            {filterCourseData?.map((v) => (
+              <div style={{display:'flex',justifyContent:'space-between'}} className='row g-4'>
+                <div className="position-relative col-5  rounded-3 ">
+                
+                    {/* Image */}
+                    <Carousel>
+                      {
+                        v.course_img.map(v => (
+                          <img src={v.url} className="card-img-top" alt="course image"
+                            style={{
+                              width: "100%",
+                              height: "50vh",
+                              // objectFit: "contain",
+                              borderRadius: "8px"
+                            }} />
+
+                        ))
+                      }
+
+                    </Carousel>
+                  
+                </div>
+                <div className="col-6">
+                  {/* Badge */}
+                  <h6 className="mb-3 font-base bg-primary text-white py-2 px-4 rounded-2 d-inline-block">{v.name}</h6>
+                  {/* Title */}
+                  <h1 className={`${isDark?'text-white':''}`}>{v.description}</h1>
+                  <p>Satisfied conveying a dependent contented he gentleman agreeable do be. Warrant private
+                    blushes removed an in equally totally if. Delivered dejection necessary objection do Mr
+                    prevailed. Mr feeling does chiefly cordial in do.</p>
+                  {/* Content */}
+                  <ul className="list-inline mb-0">
+                    <li className="list-inline-item h6 me-3 mb-1 mb-sm-0"><i className="fas fa-star text-warning me-2" />4.5/5.0</li>
+                    <li className="list-inline-item h6 me-3 mb-1 mb-sm-0"><i className="fas fa-user-graduate text-orange me-2" />12k Enrolled</li>
+                    <li className="list-inline-item h6 me-3 mb-1 mb-sm-0"><i className="fas fa-signal text-success me-2" />All levels</li>
+                    <li className="list-inline-item h6 me-3 mb-1 mb-sm-0"><i className="bi bi-patch-exclamation-fill text-danger me-2" />Last updated 09/2021</li>
+                    <li className="list-inline-item h6 mb-0"><i className="fas fa-globe text-info me-2" />English</li>
+                  </ul>
+                </div>
+              </div>
+            ))
+            }
           </div>
         </div>
       </section>

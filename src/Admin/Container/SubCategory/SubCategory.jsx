@@ -135,7 +135,7 @@ function SubCategory(props) {
         name: string()
             .matches(/^[A-Za-z]{2,30}$/, "name can only contain alphabet")
             .required('name field is required'),
-        Description: string()
+        description: string()
             .matches(/^[A-Za-z]{2,90}$/, "Description can only contain alphabet")
             .required('Description field is required'),
         course: string().required('select is required'),
@@ -178,7 +178,7 @@ function SubCategory(props) {
                         <Formik
                             initialValues={Object.keys(updatedata).length > 0 ? updatedata : {
                                 name: '',
-                                Description: '',
+                                description: '',
                                 course: '',
                               
                             }}
@@ -203,7 +203,7 @@ function SubCategory(props) {
                                 />
                                 <TextForm name='name' id='name' label='Name' />
 
-                                <TextForm name='Description' id='Description' label='Description' />
+                                <TextForm name='description' id='description' label='description' />
 
                                 {/* <FileUpload name='photo' /> */}
 

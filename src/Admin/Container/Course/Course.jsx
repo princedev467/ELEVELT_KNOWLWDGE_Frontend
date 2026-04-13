@@ -190,10 +190,10 @@ function Course() {
 
     let categorySchema = object({
         name: string()
-            .matches(/^[A-Za-z]{2,30}$/, "name can only contain alphabet")
+            // .matches(/^[A-Za-z]{2,30}$/, "name can only contain alphabet")
             .required('name field is required'),
         description: string()
-            .matches(/^[A-Za-z]{2,90}$/, "Description can only contain alphabet")
+            // .matches(/^[A-Za-z]{2,90}$/, "Description can only contain alphabet")
             .required('Description field is required'),
 
         category_id: string().required('please select category'),

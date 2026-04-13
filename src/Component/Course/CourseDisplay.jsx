@@ -3,7 +3,7 @@ import { Card, CardActions, CardContent, CardMedia, Button, Typography, Grid, Bo
 import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
 import useSearch from '../../hook/useSearch';
 import Carousel from 'react-material-ui-carousel';
-import { useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 
 function CourseDisplay(props) {
 
@@ -135,6 +135,7 @@ function CourseDisplay(props) {
                 {
                   filterCourse?.map((v) => (
                     <div className="col-sm-6 col-lg-4 col-xl-3">
+                      <NavLink to={`/Course_Detail/${v._id}`}>
                       <div className="card shadow h-100">
                         {/* Image */}
                         <Carousel>
@@ -181,6 +182,7 @@ function CourseDisplay(props) {
                           </div>
                         </div>
                       </div>
+                      </NavLink>
                     </div>
                   ))
                 }

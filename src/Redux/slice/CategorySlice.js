@@ -98,7 +98,7 @@ export const updateCategory = createAsyncThunk(
             formData.set('name', data.name);
             formData.set('description', data.description);
             formData.set('category_img', data.category_img[0])
-            // formData.set('parent_category_id', data.parent_category_id);
+            formData.set('parent_category_id', data.parent_category_id);
 
             const responce = await axios.put(`${BASE_URL}category/updateCategory/${data._id}`, formData) 
 
