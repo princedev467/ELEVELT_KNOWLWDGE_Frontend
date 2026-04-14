@@ -26,19 +26,19 @@ function SubCategory(props) {
     const [open, setOpen] = useState(false);
     const [updatedata, setUpdateData] = useState({})
 
-       const {data:course,error:courseerror,isLoading:corseLoading} = useGetCourseQuery(); //get Data
-      console.log("course", course);
+    const { data: course, error: courseerror, isLoading: corseLoading } = useGetCourseQuery(); //get Data
+    console.log("course", course);
 
-    const {data:section}=useGetSectionQuery();
- console.log("section", section);
-    
-   
+    const { data: section } = useGetSectionQuery();
+    console.log("section", section);
 
-      const [addData] =useAddSectionMutation();
 
-      const [updateData]= useUpdateSectionMutation();
+    let SectionData = section?.data
+    const [addData] = useAddSectionMutation();
 
-      const [deleteData] = useDeleteSectionMutation();
+    const [updateData] = useUpdateSectionMutation();
+
+    const [deleteData] = useDeleteSectionMutation();
 
     // const dispatch = useDispatch()
 
@@ -52,6 +52,7 @@ function SubCategory(props) {
     //     dispatch(getCategory())
     // }, [])
 
+    console.log(SectionData);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -59,26 +60,20 @@ function SubCategory(props) {
 
     // const Categorydata = useSelector(state => state.category)
 
-    const catdrop = [{ value:'', label: '---Select Course--' }];
+    const catdrop = [{ value: '', label: '---Select Course--' }];
 
-     course?.data?.map((v) => (
-        catdrop.push({ value: v._id , label: v.name })
+    course?.data?.map((v) => (
+        catdrop.push({ value: v._id, label: v.name })
 
-     ));
+    ));
 
-       let data
-     if(section?.data.length > 0){
-        data=section?.data
-     }
-  
+    let data
+    if (section?.data.length > 0) {
+        data = section?.data
+    }
+
     console.log(catdrop);
-    // console.log(Categorydata.category);
-
-
-    // const subcategorydata = useSelector(state => state.SubCategory)
-    // console.log(subcategorydata.subCategory);
-    // console.log(subcategorydata);
-
+    
     const handleClose = () => {
         setOpen(false);
     };
@@ -89,7 +84,6 @@ function SubCategory(props) {
         console.log(id);
 
         deleteData(id);
-        // dispatch(deleteSubCategory(id));
     }
 
 
@@ -103,21 +97,23 @@ function SubCategory(props) {
 
     const paginationModel = { pae: 0, pageSize: 5 };
     const columns = [
-        { field: 'course', headerName: 'Category', width: 200 ,renderCell:(parem)=>{
-              const c=  course.find((v)=>v.id===parem.row.course);
+        {
+            field: 'course', headerName: 'course', width: 200, renderCell: (parem) => {
+                const c = course?.data?.find((v) => v._id === parem.row.course);
 
-              console.log(c);
-              
-              return c?.name
-        }},
+                console.log(c);
+
+                return c?.name
+            }
+        },
         { field: 'name', headerName: 'Name', width: 130 },
-        { field: 'Description', headerName: 'Description', width: 200 },
-        
-      
+        { field: 'description', headerName: 'description', width: 200 },
+
+
         {
             headerName: 'Action', width: 170, renderCell: (parem) => (
                 <Stack direction="row" spacing={1}>
-                    <IconButton onClick={() => handledelete(parem.row.id)}>
+                    <IconButton onClick={() => handledelete(parem.row._id)}>
                         <DeleteIcon style={{ color: 'red' }} />
                     </IconButton>
                     <IconButton onClick={() => handleedit(parem.row)} >
@@ -133,31 +129,27 @@ function SubCategory(props) {
 
     let subcategorySchema = object({
         name: string()
-            .matches(/^[A-Za-z]{2,30}$/, "name can only contain alphabet")
+            // .matches(/^[A-Za-z]{2,30}$/, "name can only contain alphabet")
             .required('name field is required'),
         description: string()
-            .matches(/^[A-Za-z]{2,90}$/, "Description can only contain alphabet")
+            // .matches(/^[A-Za-z]{2,90}$/, "Description can only contain alphabet")
             .required('Description field is required'),
         course: string().required('select is required'),
-        })
+    })
 
 
     const handlesubmit = async (val) => {
-        console.log("submit",val);
+        console.log("submit", val);
         console.log('updatedata:', updatedata);
 
 
         if (Object.keys(updatedata).length > 0) {
-            updateData(val)
-            // if (typeof val.photo === 'object') {
-            //     dispatch(updateSubCategory({ ...val, photo: val.photo.name }));
-            // } else {
-            //     dispatch(updateSubCategory(val));
-            // }
+           await updateData({ _id: updatedata._id, ...val })
+           setUpdateData({});
+
         } else {
-            addData(val)
-            // dispatch(addSubCategory({ ...val, photo: val.photo.name }));
-        }
+           await addData(val)
+               }
 
 
 
@@ -167,21 +159,22 @@ function SubCategory(props) {
 
     return (
         <>
-            <h1>SubCategory</h1>
+            <h1>Section</h1>
             <React.Fragment>
                 <Button variant="outlined" onClick={handleClickOpen}>
                     Open form dialog
                 </Button>
                 <Dialog open={open} onClose={handleClose}>
-                    <DialogTitle>Add SubCategory</DialogTitle>
+                    <DialogTitle>Add Section</DialogTitle>
                     <DialogContent>
                         <Formik
                             initialValues={Object.keys(updatedata).length > 0 ? updatedata : {
                                 name: '',
                                 description: '',
                                 course: '',
-                              
+
                             }}
+                             enableReinitialize
                             validationSchema={subcategorySchema}
                             onSubmit={(values, { resetForm }) => {
                                 console.log(values);
@@ -199,7 +192,7 @@ function SubCategory(props) {
                                     name='course'
                                     data={catdrop}
                                     label='course'
-                                    
+
                                 />
                                 <TextForm name='name' id='name' label='Name' />
 
@@ -224,12 +217,13 @@ function SubCategory(props) {
                 </Dialog>
                 <br /><br />
                 <DataGrid
-                    rows={section}
+                    rows={SectionData}
                     columns={columns}
                     initialState={{ pagination: { paginationModel } }}
                     pageSizeOptions={[5, 10]}
                     checkboxSelection
                     sx={{ border: 0 }}
+                    getRowId={(row) => row ? row._id : ''}
                 />
 
 

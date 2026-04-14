@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom';
 import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
 import Carousel from 'react-material-ui-carousel';
 import { ThemeContext } from '../../context/theme.context';
+import { useGetSectionQuery } from '../../Redux/Api/Section.Api';
 
 function Course_Detail(props) {
    const themeData = useContext(ThemeContext);
@@ -18,20 +19,33 @@ function Course_Detail(props) {
   const { id } = useParams();
   console.log("id", id);
 
+// course
+  const { data:courseData, isLoading, isError } = useGetCourseQuery(); //get Data
+  console.log("course", courseData);
 
-  const { data, isLoading, isError } = useGetCourseQuery(); //get Data
-  console.log("course", data);
+// Section
+  const { data:sectionData} = useGetSectionQuery(); //get Data
+  console.log("Section", sectionData);
 
-  let course = data?.data
+  //course
+  let course = courseData?.data
+  //section
+  let section =sectionData?.data
 
   let filterCourseData
+
+  let filterSectionData
   if (id) {
-    filterCourseData = course?.filter((v) => v._id === id)
+    filterCourseData = course?.filter((v) => v._id === id);
+    filterSectionData=section?.filter((v)=>v.course===id)
 
   } else {
     filterCourseData = course
+    filterSectionData=section
   }
 
+  console.log("filterSectionData",filterSectionData);
+  
   return (
     <main>
       {/* =======================
@@ -40,7 +54,7 @@ Page intro START */}
         <div className="container" >
           <div className="row py-5 ">
             {filterCourseData?.map((v) => (
-              <div style={{display:'flex',justifyContent:'space-between'}} className='row g-4'>
+              <div key={v._id}  style={{display:'flex',justifyContent:'space-between'}} className='row g-4'>
                 <div className="position-relative col-5  rounded-3 ">
                 
                     {/* Image */}
