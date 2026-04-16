@@ -1,30 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
+import React, { useState } from 'react';
+import { useGetCourseQuery } from '../../../Redux/Api/Course.Api';
+import { useGetSectionQuery } from '../../../Redux/Api/Section.Api';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack } from '@mui/material';
+import { object, string } from 'yup';
+import { Form, Formik, useFormikContext } from 'formik';
 import TextForm from '../../Component/TextForm/TextForm';
-import FileUpload from '../../Component/FileUpload/FileUpload';
-import { Form, Formik } from 'formik';
-import { mixed, object, string } from 'yup';
 import { DataGrid } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Stack from '@mui/material/Stack';
 import EditIcon from '@mui/icons-material/Edit';
-import { IconButton } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-// import { addSubCategory, deleteSubCategory, getSubCategory, updateSubCategory } from '../../../Redux/slice/SubCategorySlice';
-import { getCategory } from '../../../Redux/slice/CategorySlice';
-import { useAddSectionMutation, useDeleteSectionMutation, useGetSectionQuery, useUpdateSectionMutation } from '../../../Redux/Api/Section.Api';
-import { useGetCourseQuery } from '../../../Redux/Api/Course.Api';
+import { NavLink } from 'react-router-dom';
+import { useAddquizMutation, useDeletequizMutation, useGetquizQuery, useUpdatequizMutation } from '../../../Redux/Api/Quiz.Api';
 
-
-
-function SubCategory(props) {
+function Quiz(props) {
 
     const [open, setOpen] = useState(false);
-    const [updatedata, setUpdateData] = useState({})
+    const [updatedata, setUpdateData] = useState({});
+    const [courseid, setCourseId] = useState('');
+
+
+    // const { setFieldValue } = useFormikContext();
+
+    console.log("courseid", courseid);
+
 
     const { data: course, error: courseerror, isLoading: corseLoading } = useGetCourseQuery(); //get Data
     console.log("course", course);
@@ -32,13 +29,19 @@ function SubCategory(props) {
     const { data: section } = useGetSectionQuery();
     console.log("section", section);
 
+    const { data: quiz } = useGetquizQuery()
 
     let SectionData = section?.data
-    const [addData] = useAddSectionMutation();
 
-    const [updateData] = useUpdateSectionMutation();
 
-    const [deleteData] = useDeleteSectionMutation();
+    let QuizData = quiz?.data
+
+
+    const [addData] = useAddquizMutation();
+
+    const [updateData] = useUpdatequizMutation();
+
+    const [deleteData] = useDeletequizMutation();
 
     // const dispatch = useDispatch()
 
@@ -62,18 +65,33 @@ function SubCategory(props) {
 
     const catdrop = [{ value: '', label: '---Select Course--' }];
 
+    let sectionData = section?.data.filter((v) => v.course === courseid);
+
+    //course DropDown
     course?.data?.map((v) => (
+
         catdrop.push({ value: v._id, label: v.name })
 
     ));
 
-    let data
-    if (section?.data.length > 0) {
-        data = section?.data
-    }
 
-    console.log(catdrop);
-    
+    const secdrop = [{ value: '', label: '---Select Section--' }];
+
+
+    //  Section DropDown
+    sectionData?.map((v) => (
+        secdrop.push({ value: v._id, label: v.name })
+
+    ));
+    // let data
+    // if (section?.data.length > 0) {
+    //     data = section?.data
+    // }
+
+    console.log("catdrop", catdrop);
+    console.log("secdrop", secdrop);
+
+
     const handleClose = () => {
         setOpen(false);
     };
@@ -106,12 +124,23 @@ function SubCategory(props) {
                 return c?.name
             }
         },
-        { field: 'name', headerName: 'Name', width: 130 },
-        { field: 'description', headerName: 'description', width: 200 },
-
-
         {
-            headerName: 'Action', width: 170, renderCell: (parem) => (
+            field: 'section', headerName: 'section', width: 200, renderCell: (param) => {
+                const sec = section?.data?.find(
+                    (v) => v._id === param?.row?.section
+                );
+
+                return sec?.name;
+            }
+
+
+        },
+        { field: 'name', headerName: 'Name', width: 130 },
+        // { field: 'description', headerName: 'description', width: 200 },
+
+
+         {
+           field: 'action', headerName: 'Action', width: 170, renderCell: (parem) => (
                 <Stack direction="row" spacing={1}>
                     <IconButton onClick={() => handledelete(parem.row._id)}>
                         <DeleteIcon style={{ color: 'red' }} />
@@ -123,6 +152,20 @@ function SubCategory(props) {
                 </Stack>
             )
         },
+        
+        {
+            headerName: 'Quiz Content', width: 170, renderCell: (parem) => (
+                <div>
+                    <button style={{border:'none'}}><NavLink style={{display: 'flex',justifyContent: 'center', alignItems: 'center',width: '80px',
+    height: '40px',
+    marginTop: '4px',
+    textDecoration: 'none',
+    backgroundColor: '#1976d2',
+    color: 'white',
+    }} to={`quizPage/${parem.row._id}`}>Add Quiz</NavLink></button>
+                </div>
+            )
+        },
     ];
 
 
@@ -131,10 +174,10 @@ function SubCategory(props) {
         name: string()
             // .matches(/^[A-Za-z]{2,30}$/, "name can only contain alphabet")
             .required('name field is required'),
-        description: string()
-            // .matches(/^[A-Za-z]{2,90}$/, "Description can only contain alphabet")
-            .required('Description field is required'),
-        course: string().required('select is required'),
+        // description: string()
+        //     // .matches(/^[A-Za-z]{2,90}$/, "Description can only contain alphabet")
+        //     .required('Description field is required'),
+
     })
 
 
@@ -144,37 +187,37 @@ function SubCategory(props) {
 
 
         if (Object.keys(updatedata).length > 0) {
-           await updateData({ _id: updatedata._id, ...val })
-           setUpdateData({});
+            await updateData({ _id: updatedata._id, ...val })
+            setUpdateData({});
 
         } else {
-           await addData(val)
-               }
+            await addData({...val,course:courseid});
+            setCourseId('');
+        }
 
 
 
 
     }
-    //  
-
     return (
         <>
-            <h1>Section</h1>
+            <h1>Quiz</h1>
             <React.Fragment>
                 <Button variant="outlined" onClick={handleClickOpen}>
                     Open form dialog
                 </Button>
                 <Dialog open={open} onClose={handleClose}>
-                    <DialogTitle>Add Section</DialogTitle>
+                    <DialogTitle>Add Quiz</DialogTitle>
                     <DialogContent>
                         <Formik
                             initialValues={Object.keys(updatedata).length > 0 ? updatedata : {
                                 name: '',
                                 description: '',
+                                section: '',
                                 course: '',
 
                             }}
-                             enableReinitialize
+                            enableReinitialize
                             validationSchema={subcategorySchema}
                             onSubmit={(values, { resetForm }) => {
                                 console.log(values);
@@ -192,11 +235,34 @@ function SubCategory(props) {
                                     name='course'
                                     data={catdrop}
                                     label='course'
+                                    value={courseid}
+                                    onChange={(e) => {
+
+                                        setCourseId(e.target.value)
+                                        formik.setFieldValue("course", e.target.value);
+     
+                                    }}
+                                />
+                                <TextForm
+                                    select
+                                    name='section'
+                                    data={secdrop}
+                                    label='section'
 
                                 />
+
+
+
                                 <TextForm name='name' id='name' label='Name' />
 
-                                <TextForm name='description' id='description' label='description' />
+
+                                {/* <button>
+                                    <NavLink to={`quizPage/${courseid}`}>
+                                        Add Your Question
+                                    </NavLink>
+                                </button> */}
+
+                                {/* <TextForm name='description' id='description' label='description' /> */}
 
                                 {/* <FileUpload name='photo' /> */}
 
@@ -217,7 +283,7 @@ function SubCategory(props) {
                 </Dialog>
                 <br /><br />
                 <DataGrid
-                    rows={SectionData}
+                    rows={QuizData}
                     columns={columns}
                     initialState={{ pagination: { paginationModel } }}
                     pageSizeOptions={[5, 10]}
@@ -232,4 +298,4 @@ function SubCategory(props) {
     );
 }
 
-export default SubCategory;
+export default Quiz;

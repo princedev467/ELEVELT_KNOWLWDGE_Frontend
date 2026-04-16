@@ -26,7 +26,7 @@ import { useContext } from 'react';
 import { Switch } from '@mui/material';
 import SunnyIcon from '@mui/icons-material/Sunny';
 import BedtimeIcon from '@mui/icons-material/Bedtime';
-
+import QuizIcon from '@mui/icons-material/Quiz';
 
 export default function Layout({ children }) {
   const [checked, setChecked] = React.useState(true);
@@ -147,8 +147,9 @@ export default function Layout({ children }) {
   const listBox = [
     { label: 'Dashboard', icon: <DashboardIcon  />, to: '/admin/Dashboard' },
     { label: 'Category', icon: <CategoryIcon  />, to: '/admin/category' },
-    { label: 'subCategory', icon: <AppsIcon  />, to: '/admin/subcategory' },
-    { label: 'Course', icon: <FoundationIcon  />, to: '/admin/course' }
+    { label: 'Section', icon: <AppsIcon  />, to: '/admin/Section' },
+    { label: 'Course', icon: <FoundationIcon  />, to: '/admin/course' }, 
+    { label: 'Quiz', icon: <QuizIcon  />, to: '/admin/quiz' }
   ]
 
   return (

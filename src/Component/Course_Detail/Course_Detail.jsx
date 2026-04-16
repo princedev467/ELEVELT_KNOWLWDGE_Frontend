@@ -189,14 +189,18 @@ Page content START */}
                     {/* Course accordion START */}
                     <div className="accordion accordion-icon accordion-bg-light" id="accordionExample2">
                       {/* Item */}
-                      <div className="accordion-item mb-3">
-                        <h6 className="accordion-header font-base" id="heading-1">
-                          <button className="accordion-button fw-bold rounded d-sm-flex d-inline-block collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
-                            Introduction of Digital Marketing
+                      {
+
+                        filterSectionData?.map((v,i) =>
+                      <div  className="accordion-item mb-3">
+                        {/*  */}
+                        <h6 className="accordion-header font-base" id={"heading-"+i}>
+                          <button className="accordion-button fw-bold rounded d-sm-flex d-inline-block collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse-`+i} aria-expanded="true" aria-controls={`collapse-`+i}>
+                           {v.name}
                             <span className="small ms-0 ms-sm-2">(3 Lectures)</span>
                           </button>
                         </h6>
-                        <div id="collapse-1" className="accordion-collapse collapse show" aria-labelledby="heading-1" data-bs-parent="#accordionExample2">
+                        <div id={"collapse-"+i} className="accordion-collapse collapse show" aria-labelledby={"heading-"+i} data-bs-parent="#accordionExample2">
                           <div className="accordion-body mt-3">
                             {/* Course lecture */}
                             <div className="d-flex justify-content-between align-items-center">
@@ -236,8 +240,10 @@ Page content START */}
                           </div>
                         </div>
                       </div>
+                        )
+}
                       {/* Item */}
-                      <div className="accordion-item mb-3">
+                      {/* <div className="accordion-item mb-3">
                         <h6 className="accordion-header font-base" id="heading-2">
                           <button className="accordion-button fw-bold collapsed rounded d-sm-flex d-inline-block" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
                             Customer Life cycle
@@ -245,9 +251,9 @@ Page content START */}
                           </button>
                         </h6>
                         <div id="collapse-2" className="accordion-collapse collapse" aria-labelledby="heading-2" data-bs-parent="#accordionExample2">
-                          {/* Accordion body START */}
+                          Accordion body START
                           <div className="accordion-body mt-3">
-                            {/* Course lecture */}
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -258,8 +264,8 @@ Page content START */}
                               </div>
                               <p className="mb-0">11m 20s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -270,8 +276,8 @@ Page content START */}
                               </div>
                               <p className="mb-0 text-truncate">25m 20s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -282,8 +288,8 @@ Page content START */}
                               </div>
                               <p className="mb-0">11m 30s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <div>
@@ -305,11 +311,11 @@ Page content START */}
                                 35m 30s</p>
                             </div>
                           </div>
-                          {/* Accordion body END */}
+                          Accordion body END
                         </div>
-                      </div>
+                      </div> */}
                       {/* Item */}
-                      <div className="accordion-item mb-3">
+                      {/* <div className="accordion-item mb-3">
                         <h6 className="accordion-header font-base" id="heading-5">
                           <button className="accordion-button fw-bold collapsed rounded d-sm-flex d-inline-block" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-5" aria-expanded="false" aria-controls="collapse-5">
                             What is Search Engine Optimization(SEO)
@@ -317,9 +323,9 @@ Page content START */}
                           </button>
                         </h6>
                         <div id="collapse-5" className="accordion-collapse collapse" aria-labelledby="heading-5" data-bs-parent="#accordionExample2">
-                          {/* Accordion body START */}
+                          Accordion body START
                           <div className="accordion-body mt-3">
-                            {/* Course lecture */}
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -329,8 +335,8 @@ Page content START */}
                               </div>
                               <p className="mb-0">1m 10s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -341,8 +347,8 @@ Page content START */}
                               </div>
                               <p className="mb-0 text-truncate">11m 03s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -353,8 +359,8 @@ Page content START */}
                               </div>
                               <p className="mb-0">15m 00s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -365,8 +371,8 @@ Page content START */}
                               </div>
                               <p className="mb-0">15m 00s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -377,8 +383,8 @@ Page content START */}
                               </div>
                               <p className="mb-0">25m 30s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -389,8 +395,8 @@ Page content START */}
                               </div>
                               <p className="mb-0">18m 10s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -401,8 +407,8 @@ Page content START */}
                               </div>
                               <p className="mb-0">28m 10s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -413,8 +419,8 @@ Page content START */}
                               </div>
                               <p className="mb-0">45m 10s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -425,8 +431,8 @@ Page content START */}
                               </div>
                               <p className="mb-0">8m 10s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -437,8 +443,8 @@ Page content START */}
                               </div>
                               <p className="mb-0">18m 10s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -450,11 +456,11 @@ Page content START */}
                               <p className="mb-0">35m 10s</p>
                             </div>
                           </div>
-                          {/* Accordion body END */}
+                          Accordion body END
                         </div>
-                      </div>
+                      </div> */}
                       {/* Item */}
-                      <div className="accordion-item mb-3">
+                      {/* <div className="accordion-item mb-3">
                         <h6 className="accordion-header font-base" id="heading-6">
                           <button className="accordion-button fw-bold collapsed rounded d-block d-sm-flex d-inline-block" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-6" aria-expanded="false" aria-controls="collapse-6">
                             Facebook ADS
@@ -462,9 +468,9 @@ Page content START */}
                           </button>
                         </h6>
                         <div id="collapse-6" className="accordion-collapse collapse" aria-labelledby="heading-6" data-bs-parent="#accordionExample2">
-                          {/* Accordion body START */}
+                          Accordion body START
                           <div className="accordion-body mt-3">
-                            {/* Course lecture */}
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -474,8 +480,8 @@ Page content START */}
                               </div>
                               <p className="mb-0">1m 20s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -486,8 +492,8 @@ Page content START */}
                               </div>
                               <p className="mb-0 text-truncate">25m 20s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -499,11 +505,11 @@ Page content START */}
                               <p className="mb-0">11m 30s</p>
                             </div>
                           </div>
-                          {/* Accordion body END */}
+                          Accordion body END
                         </div>
-                      </div>
+                      </div> */}
                       {/* Item */}
-                      <div className="accordion-item mb-3">
+                      {/* <div className="accordion-item mb-3">
                         <h6 className="accordion-header font-base" id="heading-7">
                           <button className="accordion-button fw-bold collapsed rounded d-sm-flex d-inline-block" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-7" aria-expanded="false" aria-controls="collapse-7">
                             YouTube Marketing
@@ -511,9 +517,9 @@ Page content START */}
                           </button>
                         </h6>
                         <div id="collapse-7" className="accordion-collapse collapse" aria-labelledby="heading-7" data-bs-parent="#accordionExample2">
-                          {/* Accordion body START */}
+                          Accordion body START
                           <div className="accordion-body mt-3">
-                            {/* Course lecture */}
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -524,8 +530,8 @@ Page content START */}
                               </div>
                               <p className="mb-0">25m 20s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -536,8 +542,8 @@ Page content START */}
                               </div>
                               <p className="mb-0 text-truncate">15m 20s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -548,8 +554,8 @@ Page content START */}
                               </div>
                               <p className="mb-0">32m 20s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <div>
@@ -570,8 +576,8 @@ Page content START */}
                               <p className="mb-0 d-inline-block text-truncate w-70px w-sm-60px">
                                 20m 20s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <div>
@@ -593,11 +599,11 @@ Page content START */}
                                 18m 20s</p>
                             </div>
                           </div>
-                          {/* Accordion body END */}
+                          Accordion body END
                         </div>
-                      </div>
+                      </div> */}
                       {/* Item */}
-                      <div className="accordion-item mb-3">
+                      {/* <div className="accordion-item mb-3">
                         <h6 className="accordion-header font-base" id="heading-8">
                           <button className="accordion-button fw-bold collapsed rounded d-sm-flex d-inline-block" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-8" aria-expanded="false" aria-controls="collapse-8">
                             Why SEO
@@ -605,9 +611,9 @@ Page content START */}
                           </button>
                         </h6>
                         <div id="collapse-8" className="accordion-collapse collapse" aria-labelledby="heading-8" data-bs-parent="#accordionExample2">
-                          {/* Accordion body START */}
+                          Accordion body START
                           <div className="accordion-body mt-3">
-                            {/* Course lecture */}
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -618,8 +624,8 @@ Page content START */}
                               </div>
                               <p className="mb-0">20m 20s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -630,8 +636,8 @@ Page content START */}
                               </div>
                               <p className="mb-0 text-truncate">15m 20s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -642,8 +648,8 @@ Page content START */}
                               </div>
                               <p className="mb-0">16m 20s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -654,8 +660,8 @@ Page content START */}
                               </div>
                               <p className="mb-0">12m 20s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <div>
@@ -676,8 +682,8 @@ Page content START */}
                               <p className="mb-0 d-inline-block text-truncate w-70px w-sm-60px">
                                 15m 20s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <div>
@@ -699,11 +705,11 @@ Page content START */}
                                 36m 12s</p>
                             </div>
                           </div>
-                          {/* Accordion body END */}
+                          Accordion body END
                         </div>
-                      </div>
+                      </div> */}
                       {/* Item */}
-                      <div className="accordion-item mb-3">
+                      {/* <div className="accordion-item mb-3">
                         <h6 className="accordion-header font-base" id="heading-9">
                           <button className="accordion-button fw-bold collapsed rounded d-sm-flex d-inline-block" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-9" aria-expanded="false" aria-controls="collapse-9">
                             Google tag manager
@@ -711,9 +717,9 @@ Page content START */}
                           </button>
                         </h6>
                         <div id="collapse-9" className="accordion-collapse collapse" aria-labelledby="heading-9" data-bs-parent="#accordionExample2">
-                          {/* Accordion body START */}
+                          Accordion body START
                           <div className="accordion-body mt-3">
-                            {/* Course lecture */}
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -724,8 +730,8 @@ Page content START */}
                               </div>
                               <p className="mb-0">13m 20s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -736,8 +742,8 @@ Page content START */}
                               </div>
                               <p className="mb-0 text-truncate">7m 20s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -748,8 +754,8 @@ Page content START */}
                               </div>
                               <p className="mb-0">12m 20s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -761,11 +767,11 @@ Page content START */}
                               <p className="mb-0 text-truncate">7m 20s</p>
                             </div>
                           </div>
-                          {/* Accordion body END */}
+                          Accordion body END
                         </div>
-                      </div>
+                      </div> */}
                       {/* Item */}
-                      <div className="accordion-item mb-0">
+                      {/* <div className="accordion-item mb-0">
                         <h6 className="accordion-header font-base" id="heading-10">
                           <button className="accordion-button fw-bold collapsed rounded d-sm-flex d-inline-block" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-10" aria-expanded="false" aria-controls="collapse-10">
                             Integration with Website
@@ -773,9 +779,9 @@ Page content START */}
                           </button>
                         </h6>
                         <div id="collapse-10" className="accordion-collapse collapse" aria-labelledby="heading-10" data-bs-parent="#accordionExample2">
-                          {/* Accordion body START */}
+                          Accordion body START
                           <div className="accordion-body mt-3">
-                            {/* Course lecture */}
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -786,8 +792,8 @@ Page content START */}
                               </div>
                               <p className="mb-0 text-truncate">13m 20s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -798,8 +804,8 @@ Page content START */}
                               </div>
                               <p className="mb-0">31m 20s</p>
                             </div>
-                            <hr /> {/* Divider */}
-                            {/* Course lecture */}
+                            <hr /> Divider
+                            Course lecture
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="position-relative d-flex align-items-center">
                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -811,9 +817,9 @@ Page content START */}
                               <p className="mb-0 text-truncate">25m 20s</p>
                             </div>
                           </div>
-                          {/* Accordion body END */}
+                          Accordion body END
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                     {/* Course accordion END */}
                   </div>

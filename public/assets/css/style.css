@@ -22431,6 +22431,16 @@ li
  background-color: #24292e !important;
 }
 
+.dark .accordion.accordion-bg-light .accordion-button {
+  background-color: #000000  !important;
+  color: #ffffff !important;
+}
+
+.dark .accordion-item {
+    background-color: #242121;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
 .nav-row {
  display: block;
 }
