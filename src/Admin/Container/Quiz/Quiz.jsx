@@ -162,6 +162,7 @@ function Quiz(props) {
     textDecoration: 'none',
     backgroundColor: '#1976d2',
     color: 'white',
+    marginLeft:'20px'
     }} to={`quizPage/${parem.row._id}`}>Add Quiz</NavLink></button>
                 </div>
             )
