@@ -62,8 +62,7 @@ function QuizPage() {
     }
     };
 
-
-    // const handleDelete = async (qid) => {
+let finalQuestionContentData=data?.data?.filter((v)=>v.quiz=== id)
     //     try {
     //         await deleteData(qid);
     //         refetch();
@@ -132,11 +131,11 @@ function QuizPage() {
                 </Form>
             </Formik>
 
-            {/* SHOW FROM BACKEND */}
+           
             <div style={{ marginTop: '30px' }}>
                 <h3>Questions List</h3>
 
-                {data?.data?.map((q, index) => (
+                {finalQuestionContentData?.map((q, index) => (
                     <div
                         key={q._id}
                         style={{
