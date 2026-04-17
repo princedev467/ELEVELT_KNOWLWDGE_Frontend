@@ -6,6 +6,8 @@ import  alertslice  from "./slice/alert.Slice"
 import { courseApi } from "./Api/Course.Api"
 import { sectionApi } from "./Api/Section.Api"
 import { quizApi } from "./Api/Quiz.Api"
+import { quizContentApi } from "./Api/QuizContent.Api"
+
 
 export const confistore=()=>{
 
@@ -18,10 +20,11 @@ export const confistore=()=>{
             [courseApi.reducerPath]: courseApi.reducer,
             [sectionApi.reducerPath]:sectionApi.reducer,
             [quizApi.reducerPath]: quizApi.reducer,
-            
+            [quizContentApi.reducerPath]: quizContentApi.reducer,
+          
         },
         middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat([courseApi.middleware,sectionApi.middleware,quizApi.middleware]),
+    getDefaultMiddleware().concat([courseApi.middleware,sectionApi.middleware,quizApi.middleware,quizContentApi.middleware]),
     })
 
     return store

@@ -139,8 +139,8 @@ function Quiz(props) {
         // { field: 'description', headerName: 'description', width: 200 },
 
 
-         {
-           field: 'action', headerName: 'Action', width: 170, renderCell: (parem) => (
+        {
+            field: 'action', headerName: 'Action', width: 170, renderCell: (parem) => (
                 <Stack direction="row" spacing={1}>
                     <IconButton onClick={() => handledelete(parem.row._id)}>
                         <DeleteIcon style={{ color: 'red' }} />
@@ -152,18 +152,19 @@ function Quiz(props) {
                 </Stack>
             )
         },
-        
+
         {
             headerName: 'Quiz Content', width: 170, renderCell: (parem) => (
                 <div>
-                    <button style={{border:'none'}}><NavLink style={{display: 'flex',justifyContent: 'center', alignItems: 'center',width: '80px',
-    height: '40px',
-    marginTop: '4px',
-    textDecoration: 'none',
-    backgroundColor: '#1976d2',
-    color: 'white',
-    marginLeft:'20px'
-    }} to={`quizPage/${parem.row._id}`}>Add Quiz</NavLink></button>
+                    <button style={{ border: 'none' }}><NavLink style={{
+                        display: 'flex', justifyContent: 'center', alignItems: 'center', width: '80px',
+                        height: '40px',
+                        marginTop: '4px',
+                        textDecoration: 'none',
+                        backgroundColor: '#1976d2',
+                        color: 'white',
+                        marginLeft: '20px'
+                    }} to={`/admin/quizPage/${parem.row._id}`}>Add Quiz</NavLink></button>
                 </div>
             )
         },
@@ -188,11 +189,11 @@ function Quiz(props) {
 
 
         if (Object.keys(updatedata).length > 0) {
-            await updateData({ _id: updatedata._id, ...val })
+            await updateData({ _id: updatedata._id, course: courseid , ...val })
             setUpdateData({});
 
         } else {
-            await addData({...val,course:courseid});
+            await addData({ ...val, course: courseid });
             setCourseId('');
         }
 
@@ -241,7 +242,7 @@ function Quiz(props) {
 
                                         setCourseId(e.target.value)
                                         formik.setFieldValue("course", e.target.value);
-     
+
                                     }}
                                 />
                                 <TextForm
