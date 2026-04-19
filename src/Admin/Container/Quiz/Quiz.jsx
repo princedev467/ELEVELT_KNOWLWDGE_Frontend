@@ -163,9 +163,13 @@ function Quiz(props) {
                         textDecoration: 'none',
                         backgroundColor: '#1976d2',
                         color: 'white',
-                        marginLeft: '20px'
-                    }} to={`/admin/quizPage/${parem.row._id}`}>Add Quiz</NavLink></button>
-                </div>
+                        fontWeight:'bold'
+                        
+                    }}
+                    //  to={`/admin/quizPage/${parem.row._id}`}>Add Quiz</NavLink></button>
+                      to={`/admin/quizContent/${parem.row._id}`}>Add Quiz</NavLink></button>
+                
+                   </div>
             )
         },
     ];

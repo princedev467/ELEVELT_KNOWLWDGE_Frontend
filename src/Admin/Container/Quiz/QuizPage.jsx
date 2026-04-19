@@ -1,177 +1,258 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Formik, Form } from 'formik';
-import { Button, Stack, IconButton } from '@mui/material';
-import TextForm from '../../Component/TextForm/TextForm';
-import { useAddquizContentMutation, useDeletequizContentMutation, useGetquizContentQuery, useUpdatequizContentMutation } from '../../../Redux/Api/QuizContent.Api';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import React, { useState } from "react";
+import { Button, TextField, Radio, IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import TextForm from "../../Component/TextForm/TextForm";
+import { Form, Formik } from "formik";
+import { useAddquizContentMutation, useGetquizContentQuery } from "../../../Redux/Api/QuizContent.Api";
+import { useParams } from "react-router-dom";
 
-function QuizPage() {
-    const { id } = useParams();
-    
-     const [updatedata, setUpdateData] = useState({});
+export default function QuizContent() {
+  const { id } = useParams()
 
-    const { data } = useGetquizContentQuery();
+  const [questions, setQuestions] = useState([
+    { question: "", options: [""], Answer: "" }
+  ]);
+  const [updatedata, setUpdateData] = useState({});
 
-    const [addData] = useAddquizContentMutation();
-    const [updateData] = useUpdatequizContentMutation();
-    const [deleteData] = useDeletequizContentMutation();
+ const {data} = useGetquizContentQuery()
+  const [addData] = useAddquizContentMutation()
 
-  const handledelete = async (id) => {
-        console.log(id);
-        deleteData(id);
+
+  console.log(data);
+  
+  
+  const addQuestion = () => {
+    setQuestions([
+      ...questions,
+      { question: "", options: [""], Answer: "" }
+    ]);
+  };
+
+
+  const updateQuestion = (i, value) => {
+    const updated = [...questions];
+    updated[i].question = value;
+    setQuestions(updated);
+  };
+
+
+  const deleteQuestion = (i) => {
+    if (questions.length === 1) return;
+    const updated = [...questions];
+    updated.splice(i, 1);
+    setQuestions(updated);
+  };
+
+
+
+
+  const addOption = (i) => {
+    const updated = [...questions];
+    updated[i].options.push("");
+    setQuestions(updated);
+  };
+
+  const updateOption = (i, j, value) => {
+    const updated = [...questions];
+    updated[i].options[j] = value;
+    setQuestions(updated);
+  };
+
+
+  const removeOption = (i, j) => {
+    const updated = [...questions];
+    updated[i].options.splice(j, 1);
+
+    if (updated[i].correctIndex === j) {
+      updated[i].correctIndex = null;
+    }
+
+    setQuestions(updated);
+  };
+
+
+  //  const addAnswer = () => {
+  //     setQuestions([
+  //       ...questions,
+  //       { question: "", options: [""], Answer: "" }
+  //     ]);
+  //   };
+
+  //update Answer
+  const updateAnswer = (i, value) => {
+    const updated = [...questions];
+    updated[i].Answer = value;
+    setQuestions(updated);
+  };
+
+  // //delete Question
+  // const deleteAnswer = (i) => {
+  //   if (questions.length === 1) return;
+  //   const updated = [...questions];
+  //   updated.splice(i, 1);
+  //   setQuestions(updated);
+  // };
+
+
+
+
+
+  const handlesubmit = async (val) => {
+    console.log("submit", val);
+    console.log('updatedata:', updatedata);
+
+
+    if (Object.keys(updatedata).length > 0) {
+      await updateData({ _id: updatedata._id, course: courseid, ...val })
+      setUpdateData({});
+
+    } else {
+      await addData({ questions:val, quiz: id });
+
     }
 
 
-    const handleedit = (val) => {
-
-        console.log(val);
-        
-        setUpdateData(val);
-    }
-
-    const handlesubmit = async (values) => {
-
-         console.log('updatedata:', updatedata);
 
 
-        if (Object.keys(updatedata).length > 0) {
-            await updateData({ _id: updatedata._id,quiz: id, question: values.question,
-                            options: [
-                            values.option1,
-                            values.option2,
-                            values.option3,
-                            values.option4
-                            ],
-                            correctAnswer: values.correctAnswer
-                         })
-            setUpdateData({});
+  }
+  let filterData= data?.data?.filter((v)=>v.quiz=== id)
 
-        } else {
-              // addData
-             await addData({quiz: id,question: values.question,
-                            options: [
-                            values.option1,
-                            values.option2,
-                            values.option3,
-                            values.option4
-                            ],
-                            correctAnswer: values.correctAnswer
-                            });
-    }
-    };
-
-let finalQuestionContentData=data?.data?.filter((v)=>v.quiz=== id)
-    //     try {
-    //         await deleteData(qid);
-    //         refetch();
-    //     } catch (err) {
-    //         console.error(err);
-    //     }
-    // };
-
-    // const handleUpdate = async (item) => {
-    //     const updatedQuestion = prompt("Enter new question", item.question);
-
-    //     if (!updatedQuestion) return;
-
-    //     try {
-    //         await updateData({
-    //             id: item._id,
-    //             question: updatedQuestion,
-    //             options: item.options,
-    //             correctAnswer: item.correctAnswer
-    //         });
-
-
-    //     } catch (err) {
-    //         console.error(err);
-    //     }
-    // };
-
-    return (
-        <div style={{ padding: '20px' }}>
-
-            <h2>Add Questions</h2>
-
-            {/* FORM */}
-            <Formik
-                 initialValues={Object.keys(updatedata).length > 0 ? updatedata :{
-                    question: '',
-                    option1: '',
-                    option2: '',
-                    option3: '',
-                    option4: '',
-                    correctAnswer: ''
-                }}
-                enableReinitialize
-                onSubmit={(values, { resetForm }) => {
-                    console.log(values);
-                    handlesubmit(values)
-
-                    resetForm();
-                }}
-            >
-                <Form>
-                    <TextForm name="question" label="Question" />
-
-                    <TextForm name="option1" label="Option 1"  />
-                    <TextForm name="option2" label="Option 2"  />
-                    <TextForm name="option3" label="Option 3"  />
-                    <TextForm name="option4" label="Option 4"  />
-
-                    <TextForm name="correctAnswer" label="Correct Answer"  />
-
-                    <Stack direction="row" spacing={2} mt={2}>
-                        <Button type="submit" variant="contained">
-                            Save Question
-                        </Button>
-                    </Stack>
-                </Form>
-            </Formik>
-
+  // let finalData= data.data ? filterData : questions
+  return (
+    <>
+      <React.Fragment>
+        <Formik
+          initialValues={Object.keys(updatedata).length > 0 ? updatedata : {
+          
+              
+                question: "",
+                options: [""],
+                Answer: ""
+              
            
-            <div style={{ marginTop: '30px' }}>
-                <h3>Questions List</h3>
 
-                {finalQuestionContentData?.map((q, index) => (
-                    <div
-                        key={q._id}
-                        style={{
-                            marginBottom: '15px',
-                            padding: '10px',
-                            border: '1px solid #ccc'
-                        }}
-                    >
-                        <p><strong>Q{index + 1}:</strong> {q.question}</p>
 
-                        <ul>
-                            {q.options?.map((v, i) => (
-                                <p key={i}>
-                                    {String.fromCharCode(65 + i)}. {v}
-                                </p>
-                            ))}
-                        </ul>
+          }}
+          enableReinitialize
+          onSubmit={(values) => {
+            console.log(questions);
+            handlesubmit(questions)
 
-                        <p><strong>Answer:</strong> {q.correctAnswer}</p>
+          }}
+        >
 
-                        <Stack direction="row" spacing={2} mt={1}>
-                            <IconButton onClick={() => handleedit(q)} >
-                                <EditIcon style={{ color: 'orange' }} />
+          <Form id="subscription-form">
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <h3 > Create Quiz</h3>
+              <Button
+                variant="contained"
+                type="submit" form="subscription-form"
 
-                            </IconButton>
-
-                            <IconButton onClick={() => handledelete(q._id)}>
-                                <DeleteIcon style={{ color: 'red' }} />
-                            </IconButton>
-                        </Stack>
-                    </div>
-                ))}
+              >
+                Save Quiz
+              </Button>
             </div>
+            <div style={{ width: '43%' }}>
+              {questions.map((q, i) => (
 
-        </div>
-    );
+                <div
+                  key={i}
+                  style={{
+                    padding: "10px",
+                    border: "1px solid #ccc",
+                    marginBottom: "20px",
+                    borderRadius: "10px"
+                  }}
+                >
+
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px"
+                    }}
+                  >
+                    <p style={{ marginTop: '34px' }}><strong>Q{i + 1}</strong></p>
+                    <TextForm
+                      label="Question"
+                      value={q.question}
+                      name="Question"
+                      onChange={(e) => updateQuestion(i, e.target.value)}
+                    />
+
+                    <IconButton onClick={() => deleteQuestion(i)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </div>
+
+                  {/* Options */}
+                  {q.options.map((opt, j) => (
+                    <div
+                      key={j}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginTop: "10px"
+                      }}
+                    >
+
+                      <p style={{ marginTop: '30px', paddingLeft: '20px', marginRight: "8px" }}><strong>{String.fromCharCode(65 + j)}.</strong></p>
+                      <TextForm
+                        value={opt}
+                        onChange={(e) =>
+                          updateOption(i, j, e.target.value)
+                        }
+                        name="options"
+                        placeholder={`Option ${j + 1}`}
+                        style={{ width: '50%' }}
+                      />
+
+                      <IconButton onClick={() => removeOption(i, j)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </div>
+                  ))}
+
+                  <Button
+                    onClick={() => addOption(i)}
+                    style={{ marginTop: "10px", marginLeft: '30px' }}
+                  >
+                    Add Option
+                  </Button>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px"
+                    }}
+                  >
+                    <TextForm
+                      name="Answer"
+                      label="Answer"
+                      value={q.Answer}
+                      onChange={(e) =>
+                        updateAnswer(i, e.target.value)
+                      }
+
+                      style={{ padding: 0, width: "90%" }}
+                    />
+                  </div>
+                </div>
+              ))}
+
+              {/* Add Question */}
+              <Button
+                variant="contained"
+                onClick={addQuestion}
+                fullWidth
+              >
+                Add Question
+              </Button>
+            </div>
+          </Form>
+
+        </Formik>
+      </React.Fragment>
+    </>
+  );
 }
-
-export default QuizPage;

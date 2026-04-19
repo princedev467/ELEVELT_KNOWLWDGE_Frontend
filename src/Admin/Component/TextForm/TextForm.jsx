@@ -1,44 +1,29 @@
-import React from 'react';
-import TextField from '@mui/material/TextField';
-import { useField } from 'formik';
-import MenuItem from '@mui/material/MenuItem';
-import FormLabel from '@mui/material/FormLabel';
+import React from "react";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import { useField } from "formik";
 
 function TextForm({ type = "text", data = [], ...props }) {
-  const [field, meta] = useField(props)
-
-  // console.log("field:", field);
-  // console.log("meta:", meta);
-  // console.log("props", props);
-
+  const [field, meta] = useField(props);
 
   return (
-
-    
     <TextField
       {...field}
       {...props}
-      margin="dense"
       type={type}
       fullWidth
+      margin="dense"
       variant="standard"
-      error={meta.error && meta.touched}
-      helperText={meta.error && meta.touched ? meta.error : ''}
-
+      select={type === "select"}   
+      error={meta.touched && Boolean(meta.error)}
+      helperText={meta.touched && meta.error ? meta.error : ""}
     >
-     
-      {data.map((option) => {
-        
-       if (!option) return null
-
-       return(
-                <MenuItem key={option.value} value={option.value}>
-          {option.label}
-        </MenuItem>
-
-       )
-
-})}
+      {type === "select" &&
+        data.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
     </TextField>
   );
 }
