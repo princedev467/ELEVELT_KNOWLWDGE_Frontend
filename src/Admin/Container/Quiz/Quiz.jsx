@@ -166,7 +166,7 @@ function Quiz(props) {
                         fontWeight:'bold'
                         
                     }}
-                    //  to={`/admin/quizPage/${parem.row._id}`}>Add Quiz</NavLink></button>
+                    // mon to={`/admin/quizPage/${parem.row._id}`}>Add Quiz</NavLink></button>
                       to={`/admin/quizContent/${parem.row._id}`}>Add Quiz</NavLink></button>
                 
                    </div>

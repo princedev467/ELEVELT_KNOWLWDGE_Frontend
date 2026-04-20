@@ -26,16 +26,15 @@ function QuizContent() {
   const [updateData] = useUpdatequizContentMutation();
   const [deleteData] = useDeletequizContentMutation();
 
-  // ✅ Filter safely (ObjectId fix)
+  
   const finalData =
-    data?.data?.filter((v) => v.quiz?.toString() === id) || [];
+    data?.data?.filter((v) => v.quiz?.toString() === id) ;
 
-  // ✅ DELETE
+
   const handleDelete = async (id) => {
     await deleteData(id);
   };
 
-  // ✅ EDIT (transform options array → form fields)
   const handleEdit = (val) => {
     setUpdateData({
       _id: val._id,
@@ -168,7 +167,8 @@ function QuizContent() {
 
             <Stack mt={2}>
               <Button type="submit" variant="contained" disabled={loading}>
-                {loading ? "Saving..." : updatedata._id ? "Update" : "Save"}
+                Submit
+                {/* {loading ? "Saving..." : updatedata._id ? "Update" : "Save"} */}
               </Button>
             </Stack>
           </Form>
