@@ -22423,12 +22423,37 @@ li
  background-color:#2a333c !important;
 }
 .dark .bg-body {
- background-color: #24292e !important;
+ background-color: #101112 !important;
+ color: white !important;
 
+}
+
+
+.dark h6, .h6 ,  h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1{
+  color: white !important;
+}
+
+h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1{
+  color: #24292d !important;
+}
+
+.light .bg-body{
+   background-color: #f5f7f9 !important;
+}
+.options{
+  background: #cfd3d7;
 }
 .dark  .profile-card{
   
- background-color: #24292e !important;
+ background-color: #000000 !important;
+}
+.profile-Body{
+   background-color: white !important;
+}
+
+.dark  .profile-Body{
+  
+ background-color: #212529 !important;
 }
 
 .dark .accordion.accordion-bg-light .accordion-button {

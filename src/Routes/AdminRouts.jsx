@@ -12,7 +12,6 @@ import { createTheme } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import Section from '../Admin/Container/SubCategory/Section';
 import Quiz from '../Admin/Container/Quiz/Quiz';
-import QuizPage from '../Admin/Container/Quiz/QuizPage';
 import QuizContent from '../Admin/Container/Quiz/QuizContent';
 
 function AdminRouts(props) {
@@ -48,7 +47,7 @@ function AdminRouts(props) {
           <Route path='/Section' element={<Section />} ></Route>
           <Route path='/course' element={<Course />} > </Route>
           <Route path='/quiz' element={<Quiz />} > </Route>
-          <Route path='/quizPage/:id' element={<QuizPage />} > </Route>
+          {/* <Route path='/quizPage/:id' element={<QuizPage />} > </Route> */}
           <Route path='/quizContent/:id' element={<QuizContent />} > </Route>
         </Routes>
 

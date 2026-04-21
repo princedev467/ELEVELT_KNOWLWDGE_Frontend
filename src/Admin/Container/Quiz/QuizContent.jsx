@@ -35,6 +35,8 @@ function QuizContent() {
     await deleteData(id);
   };
 
+  console.log(finalData?.length);
+  
   const handleEdit = (val) => {
     setUpdateData({
       _id: val._id,

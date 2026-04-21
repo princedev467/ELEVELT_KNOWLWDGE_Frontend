@@ -10,6 +10,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { NavLink } from 'react-router-dom';
 import { useAddquizMutation, useDeletequizMutation, useGetquizQuery, useUpdatequizMutation } from '../../../Redux/Api/Quiz.Api';
+import { useGetquizContentQuery } from '../../../Redux/Api/QuizContent.Api';
 
 function Quiz(props) {
 
@@ -31,10 +32,17 @@ function Quiz(props) {
 
     const { data: quiz } = useGetquizQuery()
 
+
     let SectionData = section?.data
+
+    // quizContent
+    const { data: quizContent } = useGetquizContentQuery();
+    let QuizContentData = quizContent?.data
+    console.log(QuizContentData);
 
 
     let QuizData = quiz?.data
+
 
 
     const [addData] = useAddquizMutation();
@@ -163,15 +171,25 @@ function Quiz(props) {
                         textDecoration: 'none',
                         backgroundColor: '#1976d2',
                         color: 'white',
-                        fontWeight:'bold'
-                        
+                        fontWeight: 'bold'
+
                     }}
-                    // mon to={`/admin/quizPage/${parem.row._id}`}>Add Quiz</NavLink></button>
-                      to={`/admin/quizContent/${parem.row._id}`}>Add Quiz</NavLink></button>
-                
-                   </div>
+                        // mon to={`/admin/quizPage/${parem.row._id}`}>Add Quiz</NavLink></button>
+                        to={`/admin/quizContent/${parem.row._id}`}>Add Quiz</NavLink></button>
+
+                </div>
             )
         },
+          { field: 'TotalMarks', headerName: 'Total Marks', width: 130,renderCell: (param) => {
+               const TotalMarks  = quizContent?.data?.filter((v)=>v.quiz === param?.row?._id )
+
+               
+               console.log(TotalMarks);
+               
+               return TotalMarks?.length || null
+          }
+               
+             },
     ];
 
 
@@ -193,7 +211,7 @@ function Quiz(props) {
 
 
         if (Object.keys(updatedata).length > 0) {
-            await updateData({ _id: updatedata._id, course: courseid , ...val })
+            await updateData({ _id: updatedata._id, course: courseid, ...val })
             setUpdateData({});
 
         } else {
@@ -221,6 +239,7 @@ function Quiz(props) {
                                 description: '',
                                 section: '',
                                 course: '',
+                                TotalMarks: null,
 
                             }}
                             enableReinitialize

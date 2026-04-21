@@ -60,6 +60,7 @@ import { ThemeContext } from '../context/theme.context';
 import CourseDisplay from '../Component/Course/CourseDisplay';
 // import Category from '../Component/Category/CategoryData';
 import AdminRouts  from './AdminRouts';
+import QuizPage from '../Component/QuizData/QuizPage';
 
 function UserRouts(props) {
     const themeData = useContext(ThemeContext);
@@ -92,6 +93,8 @@ function UserRouts(props) {
                 <Route path='/Course_Detail' element={<Course_Detail />}></Route>
                  <Route path='/Course_Detail/:id' element={<Course_Detail />}></Route>
             
+                {/* quizPage */}
+                 <Route path='/quiz' element={< QuizPage />} ></Route>
                  {/* <Route path='/category/:id' element={<CategoryPage />} /> */}
                 <Route path='/about' element={< About />} ></Route>
                  <Route path='/chat' element={<Chat />} ></Route>
