@@ -27,9 +27,11 @@ function QuizPage() {
 
     console.log(score);
 
+
     const handleNext = () => {
         if (index < questions.length - 1) setIndex(index => index + 1);
     };
+
 
     const handlePrev = () => {
         if (index > 0) setIndex(index => index - 1);
@@ -43,19 +45,26 @@ function QuizPage() {
 
    
     if (answered[qid]) return;
-
+    
     setAnswered(prev => ({
         ...prev,
         [qid]: true
     }));
-        let questionContentAnswer = questions.find((v) => v?._id === data_id);
+      
+    //answer selected then go to next page
+    if (index < questions.length - 1) setIndex(index => index + 1);
+
+    
+    let questionContentAnswer = questions.find((v) => v?._id === data_id);
         console.log(questionContentAnswer);
+
 
         if (questionContentAnswer.Answer === val) {
             setScore(prev => prev + 1)
         }
-        // setScore(val===questionContentAnswer.Answer?score+1:score)
     }
+
+
 
     return (
         <div style={{ maxWidth: '800px', margin: '40px auto', padding: '20px' }} className='bg-body'>
