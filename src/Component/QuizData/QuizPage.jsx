@@ -34,6 +34,8 @@ function QuizPage() {
     const handlePrev = () => {
         if (index > 0) setIndex(index => index - 1);
     };
+
+
     const handleoption = (val, data_id) => {
         console.log(val, data_id);
 
@@ -101,13 +103,19 @@ function QuizPage() {
                         ))}
                     </div>
 
-                    <button onClick={handlePrev} disabled={index === 0}>
+                        <div style={{marginTop:'30px' ,padding:'0 15px',display:'flex',justifyContent:'space-between'}}>
+                    <button onClick={handlePrev} disabled={index === 0}
+                     style={{padding:'4px 8px',borderRadius:'5px', background:'black',color:'white'}}
+                     className='profile-card options'>
                         Previous
                     </button>
 
-                    <button onClick={handleNext} disabled={index === questions.length - 1}>
+                    <button onClick={handleNext} disabled={index === questions.length - 1}
+                    className='profile-card options'  style={{padding:'4px 8px',borderRadius:'5px', background:'black',color:'white'}}
+                    >
                         Next
                     </button>
+                    </div>
                 </div>
             )}
 
