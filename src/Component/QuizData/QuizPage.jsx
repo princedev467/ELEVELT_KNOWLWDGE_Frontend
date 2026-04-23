@@ -1,135 +1,126 @@
 import React, { useState } from 'react';
 import { useGetquizContentQuery } from '../../Redux/Api/QuizContent.Api';
 import { useGetquizQuery } from '../../Redux/Api/Quiz.Api';
+import { useParams } from 'react-router-dom';
 
-function QuizPage() {
 
-    const [index, setIndex] = useState(0);
+function QuizPage(props) {
+
+    const { id } = useParams()
+    console.log(id);
+
+    const [index, setIndex] = useState(0)
+    const [answer, setAnswer] = useState({});
     const [score, setScore] = useState(0);
-    const [answered, setAnswered] = useState({});
-
-    const { data: quiz } = useGetquizQuery();
+    
+    const [showScore, setShowScore] = useState(false);
+    const [currentAnswer, setCurrentAnswer] = useState(0);
+    // quizContent
     const { data: quizContent } = useGetquizContentQuery();
 
-    // let quizData=quiz?.data || ""
-    // console.log(quizData);
-
-    // console.log(quizContent.data);
+    console.log(quizContent?.data);
 
 
-    //find quiz data
-    //   let filterQestionContent =  quizContent?.data?.filter((v)=>v.quiz === quizData?._id )
+    // console.log(currentAnswer);
+    
+     console.log(score);
 
-    // console.log(filterQestionContent);
+    const { data: quiz } = useGetquizQuery()
+    console.log(quiz?.data);
 
-    const questions = quizContent?.data || []; //for questionContentData
-    const currentQuestion = questions[index];  // for current question
+    // const { data: quiz } = useGetquizQuery()
 
-    console.log(score);
+    let filquiz = quiz?.data?.find((v) => v?.section === id);
+    // console.log(filquiz);
 
+    const filterQuestions = quizContent?.data?.filter((v) => v?.quiz === filquiz?._id);
+    // console.log(filterQuestions);
 
-    const handleNext = () => {
-        if (index < questions.length - 1) setIndex(index => index + 1);
-    };
+    // console.log(index);
+    
 
+    let Question = filterQuestions || [];
+    const currentQustions = Question[index] ;
 
-    const handlePrev = () => {
-        if (index > 0) setIndex(index => index - 1);
-    };
-
-
-    const handleoption = (val, data_id) => {
-        console.log(val, data_id);
-
-        const qid = currentQuestion._id;
-
+    // console.log(currentQustions);
+    // console.log(Question[index]);
    
-    if (answered[qid]) return;
-    
-    setAnswered(prev => ({
-        ...prev,
-        [qid]: true
-    }));
-      
-    //answer selected then go to next page
-    if (index < questions.length - 1) setIndex(index => index + 1);
+       const handlenext = () => {
+        if (index < Question.length - 1) {
+            setIndex((index)=>index + 1)
+        }
+    }
 
-    
-    let questionContentAnswer = questions.find((v) => v?._id === data_id);
-        console.log(questionContentAnswer);
-
-
-        if (questionContentAnswer.Answer === val) {
-            setScore(prev => prev + 1)
+    const handleprev = () => {
+        if (index > 0) {
+            setIndex((index)=>index - 1)
         }
     }
 
 
 
-    return (
-        <div style={{ maxWidth: '800px', margin: '40px auto', padding: '20px' }} className='bg-body'>
-            <h1 style={{ textAlign: 'center', marginBottom: '30px', color: '#333' }}>
-                Quiz
-            </h1>
-            {currentQuestion && (
-                <div className='profile-Body' style={{
-                    borderRadius: '12px',
-                    padding: '20px',
-                    marginBottom: '25px',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
-                }}>
 
-                    <p style={{ fontSize: '18px', fontWeight: '600', marginBottom: '15px' }}>
-                        <span style={{ marginRight: '10px' }}>
-                            Q{index + 1}
-                        </span>
-                        {currentQuestion.question}
+ 
+    const handleoption = (val, id) => {
+        console.log(val, id);
+        const qid = currentQustions._id
+
+        if (answer[qid]) return;
+
+      setAnswer((prev)=>({
+        ...prev,[qid]:true
+      }))   
+
+    setCurrentAnswer((prev)=>({
+        ...prev,[qid]:val
+    }))
+
+    //for got next question when use click option
+    if (index < Question.length - 1) {
+            setIndex((index)=>index + 1)
+        }
+
+        const quizcontendata = Question.find((v) =>v?._id === id);
+        console.log(quizcontendata);
+
+
+        if (quizcontendata?.Answer === val) {
+            setScore((prev) => prev + 1)
+            
+        }
+
+     
+    }
+
+   
+
+
+    return (
+        <>
+            {
+                // showScore ? ('ok'):
+                <div>
+                        
+                        
+                    <div>
+                        <p> {currentQustions?.question}</p>
+                    </div>
+
+                    <p>
+                        {currentQustions?.options?.map((v1, i) => (
+                            <p style={{ marginLeft: '10px' }} onClick={() => handleoption(v1, currentQustions._id)}> <strong>{String.fromCharCode(65 + i)}.</strong> {v1}</p>
+
+                        ))}
                     </p>
 
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: '1fr 1fr',
-                        gap: '10px',
-                        paddingLeft: '10px'
-                    }}>
-                        {currentQuestion.options.map((v1, i) => (
-                            <div
-                                key={i}
-                                className='profile-card options'
-                                onClick={() => handleoption(v1, currentQuestion._id)}
-                                style={{
-                                    padding: '12px',
-                                    borderRadius: '8px',
-                                    cursor: 'pointer',
-                                    border: '2px solid transparent'
-                                }}
-                            >
-                                <span style={{ fontWeight: 'bold', marginRight: '8px' }}>
-                                    {String.fromCharCode(65 + i)}.
-                                </span>
-                                {v1}
-                            </div>
-                        ))}
-                    </div>
-
-                        <div style={{marginTop:'30px' ,padding:'0 15px',display:'flex',justifyContent:'space-between'}}>
-                    <button onClick={handlePrev} disabled={index === 0}
-                     style={{padding:'4px 8px',borderRadius:'5px', background:'black',color:'white'}}
-                     className='profile-card options'>
-                        Previous
-                    </button>
-
-                    <button onClick={handleNext} disabled={index === questions.length - 1}
-                    className='profile-card options'  style={{padding:'4px 8px',borderRadius:'5px', background:'black',color:'white'}}
-                    >
-                        Next
-                    </button>
-                    </div>
+                    <button onClick={handleprev}>previous</button>
+                    <button onClick={handlenext}>next</button>
                 </div>
-            )}
 
-        </div>
-    );
+            }
+
+        </>
+    )
 }
 
 export default QuizPage;

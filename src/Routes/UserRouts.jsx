@@ -95,6 +95,7 @@ function UserRouts(props) {
             
                 {/* quizPage */}
                  <Route path='/quiz' element={< QuizPage />} ></Route>
+                 <Route path='/quiz/:id' element={< QuizPage />} ></Route>
                  {/* <Route path='/category/:id' element={<CategoryPage />} /> */}
                 <Route path='/about' element={< About />} ></Route>
                  <Route path='/chat' element={<Chat />} ></Route>

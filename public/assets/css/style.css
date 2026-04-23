@@ -22428,7 +22428,66 @@ li
 
 }
 
+.options {
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
 
+.options:hover {
+  background-color: #f0f8ff !important;
+  border-color: #007bff !important;
+  transform: scale(1.03);
+}
+
+.options:active {
+  background-color: #d6eaff;
+}
+
+.options.correct {
+    background: #d4edda;
+    border: 2px solid green;
+    color: green;
+    font-weight: bold;
+}
+
+/* wrong selected answer */
+.options.wrong {
+    background: #f8d7da;
+    border: 2px solid red;
+    color: red;
+    font-weight: bold;
+}
+
+.dark .options.correct {
+    background: #d4edda;
+    border: 2px solid green;
+    color: green;
+    font-weight: bold;
+}
+
+/* wrong selected answer */
+.dark .options.wrong {
+    background: #f8d7da;
+    border: 2px solid red;
+    color: red;
+    font-weight: bold;
+}
+.dark .profile-card:hover {
+  background-color: #181d23 !important;
+  border-color:#16191b !important;
+  transform: scale(1.03);
+}
+
+.dark .options:active {
+  background-color: #d6eaff;
+}
+.disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
 .dark h6, .h6 ,  h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1{
   color: white !important;
 }
