@@ -47,6 +47,7 @@ console.log(quiz);
 
   let filterCourseData
 
+
   let filterSectionData
   if (id) {
     filterCourseData = course?.filter((v) => v._id === id);
@@ -146,7 +147,7 @@ Page content START */}
                   </li>
                   {/* Tab item */}
                   <li className="nav-item me-2 me-sm-4" role="presentation">
-                    <button className="nav-link mb-2 mb-md-0" id="course-pills-tab-2" data-bs-toggle="pill" data-bs-target="#course-pills-2" type="button" role="tab" aria-controls="course-pills-2" aria-selected="false">Curriculum</button>
+                    <button className="nav-link mb-2 mb-md-0" id="course-pills-tab-2" data-bs-toggle="pill" data-bs-target="#course-pills-2" type="button" role="tab" aria-controls="course-pills-2" aria-selected="false">Section</button>
                   </li>
                   {/* Tab item */}
                   <li className="nav-item me-2 me-sm-4" role="presentation">
