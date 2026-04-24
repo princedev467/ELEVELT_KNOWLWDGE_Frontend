@@ -6,6 +6,9 @@ import { userCheck, userLogout } from '../../Redux/slice/auth.slice';
 import { ThemeContext } from '../../context/theme.context';
 import { Switch } from '@mui/material';
 import Course from '../../Admin/Container/Course/Course';
+import logo from '../../../public/assets/images/logo.svg';
+import avatar from '../../../public/assets/images/avatar/01.jpg';
+
 
 function Header(props) {
   const [data, setData] = useState()
@@ -53,7 +56,7 @@ function Header(props) {
         <div className="container-fluid px-3 px-xl-5">
           {/* Logo START */}
           <a className="navbar-brand" href="index.html">
-            <img className="light-mode-item navbar-brand-item" src="assets/images/logo.svg" alt="logo" />
+            <img className="light-mode-item navbar-brand-item" src={logo} alt="logo" />
             <img className="dark-mode-item navbar-brand-item" src="assets/images/logo-light.svg" alt="logo" />
           </a>
           {/* Logo END */}
@@ -485,7 +488,7 @@ function Header(props) {
           {/* Profile START */}
           <div className="dropdown ms-1 ms-lg-0">
             <a className="avatar avatar-sm p-0" href="#" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
-              <img className="avatar-img rounded-circle" src="assets/images/avatar/01.jpg" alt="avatar" />
+              <img className="avatar-img rounded-circle" src={avatar} alt="avatar" />
             </a>
             <ul className="dropdown-menu dropdown-animation dropdown-menu-end shadow pt-3" aria-labelledby="profileDropdown">
               {/* Profile info */}
@@ -493,7 +496,7 @@ function Header(props) {
                 <div className="d-flex align-items-center">
                   {/* Avatar */}
                   <div className="avatar me-3">
-                    <img className="avatar-img rounded-circle shadow" src="assets/images/avatar/01.jpg" alt="avatar" />
+                    <img className="avatar-img rounded-circle shadow" src={avatar} alt="avatar" />
                   </div>
                   <div>
                     <a className=" h6" href="#">Lori Ferguson</a>

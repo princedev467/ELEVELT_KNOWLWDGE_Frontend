@@ -1,187 +1,225 @@
 import React, { useState } from 'react';
 import { useGetquizContentQuery } from '../../Redux/Api/QuizContent.Api';
 import { useGetquizQuery } from '../../Redux/Api/Quiz.Api';
+import { useGetSectionQuery } from '../../Redux/Api/Section.Api';
 import { useParams } from 'react-router-dom';
-import { retry } from '@reduxjs/toolkit/query';
 
-
-function QuizPage(props) {
+function QuizPage() {
 
     const { id } = useParams()
-    console.log(id);
-
-    const [index, setIndex] = useState(0)
-    const [answer, setAnswer] = useState({});
+    const [index, setIndex] = useState(0);
     const [score, setScore] = useState(0);
+    const [answered, setAnswered] = useState({}); 
+    const [showResult, setShowResult] = useState(false);
+    const [selectedAnswers, setSelectedAnswers] = useState({});
 
-    const [showScore, setShowScore] = useState(false);
-    const [currentAnswer, setCurrentAnswer] = useState({});
-    // quizContent
+    const { data: quiz } = useGetquizQuery();
     const { data: quizContent } = useGetquizContentQuery();
 
-    console.log(quizContent?.data);
+
+    // Section
+    const { data: sectionData } = useGetSectionQuery(); //get Data
+    console.log("Section", sectionData);
+
+    let section = sectionData?.data
 
 
-    // console.log(currentAnswer);
+    const quizData = Array.isArray(quiz?.data) ? quiz.data : Array.isArray(quiz?.data?.data) ? quiz.data.data : [];
+    // console.log(quizData);
+
+    // console.log(quizContent.data);
+    let filtQuiz = quizData.find((v) => v.section === id);
+
+    // console.log(filtQuiz);
+
+    //     //find quiz data
+    const contentData = Array.isArray(quizContent?.data)
+        ? quizContent.data
+        : Array.isArray(quizContent?.data?.data)
+            ? quizContent.data.data
+            : [];
+
+    const filterQestionContent = contentData.filter(
+        (v) => v?.quiz === filtQuiz?._id
+    );
+    // console.log(filterQestionContent);
+
+    // const questions = quizContent?.data || [];
+    const questions = filterQestionContent || []; //for questionContentData
+    const currentQuestion = questions[index];  // for current question
 
     console.log(score);
 
-    const { data: quiz } = useGetquizQuery()
-    console.log(quiz?.data);
 
-    // const { data: quiz } = useGetquizQuery()
-
-    let filquiz = quiz?.data?.find((v) => v?.section === id);
-    // console.log(filquiz);
-
-    const filterQuestions = quizContent?.data?.filter((v) => v?.quiz === filquiz?._id);
-    // console.log(filterQuestions);
-
-    // console.log(index);
+    const handleNext = () => {
+        if (index < questions.length - 1) setIndex(index => index + 1);
+    };
 
 
-    let Question = filterQuestions || [];
-    const currentQustions = Question[index];
-
-    // console.log(currentQustions);
-    // console.log(Question[index]);
-
-    const handlenext = () => {
-        if (index < Question.length - 1) {
-            setIndex((index) => index + 1)
-        }
-    }
-
-    const handleprev = () => {
-        if (index > 0) {
-            setIndex((index) => index - 1)
-        }
-    }
+    const handlePrev = () => {
+        if (index > 0) setIndex(index => index - 1);
+    };
 
 
+    const handleoption = (val) => {
+        if (!currentQuestion) return;
 
+        const qid = currentQuestion._id;
 
+        if (answered[qid]) return;
 
-    const handleoption = (val, id) => {
-        console.log(val, id);
-        const qid = currentQustions._id
+        setSelectedAnswers(prev => ({
+            ...prev,
+            [qid]: val
+        }));
 
-        if (answer[qid]) return;
+        setAnswered(prev => ({
+            ...prev,
+            [qid]: true
+        }));
 
-        setAnswer((prev) => ({
-            ...prev, [qid]: true
-        }))
-
-        setCurrentAnswer((prev) => ({
-            ...prev, [qid]: val
-        }))
-
-        //for got next question when use click option
-        if (index < Question.length - 1) {
-            setIndex((index) => index + 1)
+        if (currentQuestion.Answer === val) {
+            setScore(prev => prev + 1);
         }
 
-        const quizcontendata = Question.find((v) => v?._id === id);
-        console.log(quizcontendata);
-
-
-        if (quizcontendata?.Answer === val) {
-            setScore((prev) => prev + 1);
+        // move to next or finish quiz
+        if (index === questions.length - 1) {
+            setShowResult(true)
+        } else {
+            setIndex(prev => prev + 1);
         }
-
-        const Answerlength = Object.keys(answer).length;
-
-
-        if (Answerlength === Question.length - 1) {
-            setShowScore(true)
-        }
+    };
 
 
-    }
-
-
-
-    // console.log(currentAnswer[]);
 
     return (
-        <>
-            {
-                showScore ? (
-                    <>
-                        <p> You scored {score} out of {Question.length}
-                        </p>
-                        {
-                            Question.map((v) => {
+        <div style={{ maxWidth: '800px', margin: '40px auto', padding: '20px' }} className='bg-body'>
+            <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>
+                {showResult?'Result':'Quiz'}
+            </h1>
+            {showResult ? (
+                <div className="score-section">
+                    <h5 style={{textAlign:'center',marginBottom:'20px'}}>You scored {score} out of {questions.length}</h5>
+                    {
+                        questions.map((q, qIndex) => {
+                            const userAnswer = selectedAnswers[q._id];
+                            const correctAnswer = q.Answer;
 
-                                // console.log("currentAnswer",currentAnswer[v._id]);
-                                const userAnswer = currentAnswer[v._id]; // user answer
+                            return (
+                                <div
+                                    className='profile-Body'
+                                    key={q._id}
+                                    style={{
+                                        marginBottom: "25px",
+                                        padding: "15px",
+                                        borderRadius: "10px",
+                                        boxShadow: "0 2px 10px rgba(0,0,0,0.1)"
+                                    }}
+                                >
 
-                                const correctAnswer = v.Answer; // right answer
-                                // console.log("correctAnswer",correctAnswer);
-                                // console.log("userAnswer",userAnswer);
+                                    {/* Question */}
+                                    {/* <h4>
+                                        Q{qIndex + 1}. {q.question}
+                                    </h4> */}
+                                    <p style={{ fontSize: '18px', fontWeight: '600', marginBottom: '15px' }}>
+                                        <span style={{ marginRight: '10px' }}>
+                                            Q{qIndex + 1}
+                                        </span>
+                                        {q.question}
+                                    </p>
 
-                                return (
-                                    <div>
-                                        <div>
-                                            <p> {v?.question}</p>
-                                        </div>
+                                    {/* Options */}
+                                    <div style={{
+                                        display: 'grid',
+                                        gridTemplateColumns: '1fr 1fr',
+                                        gap: '10px',
+                                        paddingLeft: '10px'
+                                    }}>
+                                        {q.options.map((opt, i) =>  {
+                                            const isCorrect = opt === correctAnswer;
+                                            const isSelected = opt === userAnswer;
 
-                                        <p>
-                                            {v?.options?.map((v1, i) => {
-
-                                                console.log(v1);
-
-                                                let iscorrect = v1 === correctAnswer; //retuen true corect answer 
-
-                                                let iswrong = v1 === userAnswer; // if user answer match with option set user answer
-
-
-
-                                                console.log(iswrong && !iscorrect);
-
-
-                                                // console.log("iscorrect:",iscorrect,"iswrong:",iswrong);
-
-                                                return (
-
-                                                    //iswrong && !iscorrect?"wrong":""} <= in this condition if user answer  and correct answer not then get it wrong
-                                                    <p style={{ marginLeft: '10px' }} className={` options ${iscorrect ? "correct" : ""} ${iswrong && !iscorrect ? "wrong" : ""}`} onClick={() => handleoption(v1, currentQustions._id)}> <strong>{String.fromCharCode(65 + i)}.</strong> {v1}</p>
-
-                                                )
-                                            }
-
-                                            )}
-                                        </p>
+                                            return (
+                                                <div
+                                                    key={i}
+                                                    className={`
+                                                    profile-card options
+                                                ${isCorrect ? "correct" : ""}
+                                                ${isSelected && !isCorrect ? "wrong" : ""}
+                                            `}
+                                                >
+                                                    {String.fromCharCode(65 + i)}. {opt}
+                                                </div>
+                                            );
+                                        })}
                                     </div>
-                                )
-
-                            })
-                        }
-                    </>
-
-                ) :
-                    <div>
+                                </div>
+                            );
 
 
-                        <div>
-                            <p> {currentQustions?.question}</p>
-                        </div>
+                        })
+                    }
+                </div>
+            ) : (currentQuestion && (
+                <div className='profile-Body' style={{
+                    borderRadius: '12px',
+                    padding: '20px',
+                    marginBottom: '25px',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+                }}>
 
-                        <p>
-                            {currentQustions?.options?.map((v1, i) => (
-                                <p style={{ marginLeft: '10px' }} onClick={() => handleoption(v1, currentQustions._id)}> <strong>{String.fromCharCode(65 + i)}.</strong> {v1}</p>
+                    <p style={{ fontSize: '18px', fontWeight: '600', marginBottom: '15px' }}>
+                        <span style={{ marginRight: '10px' }}>
+                            Q{index + 1}
+                        </span>
+                        {currentQuestion.question}
+                    </p>
 
-                            ))}
-                        </p>
-
-                        <button onClick={handleprev}>previous</button>
-                        <button onClick={handlenext}>next</button>
+                    <div
+                        style={{
+                            display: 'grid',
+                            gridTemplateColumns: '1fr 1fr',
+                            gap: '10px',
+                            paddingLeft: '10px'
+                        }}>
+                        {currentQuestion.options.map((v1, i) => (
+                            <div
+                                key={i}
+                                className='profile-card option'
+                                onClick={() => handleoption(v1, currentQuestion._id)}
+                                style={{
+                                    padding: '12px',
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    border: '2px solid transparent'
+                                }}
+                            >
+                                <span style={{ fontWeight: 'bold', marginRight: '8px' }}>
+                                    {String.fromCharCode(65 + i)}.
+                                </span>
+                                {v1}
+                            </div>
+                        ))}
                     </div>
 
-            }
+                    <div style={{ marginTop: '30px', padding: '0 15px', display: 'flex', justifyContent: 'space-between' }}>
+                        <button onClick={handlePrev} disabled={index === 0}
+                            style={{ padding: '4px 8px', borderRadius: '5px', background: 'black', color: 'white' }}
+                            className='profile-card options'>
+                            Previous
+                        </button>
 
-        </>
-    )
+                        <button onClick={handleNext} disabled={index === questions.length - 1}
+                            className='profile-card options' style={{ padding: '4px 8px', borderRadius: '5px', background: 'black', color: 'white' }}
+                        >
+                            Next
+                        </button>
+                    </div>
+                </div>
+            ))}
+
+        </div>
+    );
 }
 
 export default QuizPage;

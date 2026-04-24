@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { ThemeContext } from '../../context/theme.context';
+import logo from '../../../public/assets/images/logo.svg';
 
 function Footer(props) {
    const themeData = useContext(ThemeContext);
@@ -16,7 +17,7 @@ function Footer(props) {
       <div className="col-lg-3">
         {/* logo */}
         <a className="me-0" href="index.html">
-          <img className="light-mode-item h-40px" src="assets/images/logo.svg" alt="logo" />
+          <img className="light-mode-item h-40px" src={logo} alt="logo" />
           <img className="dark-mode-item h-40px" src="assets/images/logo-light.svg" alt="logo" />
         </a>
         <p className="my-3">Eduport education theme, built specifically for the education centers which is dedicated to teaching and involve learners.</p>
