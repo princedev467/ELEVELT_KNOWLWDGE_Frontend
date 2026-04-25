@@ -188,7 +188,7 @@ function Section(props) {
                             <Form id="subscription-form">
 
                                 <TextForm
-                                    select
+                                   type="select"
                                     name='course'
                                     data={catdrop}
                                     label='course'

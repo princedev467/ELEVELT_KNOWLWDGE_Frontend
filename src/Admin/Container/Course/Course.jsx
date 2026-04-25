@@ -344,7 +344,7 @@ function Course() {
                                 <TextForm
                                     name='category_id'
                                     id="category_id"
-                                    select
+                                    type="select"
                                     data={subData}
                                     label="Select"
                                     style={{ margin: '0', padding: '0' }}

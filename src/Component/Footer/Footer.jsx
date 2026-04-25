@@ -1,6 +1,9 @@
 import React, { useContext } from 'react';
 import { ThemeContext } from '../../context/theme.context';
 import logo from '../../../public/assets/images/logo.svg';
+import google_play from '../../../public/assets/images/client/google-play.svg'
+import app_store  from '../../../public/assets/images/client/app-store.svg'
+import 'font-awesome/css/font-awesome.min.css';
 
 function Footer(props) {
    const themeData = useContext(ThemeContext);
@@ -78,11 +81,11 @@ function Footer(props) {
         <div className="row g-2 mt-2">
           {/* Google play store button */}
           <div className="col-6 col-sm-4 col-md-3 col-lg-6">
-            <a href="#"> <img src="assets/images/client/google-play.svg" alt /> </a>
+            <a href="#"> <img src={google_play} alt /> </a>
           </div>
           {/* App store button */}
           <div className="col-6 col-sm-4 col-md-3 col-lg-6">
-            <a href="#"> <img src="assets/images/client/app-store.svg" alt="app-store" /> </a>
+            <a href="#"> <img src={app_store} alt="app-store" /> </a>
           </div>
         </div> {/* Row END */}
       </div> 

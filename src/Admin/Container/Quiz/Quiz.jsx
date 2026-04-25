@@ -256,7 +256,7 @@ function Quiz(props) {
                             <Form id="subscription-form">
 
                                 <TextForm
-                                    select
+                                     type="select"
                                     name='course'
                                     data={catdrop}
                                     label='course'
@@ -269,7 +269,7 @@ function Quiz(props) {
                                     }}
                                 />
                                 <TextForm
-                                    select
+                                     type="select"
                                     name='section'
                                     data={secdrop}
                                     label='section'

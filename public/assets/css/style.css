@@ -22530,6 +22530,10 @@ li
 .options{
   background: #cfd3d7;
 }
+
+.option{
+  background: #cfd3d7;
+}
 .dark  .profile-card{
   
  background-color: #000000 !important;

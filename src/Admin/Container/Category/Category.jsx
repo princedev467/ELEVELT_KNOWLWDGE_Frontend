@@ -221,7 +221,7 @@ function Category(props) {
                                 <TextForm
                                 name='parent_category_id'
                                     id="parent_category_id"
-                                    select
+                                    type="select"
                                     data={subData}
                                     label="Select"
                                     style={{ margin: '0', padding: '0' }}
