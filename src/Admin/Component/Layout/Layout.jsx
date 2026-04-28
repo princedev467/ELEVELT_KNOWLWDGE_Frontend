@@ -27,6 +27,7 @@ import { Switch } from '@mui/material';
 import SunnyIcon from '@mui/icons-material/Sunny';
 import BedtimeIcon from '@mui/icons-material/Bedtime';
 import QuizIcon from '@mui/icons-material/Quiz';
+import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 
 export default function Layout({ children }) {
   const [checked, setChecked] = React.useState(true);
@@ -149,7 +150,8 @@ export default function Layout({ children }) {
     { label: 'Category', icon: <CategoryIcon  />, to: '/admin/category' },
     { label: 'Section', icon: <AppsIcon  />, to: '/admin/Section' },
     { label: 'Course', icon: <FoundationIcon  />, to: '/admin/course' }, 
-    { label: 'Quiz', icon: <QuizIcon  />, to: '/admin/quiz' }
+    { label: 'Quiz', icon: <QuizIcon  />, to: '/admin/quiz' },
+     { label: 'Content', icon: <ContentPasteSearchIcon  />, to: '/admin/content' }
   ]
 
   return (

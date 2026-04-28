@@ -15,7 +15,7 @@ export const contentApi = createApi({
       query: (data) => ({
         url: 'content/addContent',
         method: 'POST',
-        body: data
+        body:  data,
       }),
       invalidatesTags:['content']    
     }),
@@ -23,7 +23,7 @@ export const contentApi = createApi({
       query: (data) => ({
         url: `content/updateContent/${data._id}`,
         method: 'PUT',
-        body: data
+        body: data,
       }),
       invalidatesTags:['content']
     }),

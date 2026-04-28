@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Section from '../Admin/Container/SubCategory/Section';
 import Quiz from '../Admin/Container/Quiz/Quiz';
 import QuizContent from '../Admin/Container/Quiz/QuizContent';
+import Content from '../Admin/Container/Content/Content';
 
 function AdminRouts(props) {
 
@@ -47,6 +48,7 @@ function AdminRouts(props) {
           <Route path='/Section' element={<Section />} ></Route>
           <Route path='/course' element={<Course />} > </Route>
           <Route path='/quiz' element={<Quiz />} > </Route>
+           <Route path='/content' element={<Content />} > </Route>
           {/* <Route path='/quizPage/:id' element={<QuizPage />} > </Route> */}
           <Route path='/quizContent/:id' element={<QuizContent />} > </Route>
         </Routes>
