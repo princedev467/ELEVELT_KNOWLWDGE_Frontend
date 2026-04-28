@@ -222,7 +222,7 @@ let ContentData=content?.data
 
 
         if (Object.keys(updatedata).length > 0) {
-               formData.append('_id', val._id);
+               formData.append('_id', updatedata._id);
 
              updateData(formData)
             setUpdateData({});
