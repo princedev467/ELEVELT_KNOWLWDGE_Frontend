@@ -35,9 +35,15 @@ function FileUpload(props) {
         console.log(v);
 
         if(v?.url){
-            return v.url
+            return{ 
+                url:v.url,
+                type: file.resource_type}
         } else {
-            return URL.createObjectURL(v);
+            return {
+                url:URL.createObjectURL(v),
+                type: file.type
+
+            }
         }
         // if (typeof v === 'string') {
         //     return (filepath = v)
@@ -85,10 +91,30 @@ function FileUpload(props) {
             </Button>
 
 
-             {ImageData?.map((v) => (
-                       <img src={v} width={'50px'} height={'50px'} />
+             {ImageData?.map((v,i) => {
+
+                if(v.type==='image'){
+                    return(
+                          <img src={v.url} width={'50px'} height={'50px'} />
+                    )
+                }else  if(v.type==='video'){
+                    return(
+
+                         <video key={i} width="80" height="50" controls>
+                            <source src={v.url} />
+                        </video>
+                    )
+                }else  if(v.type==='row'){
+                    return(
+
+                         <a key={index} href={v.url}>
+                            View PDF
+                        </a>
+                    )
+                }
+                     
                 
-                ))
+})
                
             }
             {

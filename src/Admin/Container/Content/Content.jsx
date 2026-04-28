@@ -16,7 +16,7 @@ import FileUpload from '../../Component/FileUpload/FileUpload';
 
 function Content(props) {
 
-    
+
     const [open, setOpen] = useState(false);
     const [updatedata, setUpdateData] = useState({});
     const [courseid, setCourseId] = useState('');
@@ -46,12 +46,12 @@ function Content(props) {
 
     // let QuizData = quiz?.data
 
-//contentData
+    //contentData
 
-const {data:content}=useGetcontentQuery();
+    const { data: content } = useGetcontentQuery();
     console.log(content);
-    
-let ContentData=content?.data
+
+    let ContentData = content?.data
 
     const [addData] = useAddcontentMutation();
 
@@ -59,7 +59,7 @@ let ContentData=content?.data
 
     const [deleteData] = useDeletecontentMutation();
 
-   
+
     console.log(SectionData);
 
     const handleClickOpen = () => {
@@ -141,6 +141,41 @@ let ContentData=content?.data
 
         },
         { field: 'name', headerName: 'Name', width: 130 },
+        {
+            field: 'contentFile', headerName: 'Source', width: 130,
+            renderCell: (param) => (
+
+                <div>
+                    {
+                        param.row.contentFile.map((v,i) => {
+                            if (v.resource_type === 'image') {
+                                return (
+                                    <img src={v.url} style={{ objectFit: 'cover', width: "50px", height: "50px" }} />
+
+                                )
+                            } else if (v.resource_type === 'video') {
+                                return (
+
+                                    <video key={i} width="50" height="50" controls>
+                                        <source src={v.url} />
+                                    </video>
+                                )
+                            } else if (v.resource_type === 'row') {
+                                return (
+
+                                    <a key={i} href={v.url}>
+                                        View PDF
+                                    </a>
+                                )
+                            }
+
+                        })
+                    }
+
+
+                </div>
+            )
+        },
         // { field: 'description', headerName: 'description', width: 200 },
 
 
@@ -158,35 +193,7 @@ let ContentData=content?.data
             )
         },
 
-        // {
-        //     headerName: 'Quiz Content', width: 170, renderCell: (parem) => (
-        //         <div>
-        //             <button style={{ border: 'none' }}><NavLink style={{
-        //                 display: 'flex', justifyContent: 'center', alignItems: 'center', width: '80px',
-        //                 height: '40px',
-        //                 marginTop: '4px',
-        //                 textDecoration: 'none',
-        //                 backgroundColor: '#1976d2',
-        //                 color: 'white',
-        //                 fontWeight: 'bold'
 
-        //             }}
-        //                 // mon to={`/admin/quizPage/${parem.row._id}`}>Add Quiz</NavLink></button>
-        //                 to={`/admin/quizContent/${parem.row._id}`}>Add Quiz</NavLink></button>
-
-        //         </div>
-        //     )
-        // },
-        //   { field: 'TotalMarks', headerName: 'Total Marks', width: 130,renderCell: (param) => {
-        //        const TotalMarks  = quizContent?.data?.filter((v)=>v.quiz === param?.row?._id )
-
-               
-        //        console.log(TotalMarks);
-               
-        //        return TotalMarks?.length || null
-        //   }
-               
-        //      },
     ];
 
 
@@ -206,7 +213,7 @@ let ContentData=content?.data
         console.log("submit", val);
         console.log('updatedata:', updatedata);
 
-        
+
         let formData = new FormData();
 
         formData.append('name', val.name);
@@ -222,15 +229,15 @@ let ContentData=content?.data
 
 
         if (Object.keys(updatedata).length > 0) {
-               formData.append('_id', updatedata._id);
+            formData.append('_id', updatedata._id);
 
-             updateData(formData)
+            updateData(formData)
             setUpdateData({});
 
         } else {
             // let data=Object.fromEntries(formData) 
             // console.log(data);
-             addData(formData);
+            addData(formData);
             setCourseId('');
         }
 
@@ -254,8 +261,8 @@ let ContentData=content?.data
                                 name: '',
                                 section: '',
                                 course: '',
-                                contentFile:[]
-    
+                                contentFile: []
+
 
                             }}
                             enableReinitialize
@@ -272,7 +279,7 @@ let ContentData=content?.data
                             <Form id="subscription-form">
 
                                 <TextForm
-                                     type="select"
+                                    type="select"
                                     name='course'
                                     data={catdrop}
                                     label='course'
@@ -285,7 +292,7 @@ let ContentData=content?.data
                                     }}
                                 />
                                 <TextForm
-                                     type="select"
+                                    type="select"
                                     name='section'
                                     data={secdrop}
                                     label='section'
@@ -296,8 +303,8 @@ let ContentData=content?.data
 
                                 <TextForm name='name' id='name' label='Name' />
 
-                                       <FileUpload name='contentFile' />
-                                        
+                                <FileUpload name='contentFile' />
+
 
                                 {/* <button>
                                     <NavLink to={`quizPage/${courseid}`}>
