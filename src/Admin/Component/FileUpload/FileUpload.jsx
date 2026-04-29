@@ -37,12 +37,14 @@ function FileUpload(props) {
         if(v?.url){
             return{ 
                 url:v.url,
-                type: file.resource_type}
+                type: v?.resource_type,
+            
+            }
         } else {
             return {
                 url:URL.createObjectURL(v),
-                type: file.type
-
+                type: v?.type,
+                //  firstName : type.split("/")[0]
             }
         }
         // if (typeof v === 'string') {
@@ -91,32 +93,35 @@ function FileUpload(props) {
             </Button>
 
 
-             {ImageData?.map((v,i) => {
+             {ImageData.map((v, i) => {
+       
+        if (v?.type==='image' ||  v?.type?.startsWith('image')) {
+          return (
+            <img
+             
+              src={v.url}
+              width="50"
+              height="50"
+              alt="preview"
+            />
+          );
+        }else if (v?.type==='video'|| v?.type?.startsWith('video')) {
+          return (
+            <video  width="80" height="50" controls autoPlay>
+              <source src={v.url} />
+            </video>
+          );
+        }else if (v?.type==='row' ||  v?.type?.startsWith('application')) {
+          return (
+            <a  href={v.url} target="_blank" rel="noreferrer">
+              View PDF
+            </a>
+          );
+        }
 
-                if(v.type==='image'){
-                    return(
-                          <img src={v.url} width={'50px'} height={'50px'} />
-                    )
-                }else  if(v.type==='video'){
-                    return(
+        return null;
+      })}
 
-                         <video key={i} width="80" height="50" controls>
-                            <source src={v.url} />
-                        </video>
-                    )
-                }else  if(v.type==='row'){
-                    return(
-
-                         <a key={index} href={v.url}>
-                            View PDF
-                        </a>
-                    )
-                }
-                     
-                
-})
-               
-            }
             {
                 <p style={{ color: 'red' }}>{meta.error && meta.touched ? meta.error : null}</p>
             }

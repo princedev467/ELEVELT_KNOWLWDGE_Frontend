@@ -141,6 +141,7 @@ function Content(props) {
 
         },
         { field: 'name', headerName: 'Name', width: 130 },
+        {field:'order' ,headerName: 'Order', width: 130 },
         {
             field: 'contentFile', headerName: 'Source', width: 130,
             renderCell: (param) => (
@@ -156,14 +157,14 @@ function Content(props) {
                             } else if (v.resource_type === 'video') {
                                 return (
 
-                                    <video key={i} width="50" height="50" controls>
+                                    <video key={i} width="50" height="50" controls autoPlay>
                                         <source src={v.url} />
                                     </video>
                                 )
                             } else if (v.resource_type === 'row') {
                                 return (
 
-                                    <a key={i} href={v.url}>
+                                    <a key={i} href={v.url} target='_blank' >
                                         View PDF
                                     </a>
                                 )
@@ -219,6 +220,8 @@ function Content(props) {
         formData.append('name', val.name);
         formData.append('section', val.section);
         formData.append('course', courseid);
+         formData.append('order',val.order);
+
         val.contentFile.forEach((v) => {
             if (v instanceof File) {
                 formData.append('contentFile', v);
@@ -261,7 +264,8 @@ function Content(props) {
                                 name: '',
                                 section: '',
                                 course: '',
-                                contentFile: []
+                                contentFile: [],
+                                order:''
 
 
                             }}
@@ -302,6 +306,8 @@ function Content(props) {
 
 
                                 <TextForm name='name' id='name' label='Name' />
+
+                                  <TextForm name='order' id='order' label='Order' />
 
                                 <FileUpload name='contentFile' />
 
