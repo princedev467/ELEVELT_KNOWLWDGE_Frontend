@@ -116,6 +116,7 @@ function Content(props) {
         handleClickOpen();
 
         setUpdateData(val);
+        setCourseId(val.course); 
     }
 
     const paginationModel = { pae: 0, pageSize: 5 };
@@ -161,10 +162,10 @@ function Content(props) {
                                         <source src={v.url} />
                                     </video>
                                 )
-                            } else if (v.resource_type === 'row') {
+                            } else if (v.url.toLowerCase().endsWith('.pdf')) {
                                 return (
 
-                                    <a key={i} href={v.url} target='_blank' >
+                                    <a key={i} href={v.url} target='_blank' rel="noreferrer" >
                                         View PDF
                                     </a>
                                 )

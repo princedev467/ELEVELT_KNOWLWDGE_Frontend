@@ -111,7 +111,7 @@ function FileUpload(props) {
               <source src={v.url} />
             </video>
           );
-        }else if (v?.type==='row' ||  v?.type?.startsWith('application')) {
+        }else if (v.url.toLowerCase().endsWith('.pdf')) {
           return (
             <a  href={v.url} target="_blank" rel="noreferrer">
               View PDF
