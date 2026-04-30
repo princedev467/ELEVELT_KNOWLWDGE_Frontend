@@ -1,6 +1,21 @@
 import React from 'react';
+import { useGetcontentQuery } from '../../Redux/Api/Content.Api';
+import { useParams } from 'react-router-dom';
 
 function Course_Video_Player(props) {
+
+  const { id } = useParams()
+
+    console.log(id);
+
+    const { data: Content } = useGetcontentQuery();
+
+    console.log(Content?.data);
+
+    const Video_display = Content?.data?.filter((v) => v?._id === id);
+
+    console.log(Video_display);
+    
     return (
        <main>
   <section className="py-0 bg-dark position-relative">
@@ -9,14 +24,45 @@ function Course_Video_Player(props) {
         <div className="overflow-hidden fullscreen-video w-100">
           {/* Full screen video START */}
           <div className="video-player rounded-3">
-            <video controls crossOrigin="anonymous" playsInline poster="assets/images/videos/poster.jpg">
-              <source src="assets/images/videos/360p.mp4" type="video/mp4" size={360} />
-              <source src="assets/images/videos/720p.mp4" type="video/mp4" size={720} />
-              <source src="assets/images/videos/1080p.mp4" type="video/mp4" size={1080} />
-              {/* Caption files */}
-              <track kind="captions" label="English" srcLang="en" src="assets/images/videos/en.vtt.txt" default />
-              <track kind="captions" label="French" srcLang="fr" src="assets/images/videos/fr.vtt.txt" />
-            </video>
+             {
+                                    Video_display?.map((v) => {
+                                          let file = v.contentFile[0]
+
+                                        console.log(file);
+
+                                        if (file.resource_type === "image") {
+                                            return (
+                                                <img
+                                                    src={file.url}
+                                                    alt="content"
+                                                    className="w-80 h-50 rounded-3"
+                                                />
+                                            );
+                                        } else if (file.resource_type === "video") {
+                                            return (
+                                                <video controls autoPlay className="w-100">
+                                                    <source src={file.url} type="video/mp4"  />
+                                                </video>
+                                            )
+                                        } else if (v.resource_type === 'application/pdf' || v.resource_type === 'raw' || v.type === 'pdf') {
+                                            return (
+                                                <a href={v.url} target='_blank'
+                                                    src={file.url}
+                                                    title="PDF Viewer"
+                                                    width="100%"
+                                                    height="600px">
+                                                    View Pdf
+                                                </a>
+                                            )
+                                        }
+
+                                        // return (
+                                        //     <video  controls autoPlay className="w-100">
+                                        //         <source src={file.url} type="video/mp4" />
+                                        //     </video>
+                                        // )
+                                    })
+                                }
           </div>
           {/* Full screen video END */}
           {/* Plyr resources and browser polyfills are specified in the pen settings */}

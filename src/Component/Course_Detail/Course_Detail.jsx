@@ -232,6 +232,7 @@ Page content START */}
                           let contentFilter = content?.data?.filter((c) => c.section === v._id);
                           console.log(contentFilter);
 
+                          
                           return (
                             <div className="accordion-item mb-3">
                               {/*  */}
