@@ -162,7 +162,8 @@ Inner part START */}
                   {/* Table body START */}
                   <tbody>
                     {/* Table item */}
-                  { InstructorCourse?.map((v)=>( <tr>
+                  { InstructorCourse?.map((v)=>(
+                     <tr>
                       {/* Course item */}
 
                       
