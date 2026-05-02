@@ -94,7 +94,7 @@ Page intro START */}
                 <div className="position-relative col-5  rounded-3 ">
 
                   {/* Image */}
-                  <Carousel>
+                  <Carousel indicators={false}>
                     {
                       v.course_img.map(v => (
                         <img src={v.url} className="card-img-top" alt="course image"

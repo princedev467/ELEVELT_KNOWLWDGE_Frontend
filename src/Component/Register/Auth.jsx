@@ -11,13 +11,13 @@ function Auth(props) {
 
   const [type, setType] = useState('login');
   const [otptype, setOtpType] = useState('signup')
-  const dispatch = useDispatch()
-
+  
  const {Instructor}= useParams()
- console.log(Instructor);
+//  console.log(Instructor);
  
   const navigate = useNavigate()
 
+  const dispatch=useDispatch()
 
   useEffect(() => {
 

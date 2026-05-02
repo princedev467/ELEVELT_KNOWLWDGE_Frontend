@@ -170,15 +170,15 @@ Inner part START */}
                       <td>
                         <div className="d-flex align-items-center">
                           {/* Image */}
-                          <div className="w-70px">
-                           <Carousel>
+                          <div className="w-100px">
+                           <Carousel indicators={false}  navButtonsAlwaysInvisible={true}>
                             {
-                               v.course_img.map(v1 => (  <img src={v1.url} className="rounded" alt />))
+                               v.course_img.map(v1 => (  <img src={v1.url} style={{width:'70px',height:'70px',objectFit:'cover'}} alt />))
                             }
                           
                             </Carousel>
                           </div>
-                          <div className="mb-0 ms-2">
+                          <div className="mb-0">
                             {/* Title */}
                             <h6><a href="#">{v.name}</a></h6>
                             {/* Info */}
@@ -203,210 +203,7 @@ Inner part START */}
                         <button className="btn btn-sm btn-danger-soft btn-round mb-0"><i className="fas fa-fw fa-times" /></button>
                       </td>
                     </tr>))}
-                    {/* Table item */}
-                    <tr>
-                      {/* Course item */}
-                      <td>
-                        <div className="d-flex align-items-center">
-                          {/* Image */}
-                          <div className="w-100px">
-                            <img src="assets/images/courses/4by3/10.jpg" className="rounded" alt />
-                          </div>
-                          <div className="mb-0 ms-2">
-                            {/* Title */}
-                            <h6><a href="#">Bootstrap 5 From Scratch</a></h6>
-                            {/* Info */}
-                            <div className="d-sm-flex">
-                              <p className="h6 fw-light mb-0 small me-3"><i className="fas fa-table text-orange me-2" />0 lectures</p>
-                              <p className="h6 fw-light mb-0 small"><i className="fas fa-check-circle text-success me-2" />0 Completed</p>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      {/* Enrolled item */}
-                      <td className="text-center text-sm-start">145</td>
-                      {/* Status item */}
-                      <td>
-                        <div className="badge bg-secondary bg-opacity-10 text-secondary">Disable</div>
-                      </td>
-                      {/* Price item */}
-                      <td>$350</td>
-                      {/* Action item */}
-                      <td>
-                        <a href="#" className="btn btn-sm btn-success-soft btn-round me-1 mb-0"><i className="far fa-fw fa-edit" /></a>
-                        <button className="btn btn-sm btn-danger-soft btn-round mb-0"><i className="fas fa-fw fa-times" /></button>
-                      </td>
-                    </tr>
-                    {/* Table item */}
-                    <tr>
-                      {/* Course item */}
-                      <td>
-                        <div className="d-flex align-items-center">
-                          {/* Image */}
-                          <div className="w-100px">
-                            <img src="assets/images/courses/4by3/06.jpg" className="rounded" alt />
-                          </div>
-                          <div className="mb-0 ms-2">
-                            {/* Title */}
-                            <h6><a href="#">Angular – The Complete Guider</a></h6>
-                            {/* Info */}
-                            <div className="d-sm-flex">
-                              <p className="h6 fw-light mb-0 small me-3"><i className="fas fa-table text-orange me-2" />37 lectures</p>
-                              <p className="h6 fw-light mb-0 small"><i className="fas fa-check-circle text-success me-2" />20 Completed</p>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      {/* Enrolled item */}
-                      <td className="text-center text-sm-start">145</td>
-                      {/* Status item */}
-                      <td>
-                        <div className="badge bg-success bg-opacity-10 text-success">Live</div>
-                      </td>
-                      {/* Price item */}
-                      <td>$652</td>
-                      {/* Action item */}
-                      <td>
-                        <a href="#" className="btn btn-sm btn-success-soft btn-round me-1 mb-0"><i className="far fa-fw fa-edit" /></a>
-                        <button className="btn btn-sm btn-danger-soft btn-round mb-0"><i className="fas fa-fw fa-times" /></button>
-                      </td>
-                    </tr>
-                    {/* Table item */}
-                    <tr>
-                      {/* Course item */}
-                      <td>
-                        <div className="d-flex align-items-center">
-                          {/* Image */}
-                          <div className="w-100px">
-                            <img src="assets/images/courses/4by3/02.jpg" className="rounded" alt />
-                          </div>
-                          <div className="mb-0 ms-2">
-                            {/* Title */}
-                            <h6><a href="#">Graphic Design Masterclass</a></h6>
-                            {/* Info */}
-                            <div className="d-sm-flex">
-                              <p className="h6 fw-light mb-0 small me-3"><i className="fas fa-table text-orange me-2" />58 lectures</p>
-                              <p className="h6 fw-light mb-0 small"><i className="fas fa-check-circle text-success me-2" />0 Completed</p>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      {/* Enrolled item */}
-                      <td className="text-center text-sm-start">0</td>
-                      {/* Status item */}
-                      <td>
-                        <div className="badge bg-info bg-opacity-10 text-info">Applied</div>
-                      </td>
-                      {/* Price item */}
-                      <td>$245</td>
-                      {/* Action item */}
-                      <td>
-                        <a href="#" className="btn btn-sm btn-success-soft btn-round me-1 mb-0"><i className="far fa-fw fa-edit" /></a>
-                        <button className="btn btn-sm btn-danger-soft btn-round mb-0"><i className="fas fa-fw fa-times" /></button>
-                      </td>
-                    </tr>
-                    {/* Table item */}
-                    <tr>
-                      {/* Course item */}
-                      <td>
-                        <div className="d-flex align-items-center">
-                          {/* Image */}
-                          <div className="w-100px">
-                            <img src="assets/images/courses/4by3/04.jpg" className="rounded" alt />
-                          </div>
-                          <div className="mb-0 ms-2">
-                            {/* Title */}
-                            <h6><a href="#">Learn Invision</a></h6>
-                            {/* Info */}
-                            <div className="d-sm-flex">
-                              <p className="h6 fw-light mb-0 small me-3"><i className="fas fa-table text-orange me-2" />16 lectures</p>
-                              <p className="h6 fw-light mb-0 small"><i className="fas fa-check-circle text-success me-2" />0 Completed</p>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      {/* Enrolled item */}
-                      <td className="text-center text-sm-start">0</td>
-                      {/* Status item */}
-                      <td>
-                        <div className="badge bg-danger bg-opacity-10 text-danger">Rejected</div>
-                      </td>
-                      {/* Price item */}
-                      <td>$365</td>
-                      {/* Action item */}
-                      <td>
-                        <a href="#" className="btn btn-sm btn-success-soft btn-round me-1 mb-0"><i className="far fa-fw fa-edit" /></a>
-                        <button className="btn btn-sm btn-danger-soft btn-round mb-0"><i className="fas fa-fw fa-times" /></button>
-                      </td>
-                    </tr>
-                    {/* Table item */}
-                    <tr>
-                      {/* Course item */}
-                      <td>
-                        <div className="d-flex align-items-center">
-                          {/* Image */}
-                          <div className="w-100px">
-                            <img src="assets/images/courses/4by3/03.jpg" className="rounded" alt />
-                          </div>
-                          <div className="mb-0 ms-2">
-                            {/* Title */}
-                            <h6><a href="#">Create a Design System in Figma</a></h6>
-                            {/* Info */}
-                            <div className="d-sm-flex">
-                              <p className="h6 fw-light mb-0 small me-3"><i className="fas fa-table text-orange me-2" />25 lectures</p>
-                              <p className="h6 fw-light mb-0 small"><i className="fas fa-check-circle text-success me-2" />0 Completed</p>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      {/* Enrolled item */}
-                      <td className="text-center text-sm-start">0</td>
-                      {/* Status item */}
-                      <td>
-                        <div className="badge bg-info bg-opacity-10 text-info">Applied</div>
-                      </td>
-                      {/* Price item */}
-                      <td>$135</td>
-                      {/* Action item */}
-                      <td>
-                        <a href="#" className="btn btn-sm btn-success-soft btn-round me-1 mb-0"><i className="far fa-fw fa-edit" /></a>
-                        <button className="btn btn-sm btn-danger-soft btn-round mb-0"><i className="fas fa-fw fa-times" /></button>
-                      </td>
-                    </tr>
-                    {/* Table item */}
-                    <tr>
-                      {/* Course item */}
-                      <td>
-                        <div className="d-flex align-items-center">
-                          {/* Image */}
-                          <div className="w-100px">
-                            <img src="assets/images/courses/4by3/07.jpg" className="rounded" alt />
-                          </div>
-                          <div className="mb-0 ms-2">
-                            {/* Title */}
-                            <h6><a href="#">Deep Learning with React-Native</a></h6>
-                            {/* Info */}
-                            <div className="d-sm-flex">
-                              <p className="h6 fw-light mb-0 small me-3"><i className="fas fa-table text-orange me-2" />18 lectures</p>
-                              <p className="h6 fw-light mb-0 small"><i className="fas fa-check-circle text-success me-2" />10 Completed</p>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      {/* Enrolled item */}
-                      <td className="text-center text-sm-start">186</td>
-                      {/* Status item */}
-                      <td>
-                        <div className="badge bg-success bg-opacity-10 text-success">Live</div>
-                      </td>
-                      {/* Price item */}
-                      <td>$256</td>
-                      {/* Action item */}
-                      <td>
-                        <a href="#" className="btn btn-sm btn-success-soft btn-round me-1 mb-0"><i className="far fa-fw fa-edit" /></a>
-                        <button className="btn btn-sm btn-danger-soft btn-round mb-0"><i className="fas fa-fw fa-times" /></button>
-                      </td>
-                    </tr>
+                    
                     {/* Table item */}
                     <tr>
                       {/* Course item */}

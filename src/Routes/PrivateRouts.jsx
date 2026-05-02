@@ -7,14 +7,14 @@ function PrivateRouts(pro) {
 
 
 
-   const dispatch=useDispatch()
+  const dispatch = useDispatch()
 
-  useEffect(()=>{
- dispatch(userCheck())
+  useEffect(() => {
+    dispatch(userCheck())
 
-  },[])
- 
-    let auth = useSelector(state => state.auth);
+  }, [])
+
+  let auth = useSelector(state => state.auth);
   console.log(auth);
 
 
@@ -23,23 +23,33 @@ function PrivateRouts(pro) {
 
   let user = auth?.auth
 
-console.log(user);
+  console.log(user);
 
- 
+
   if (user === undefined) {
-   return <p>---Loading</p>
+    return <p>---Loading</p>
   }
+  
+  if (user) {
 
+if (user?.role === 'Instructor') {
+    return <Outlet />
 
-  if(user?.role==='Instructor'){
-    return <Outlet/>
-
-  }else if(user?.role==='user'){
+  } else if (user?.role === 'user') {
     return <Navigate to={'/'} />
   }
+   
+  }else{
+    //  return <Navigate to={'/Auth'} />
+  }
 
 
- 
+  
+
+
+
+
+
 
   // return (
 

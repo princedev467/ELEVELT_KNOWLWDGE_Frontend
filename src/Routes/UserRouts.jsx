@@ -107,6 +107,14 @@ function UserRouts(props) {
                  {/* Instructor */}
                   <Route path='/Instructor_Create_Course' element={<Instructor_Create_Course />}></Route>
                 <Route path='/Instructor_Create_Course/:id' element={<Instructor_Create_Course />}></Route>
+                  <Route path='/Instructor_Earning' element={< Instructor_Earning />} ></Route>
+               <Route path='/Instructor_Review' element={<Instructor_Review />}></Route>
+                <Route path='/Instructor_Manage_Course' element={<Instructor_Manage_Course />}></Route>
+                <Route path='/Instructor_Order' element={<Instructor_Order />}></Route>
+                <Route path='/Instructor_Payout' element={<Instructor_Payout />}></Route>
+                <Route path='/Instructor_Single' element={<Instructor_Single />}></Route>
+                <Route path='/Instructor_List' element={< Instructor_List />} ></Route>
+                <Route path='/Instructor_Student_list' element={<Instructor_Student_list />}></Route>
                
                 <Route path='/about' element={< About />} ></Route>
                  <Route path='/chat' element={<Chat />} ></Route>
@@ -132,14 +140,7 @@ function UserRouts(props) {
                 <Route path='/Error_404' element={<Error_404 />}></Route>
                 <Route path='/Faq' element={<Faq />}></Route>
                 <Route path='/Forget_Password' element={<Forget_Password />}></Route>
-                <Route path='/Instructor_Manage_Course' element={<Instructor_Manage_Course />}></Route>
-                <Route path='/Instructor_Order' element={<Instructor_Order />}></Route>
-                <Route path='/Instructor_Payout' element={<Instructor_Payout />}></Route>
-                <Route path='/Instructor_Review' element={<Instructor_Review />}></Route>
-                <Route path='/Instructor_Single' element={<Instructor_Single />}></Route>
-                <Route path='/Instructor_List' element={< Instructor_List />} ></Route>
-                <Route path='/Instructor_Earning' element={< Instructor_Earning />} ></Route>
-                <Route path='/Instructor_Student_list' element={<Instructor_Student_list />}></Route>
+               
                 <Route path='/Pricing' element={<Pricing />}></Route>
                 <Route path='/Request_Access' element={< Request_Access />} ></Route>
                 <Route path='/Request_Demo' element={<Request_Demo />}></Route>
@@ -150,7 +151,8 @@ function UserRouts(props) {
                   <Route path='/Auth/:Instructor' element={<Auth />}></Route>
                
                 {/* Notification */}
-                NotificationDemo
+                
+                {/* NotificationDemo */}
                 <Route path='/NotificationDemo' element={<NotificationDemo />}></Route>
                 <Route path='/University_Admission_Form' element={<University_Admission_Form />}></Route>
                 <Route path='/Student_Subscription' element={<Student_Subscription />}></Route>
