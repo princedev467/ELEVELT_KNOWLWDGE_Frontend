@@ -40,7 +40,7 @@ if (user?.role === 'Instructor') {
   }
    
   }else{
-    //  return <Navigate to={'/Auth'} />
+     return <Navigate to={'/Auth'} />
   }
 
 

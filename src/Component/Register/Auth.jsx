@@ -177,7 +177,7 @@ function Auth(props) {
 
   const { handleSubmit, handleChange, handleBlur, values, errors, touched } = formik
 
-  console.log(errors);
+  // console.log(errors);
 
   const handleGoogle = () => {
     try {
