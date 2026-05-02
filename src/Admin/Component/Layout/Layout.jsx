@@ -28,6 +28,7 @@ import SunnyIcon from '@mui/icons-material/Sunny';
 import BedtimeIcon from '@mui/icons-material/Bedtime';
 import QuizIcon from '@mui/icons-material/Quiz';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
+import { useSelector } from 'react-redux';
 
 export default function Layout({ children }) {
   const [checked, setChecked] = React.useState(true);
@@ -50,6 +51,10 @@ export default function Layout({ children }) {
   const drawerWidth = 240;
 
 
+
+  const auth = useSelector(state => state.auth);
+  const user = auth?.auth;
+  console.log(user);
 
   const openedMixin = (theme) => ({
     width: drawerWidth,
@@ -112,8 +117,8 @@ export default function Layout({ children }) {
       boxSizing: 'border-box',
       '& .MuiDrawer-paper': {
         width: drawerWidth,
-  
-       
+
+
 
       },
       variants: [
@@ -145,14 +150,25 @@ export default function Layout({ children }) {
     setOpen(false);
   };
 
-  const listBox = [
-    { label: 'Dashboard', icon: <DashboardIcon  />, to: '/admin/Dashboard' },
-    { label: 'Category', icon: <CategoryIcon  />, to: '/admin/category' },
-    { label: 'Section', icon: <AppsIcon  />, to: '/admin/Section' },
-    { label: 'Course', icon: <FoundationIcon  />, to: '/admin/course' }, 
-    { label: 'Quiz', icon: <QuizIcon  />, to: '/admin/quiz' },
-     { label: 'Content', icon: <ContentPasteSearchIcon  />, to: '/admin/content' }
-  ]
+
+  let listBox
+  if (user?.role==='Instructor') {
+
+    listBox = [
+      { label: 'Section', icon: <AppsIcon />, to: '/admin/Section' },
+      { label: 'Course', icon: <FoundationIcon />, to: '/admin/course' },
+      { label: 'Quiz', icon: <QuizIcon />, to: '/admin/quiz' },
+      { label: 'Content', icon: <ContentPasteSearchIcon />, to: '/admin/content' }
+    ]
+
+  } else {
+    listBox = [
+      { label: 'Dashboard', icon: <DashboardIcon />, to: '/admin/Dashboard' },
+      { label: 'Category', icon: <CategoryIcon />, to: '/admin/category' },
+
+    ]
+  }
+
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -175,13 +191,13 @@ export default function Layout({ children }) {
           </IconButton>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between", width: "100%" }}>
             <Typography variant="h6" sx={{ flexGrow: 1, gap: 1 }}>
-              Admin Panel
+             {user?.role==='Instructor'?'Instructor Panel': 'Admin Panel'}
             </Typography>
-            <IconButton size="large" onClick={()=>themeData.ToggleTheme(themeData.theme)}>
+            <IconButton size="large" onClick={() => themeData.ToggleTheme(themeData.theme)}>
               {
-                themeData.theme==='light'? <BedtimeIcon />:<SunnyIcon />
+                themeData.theme === 'light' ? <BedtimeIcon /> : <SunnyIcon />
               }
-              
+
 
             </IconButton>
             {/* <Box className="modeswitch-wrap" id="darkModeSwitch" sx={{display:'flex',justifyContent:'end'}}>

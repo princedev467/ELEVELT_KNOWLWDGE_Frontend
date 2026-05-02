@@ -7,7 +7,7 @@ function Instructor_Dashboard(props) {
   let auth = useSelector(state => state.auth);
   console.log(auth);
 
-  let insructorData = auth.auth
+  let insructorData = auth?.auth
   return (
     <main>
       {/* =======================
@@ -85,7 +85,7 @@ Page content START */}
                       {/* Dashboard menu */}
                       <div className="list-group list-group-dark list-group-borderless">
                         <a className="list-group-item active" href="instructor-dashboard.html"><i className="bi bi-ui-checks-grid fa-fw me-2" />Dashboard</a>
-                        <NavLink to={`/Instructor_Create_Course/${insructorData._id}`} className="list-group-item"><i className="bi bi-basket fa-fw me-2" />My course</NavLink>
+                        <NavLink to={`/Instructor_Create_Course/${insructorData?._id}`} className="list-group-item"><i className="bi bi-basket fa-fw me-2" />My course</NavLink>
 
                         <NavLink to={`/Instructor_Create_Course/${insructorData._id}`} className="list-group-item"><i className="bi bi-graph-up fa-fw me-2" />Earnings</NavLink>
                         <NavLink to={`/Instructor_Earning/${insructorData._id}`} className="list-group-item"><i className="bi bi-people fa-fw me-2" />Students</NavLink>

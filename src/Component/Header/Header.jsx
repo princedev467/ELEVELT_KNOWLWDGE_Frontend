@@ -42,6 +42,8 @@ function Header(props) {
   const auth = useSelector(state => state.auth)
   console.log(auth.auth);
 
+   localStorage.setItem("user", JSON.stringify(auth.auth));
+          
   const alert = useSelector(state => state.alert)
   console.log("alert:", alert);
 

@@ -172,6 +172,8 @@ export const userCheck = createAsyncThunk(
                 console.log("responce.data.data", responce.data.data);
 
                 return responce.data.data
+
+                
             }
         } catch (error) {
             // console.log(error);
@@ -236,11 +238,16 @@ const authSlice = createSlice({
             state.auth = null;
             state.error = action.payload;
         })
+        builder.addCase(userCheck.pending, (state, action) => {
+            state.isLoading = true;
+           })
         builder.addCase(userCheck.fulfilled, (state, action) => {
             console.log(action.payload);
-            state.isLoading = false;
+
+             state.isLoading = false;
             state.auth = action.payload;
             state.error = null;
+            
         })
         builder.addCase(userCheck.rejected, (state, action) => {
             console.log(action?.payload);

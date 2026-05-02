@@ -3,61 +3,45 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
 import { userCheck } from '../Redux/slice/auth.slice';
 
-function PrivateRouts(pro) {
+function PrivateRouts(props) {
 
-
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(userCheck())
-
-  }, [])
-
-  let auth = useSelector(state => state.auth);
-  console.log(auth);
+    dispatch(userCheck());
+  }, []);
 
 
-
-
-
-  let user = auth?.auth
-
+  const auth = useSelector(state => state.auth);
+  const user = auth?.auth;
   console.log(user);
-
-
-  if (user === undefined) {
-    return <p>---Loading</p>
-  }
   
-  if (user) {
+  const isLoading = auth?.isLoading;
 
-if (user?.role === 'Instructor') {
-    return <Outlet />
+  // console.log('PrivateRouts → isLoading:', isLoading, '| user:', user);
+const data = localStorage.getItem("user");
 
-  } else if (user?.role === 'user') {
-    return <Navigate to={'/'} />
+let storeuser = null;
+
+if (data) {
+  storeuser = JSON.parse(data);
+}
+  
+  if (isLoading) {
+    return <p>---Loading...</p>;
   }
-   
+
+  if (storeuser) {
+    if (storeuser?.role === 'Instructor') {
+      return <Outlet />
+    } else{
+      return <Navigate to={'/'}  />
+    }
+    
   }else{
-     return <Navigate to={'/Auth'} />
+    
+ return <Navigate to={'/Auth'}  />
   }
-
-
-  
-
-
-
-
-
-
-  // return (
-
-  //   // role==='Instructor' ? <Outlet /> :<Navigate to={'/'} replace />
-
-  //   user?.role === 'Instructor' ? <Outlet /> : <Navigate to={'/'} />
-
-  // );
 }
 
 export default PrivateRouts;
