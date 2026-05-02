@@ -205,6 +205,7 @@ Page content START */}
                         Chatbot</li>
                       <li className="list-group-item h6 fw-light d-flex mb-0"><i className="fas fa-check-circle text-success me-2" />Search engine
                         optimization tools</li>
+                   
                       <li className="list-group-item h6 fw-light d-flex mb-0"><i className="fas fa-check-circle text-success me-2" />Why SEO</li>
                       <li className="list-group-item h6 fw-light d-flex mb-0"><i className="fas fa-check-circle text-success me-2" />URL Structure</li>
                       <li className="list-group-item h6 fw-light d-flex mb-0"><i className="fas fa-check-circle text-success me-2" />Featured Snippet</li>
@@ -229,7 +230,7 @@ Page content START */}
 
                         filterSectionData?.map((v, i) => {
 
-                          let contentFilter = content?.data?.filter((c) => c.section === v._id);
+                          let contentFilter = content?.data?.filter((c) => c.section === v._id).sort((a,b)=>a.order-b.order);
                           console.log(contentFilter);
 
                           

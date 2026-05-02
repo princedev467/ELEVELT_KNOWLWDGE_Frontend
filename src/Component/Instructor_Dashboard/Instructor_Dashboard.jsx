@@ -1,6 +1,13 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
 function Instructor_Dashboard(props) {
+  
+      let auth = useSelector(state => state.auth);
+    console.log(auth);
+
+    let insructorData=auth.auth
     return (
      <main>
   {/* =======================
@@ -78,16 +85,27 @@ Page content START */}
                   {/* Dashboard menu */}
                   <div className="list-group list-group-dark list-group-borderless">
                     <a className="list-group-item active" href="instructor-dashboard.html"><i className="bi bi-ui-checks-grid fa-fw me-2" />Dashboard</a>
-                    <a className="list-group-item" href="instructor-manage-course.html"><i className="bi bi-basket fa-fw me-2" />My Courses</a>
-                    <a className="list-group-item" href="instructor-earning.html"><i className="bi bi-graph-up fa-fw me-2" />Earnings</a>
-                    <a className="list-group-item" href="instructor-studentlist.html"><i className="bi bi-people fa-fw me-2" />Students</a>
-                    <a className="list-group-item" href="instructor-order.html"><i className="bi bi-folder-check fa-fw me-2" />Orders</a>
-                    <a className="list-group-item" href="instructor-review.html"><i className="bi bi-star fa-fw me-2" />Reviews</a>
-                    <a className="list-group-item" href="instructor-edit-profile.html"><i className="bi bi-pencil-square fa-fw me-2" />Edit Profile</a>
-                    <a className="list-group-item" href="instructor-payout.html"><i className="bi bi-wallet2 fa-fw me-2" />Payouts</a>
+                     <NavLink to={`/Instructor_Create_Course/${insructorData._id}`} className="list-group-item"><i className="bi bi-basket fa-fw me-2" />My course</NavLink>
+                   
+                    <NavLink to={`/Instructor_Create_Course/${insructorData._id}`} className="list-group-item"><i className="bi bi-graph-up fa-fw me-2" />Earnings</NavLink>
+                    <NavLink to={`/Instructor_Create_Course/${insructorData._id}`} className="list-group-item"><i className="bi bi-people fa-fw me-2" />Students</NavLink>
+                    <NavLink to={`/Instructor_Create_Course/${insructorData._id}`} className="list-group-item"><i className="bi bi-folder-check fa-fw me-2" />Orders</NavLink>
+                    <NavLink to={`/Instructor_Create_Course/${insructorData._id}`} className="list-group-item"><i className="bi bi-star fa-fw me-2" />Reviews</NavLink>
+                    <NavLink to={`/Instructor_Create_Course/${insructorData._id}`} className="list-group-item"><i className="bi bi-pencil-square fa-fw me-2" />Edit Profile</NavLink>
+                    <NavLink to={`/Instructor_Create_Course/${insructorData._id}`} className="list-group-item"><i className="bi bi-wallet2 fa-fw me-2" />Payouts</NavLink>
+                    <NavLink to={`/Instructor_Create_Course/${insructorData._id}`} className="list-group-item"><i className="bi bi-trash fa-fw me-2" />Delete Profile</NavLink>
+                    <NavLink to={`/Instructor_Create_Course/${insructorData._id}`} className="list-group-item"><i className="fas fa-sign-out-alt fa-fw me-2" />Sign Out</NavLink>
+                   
+                    {/* <a className="list-group-item" href="instructor-manage-course.html"><i className="bi bi-basket fa-fw me-2" />My Courses</a> */}
+                    {/* <a className="list-group-item" href="instructor-earning.html"><i className="bi bi-graph-up fa-fw me-2" />Earnings</a> */}
+                    {/* <a className="list-group-item" href="instructor-studentlist.html"><i className="bi bi-people fa-fw me-2" />Students</a> */}
+                    {/* <a className="list-group-item" href="instructor-order.html"><i className="bi bi-folder-check fa-fw me-2" />Orders</a> */}
+                    {/* <a className="list-group-item" href="instructor-review.html"><i className="bi bi-star fa-fw me-2" />Reviews</a> */}
+                    {/* <a className="list-group-item" href="instructor-edit-profile.html"><i className="bi bi-pencil-square fa-fw me-2" />Edit Profile</a> */}
+                    {/* <a className="list-group-item" href="instructor-payout.html"><i className="bi bi-wallet2 fa-fw me-2" />Payouts</a> */}
                     <a className="list-group-item" href="instructor-setting.html"><i className="bi bi-gear fa-fw me-2" />Settings</a>
-                    <a className="list-group-item" href="instructor-delete-account.html"><i className="bi bi-trash fa-fw me-2" />Delete Profile</a>
-                    <a className="list-group-item text-danger bg-danger-soft-hover" href="sign-in.html"><i className="fas fa-sign-out-alt fa-fw me-2" />Sign Out</a>
+                    {/* <a className="list-group-item" href="instructor-delete-account.html"><i className="bi bi-trash fa-fw me-2" />Delete Profile</a> */}
+                    {/* <a className="list-group-item text-danger bg-danger-soft-hover" href="sign-in.html"><i className="fas fa-sign-out-alt fa-fw me-2" />Sign Out</a> */}
                   </div>
                 </div>
               </div>

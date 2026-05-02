@@ -1,6 +1,21 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
+import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
+import Carousel from 'react-material-ui-carousel';
 
 function Instructor_Create_Course(props) {
+
+  const{id}=useParams();
+  console.log(id);
+  
+  const { data } = useGetCourseQuery();
+  console.log(data?.data);
+  
+  let courseData=data?.data
+
+ let  InstructorCourse=courseData?.filter((v)=>v.Instructor_id===id);
+ console.log(InstructorCourse);
+ 
     return (
         <main>
   {/* =======================
@@ -147,17 +162,24 @@ Inner part START */}
                   {/* Table body START */}
                   <tbody>
                     {/* Table item */}
-                    <tr>
+                  { InstructorCourse?.map((v)=>( <tr>
                       {/* Course item */}
+
+                      
                       <td>
                         <div className="d-flex align-items-center">
                           {/* Image */}
-                          <div className="w-100px">
-                            <img src="assets/images/courses/4by3/08.jpg" className="rounded" alt />
+                          <div className="w-70px">
+                           <Carousel>
+                            {
+                               v.course_img.map(v1 => (  <img src={v1.url} className="rounded" alt />))
+                            }
+                          
+                            </Carousel>
                           </div>
                           <div className="mb-0 ms-2">
                             {/* Title */}
-                            <h6><a href="#">Building Scalable APIs with GraphQL</a></h6>
+                            <h6><a href="#">{v.name}</a></h6>
                             {/* Info */}
                             <div className="d-sm-flex">
                               <p className="h6 fw-light mb-0 small me-3"><i className="fas fa-table text-orange me-2" />18 lectures</p>
@@ -173,13 +195,13 @@ Inner part START */}
                         <div className="badge bg-success bg-opacity-10 text-success">Live</div>
                       </td>
                       {/* Price item */}
-                      <td>$250</td>
+                      <td>{v.price}</td>
                       {/* Action item */}
                       <td>
                         <a href="#" className="btn btn-sm btn-success-soft btn-round me-1 mb-0"><i className="far fa-fw fa-edit" /></a>
                         <button className="btn btn-sm btn-danger-soft btn-round mb-0"><i className="fas fa-fw fa-times" /></button>
                       </td>
-                    </tr>
+                    </tr>))}
                     {/* Table item */}
                     <tr>
                       {/* Course item */}

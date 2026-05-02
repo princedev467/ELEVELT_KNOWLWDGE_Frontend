@@ -29,43 +29,43 @@ function FileUpload(props) {
     if (field?.value) {
         filepaths = Array.from(field?.value);
     }
-    console.log("filepath:",filepath);
+    console.log("filepath:", filepath);
 
     const ImageData = filepaths?.map((v) => {
         console.log(v);
 
-        if(v?.url){
-            return{ 
-                url:v.url,
-                type: v?.resource_type,
-            
+        if (v?.url) {
+            return {
+                url: v.url,
+                type: v?.type,
+
             }
         } else {
             return {
-                url:URL.createObjectURL(v),
+                url: URL.createObjectURL(v),
                 type: v?.type,
                 //  firstName : type.split("/")[0]
             }
         }
         // if (typeof v === 'string') {
         //     return (filepath = v)
-        
+
         // } else if (typeof v === 'object' && v !== null) {
-            
+
         //     return (filepath = URL.createObjectURL(v))
         // }
     })
-    
+
     console.log("ImageData:", ImageData);
 
 
-        
-        console.log("filepath",filepath);
 
-        // // console.log(field);
-        
+    console.log("filepath", filepath);
 
-    
+    // // console.log(field);
+
+
+
     return (
         <>
             <Button
@@ -79,13 +79,13 @@ function FileUpload(props) {
                 Upload file
                 <VisuallyHiddenInput
                     type="file"
-                    onChange={(event) =>{
-                        const files = Array.from(event.target.files|| []);
+                    onChange={(event) => {
+                        const files = Array.from(event.target.files || []);
                         setValue(files);
                         event.target.value = null;
 
                     }
-                    
+
                     }
                     multiple
                 // onBlur={handleBlur}
@@ -93,39 +93,25 @@ function FileUpload(props) {
             </Button>
 
 
-             {ImageData.map((v, i) => {
-       
-        if (v?.type==='image' ||  v?.type?.startsWith('image')) {
-          return (
-            <img
-             
-              src={v.url}
-              width="50"
-              height="50"
-              alt="preview"
-            />
-          );
-        }else if (v?.type==='video'|| v?.type?.startsWith('video')) {
-          return (
-            <video  width="80" height="50" controls autoPlay>
-              <source src={v.url} />
-            </video>
-          );
-        }else if (v.url.toLowerCase().endsWith('.pdf')) {
-          return (
-            <a  href={v.url} target="_blank" rel="noreferrer">
-              View PDF
-            </a>
-          );
-        }
+            {ImageData.map((v, i) => {
 
-        return null;
-      })}
+                if (v?.type === 'image' || v?.type?.startsWith('image')) {
+                    if (v.type == 'video' || v.type == 'video/mp4') {
+                        return <video src={v.url} width={"80px"} height={"50px"} />
+                    } else if (v.type == 'image' || v.type == 'image/png' || v.type == 'image/jpg' || v.type == 'image/jpeg') {
+                        return <img src={v.url} alt="" width={"80px"} height={"50px"} />
+                    } else {
+                        return <a href={v.url} target="_blank">Open File</a>
+                    }
+                }
+
+                return null;
+            })}
 
             {
                 <p style={{ color: 'red' }}>{meta.error && meta.touched ? meta.error : null}</p>
             }
-           </>
+        </>
     );
 }
 

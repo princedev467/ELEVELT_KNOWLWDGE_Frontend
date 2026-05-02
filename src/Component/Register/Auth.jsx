@@ -110,6 +110,7 @@ function Auth(props) {
         const res = await dispatch(addRegister({...values,role:Instructor?Instructor:'user'}));
 
         localStorage.setItem('email', values.email)
+        Instructor?localStorage.setItem('role', 'Instructor'):localStorage.setItem('role', 'user')
         if (res.type === 'auth/addRegister/fulfilled') {
           setType('verify OTP')
 
@@ -156,7 +157,10 @@ function Auth(props) {
           //login type Instructor
         if (res.type === 'auth/userLogin/fulfilled' && res.payload.role==='Instructor') {
 
+
           navigate('/Instructor_Dashboard');
+
+
 
             //login type user
         }else  if (res.type === 'auth/userLogin/fulfilled' && res.payload.role==='user') {
