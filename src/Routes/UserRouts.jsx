@@ -73,7 +73,9 @@ function UserRouts(props) {
     
     }, [])
 
-    
+
+  
+
   
     return (
         <div className={themeData.theme==='light'?'dark':'light'}>
@@ -101,6 +103,11 @@ function UserRouts(props) {
                  <Route path='/Course_Video_Player/:id' element={< Course_Video_Player />} ></Route>
                  
                  {/* <Route path='/category/:id' element={<CategoryPage />} /> */}
+
+                 {/* Instructor */}
+                  <Route path='/Instructor_Create_Course' element={<Instructor_Create_Course />}></Route>
+                <Route path='/Instructor_Create_Course/:id' element={<Instructor_Create_Course />}></Route>
+               
                 <Route path='/about' element={< About />} ></Route>
                  <Route path='/chat' element={<Chat />} ></Route>
                  <Route path='/about/:id' element={< About />} ></Route>
@@ -133,7 +140,6 @@ function UserRouts(props) {
                 <Route path='/Instructor_List' element={< Instructor_List />} ></Route>
                 <Route path='/Instructor_Earning' element={< Instructor_Earning />} ></Route>
                 <Route path='/Instructor_Student_list' element={<Instructor_Student_list />}></Route>
-                <Route path='/Instructor_Create_Course' element={<Instructor_Create_Course />}></Route>
                 <Route path='/Pricing' element={<Pricing />}></Route>
                 <Route path='/Request_Access' element={< Request_Access />} ></Route>
                 <Route path='/Request_Demo' element={<Request_Demo />}></Route>
@@ -157,7 +163,7 @@ function UserRouts(props) {
         </Route>
 
 
-                <Route element={<PrivateRouts />}>
+                <Route element={<PrivateRouts  />}>
                     <Route path='/Student_Dashboard' element={<Student_Dashboard />}></Route>
                     <Route path='/Instructor_Dashboard' element={< Instructor_Dashboard />} ></Route>
                 </Route>
