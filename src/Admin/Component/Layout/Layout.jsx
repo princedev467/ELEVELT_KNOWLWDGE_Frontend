@@ -52,9 +52,19 @@ export default function Layout({ children }) {
 
 
 
-  const auth = useSelector(state => state.auth);
-  const user = auth?.auth;
-  console.log(user);
+  // const auth = useSelector(state => state.auth);
+  // const user = auth?.auth;
+  // console.log(user);
+
+
+  const data = localStorage.getItem("user");
+
+  let storeuser = null;
+
+if (data) {
+  storeuser = JSON.parse(data);
+}
+  
 
   const openedMixin = (theme) => ({
     width: drawerWidth,
@@ -152,7 +162,7 @@ export default function Layout({ children }) {
 
 
   let listBox
-  if (user?.role==='Instructor') {
+  if (storeuser?.role==='Instructor') {
 
     listBox = [
       { label: 'Section', icon: <AppsIcon />, to: '/admin/Section' },
@@ -191,7 +201,7 @@ export default function Layout({ children }) {
           </IconButton>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between", width: "100%" }}>
             <Typography variant="h6" sx={{ flexGrow: 1, gap: 1 }}>
-             {user?.role==='Instructor'?'Instructor Panel': 'Admin Panel'}
+             {storeuser?.role==='Instructor'?'Instructor Panel': 'Admin Panel'}
             </Typography>
             <IconButton size="large" onClick={() => themeData.ToggleTheme(themeData.theme)}>
               {

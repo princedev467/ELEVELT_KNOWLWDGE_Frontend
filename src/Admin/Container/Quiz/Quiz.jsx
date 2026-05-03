@@ -147,6 +147,7 @@ function Quiz(props) {
         // { field: 'description', headerName: 'description', width: 200 },
 
 
+        { field: 'Instructor_id', headerName: 'Instructor_id', width: 260 },
         {
             field: 'action', headerName: 'Action', width: 170, renderCell: (parem) => (
                 <Stack direction="row" spacing={1}>
@@ -180,16 +181,18 @@ function Quiz(props) {
                 </div>
             )
         },
-          { field: 'TotalMarks', headerName: 'Total Marks', width: 130,renderCell: (param) => {
-               const TotalMarks  = quizContent?.data?.filter((v)=>v.quiz === param?.row?._id )
 
-               
-               console.log(TotalMarks);
-               
-               return TotalMarks?.length || null
-          }
-               
-             },
+        {
+            field: 'TotalMarks', headerName: 'Total Marks', width: 130, renderCell: (param) => {
+                const TotalMarks = quizContent?.data?.filter((v) => v.quiz === param?.row?._id)
+
+
+                console.log(TotalMarks);
+
+                return TotalMarks?.length || null
+            }
+
+        },
     ];
 
 
@@ -210,12 +213,31 @@ function Quiz(props) {
         console.log('updatedata:', updatedata);
 
 
+        const data = localStorage.getItem("user");
+
+        let storeuser = null;
+
+        if (data) {
+            storeuser = JSON.parse(data);
+        }
+
+        let Instructor_id = storeuser?.role === 'Instructor' ? storeuser._id : null
+
+        console.log(Instructor_id);
+
+
         if (Object.keys(updatedata).length > 0) {
+
+            // if (auth.auth?.role === 'Instructor') {
+            //     formData.append('Instructor_id', auth.auth._id);
+
+            // }
+
             await updateData({ _id: updatedata._id, course: courseid, ...val })
             setUpdateData({});
 
         } else {
-            await addData({ ...val, course: courseid });
+            await addData({ ...val, course: courseid, Instructor_id: Instructor_id });
             setCourseId('');
         }
 
@@ -239,6 +261,7 @@ function Quiz(props) {
                                 description: '',
                                 section: '',
                                 course: '',
+                                Instructor_id: null,
                                 TotalMarks: null,
 
                             }}
@@ -256,7 +279,7 @@ function Quiz(props) {
                             <Form id="subscription-form">
 
                                 <TextForm
-                                     type="select"
+                                    type="select"
                                     name='course'
                                     data={catdrop}
                                     label='course'
@@ -269,7 +292,7 @@ function Quiz(props) {
                                     }}
                                 />
                                 <TextForm
-                                     type="select"
+                                    type="select"
                                     name='section'
                                     data={secdrop}
                                     label='section'

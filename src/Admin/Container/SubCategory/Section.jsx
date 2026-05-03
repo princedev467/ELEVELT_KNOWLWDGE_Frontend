@@ -108,6 +108,8 @@ function Section(props) {
             },
             { field: 'name', headerName: 'Name', width: 130 },
             { field: 'description', headerName: 'description', width: 200 },
+            
+        { field: 'Instructor_id', headerName: 'Instructor_id', width: 260 },
 
 
             {
@@ -143,8 +145,21 @@ function Section(props) {
             console.log('updatedata:', updatedata);
 
 
+            
+        const data = localStorage.getItem("user");
+
+        let storeuser = null;
+
+        if (data) {
+            storeuser = JSON.parse(data);
+        }
+
+        let Instructor_id = storeuser?.role === 'Instructor' ? storeuser._id : null
+
+        console.log(Instructor_id);
+        
             if (Object.keys(updatedata).length > 0) {
-            await updateData({ _id: updatedata._id, ...val })
+            await updateData({ _id: updatedata._id,Instructor_id: Instructor_id , ...val })
             setUpdateData({});
 
             } else {
@@ -172,6 +187,7 @@ function Section(props) {
                                 name: '',
                                 description: '',
                                 course: '',
+                                Instructor_id: null,
 
                             }}
                              enableReinitialize

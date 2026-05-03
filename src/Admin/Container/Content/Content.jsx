@@ -11,6 +11,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { NavLink } from 'react-router-dom';
 import { useAddcontentMutation, useDeletecontentMutation, useGetcontentQuery, useUpdatecontentMutation } from '../../../Redux/Api/Content.Api';
 import FileUpload from '../../Component/FileUpload/FileUpload';
+import { useSelector } from 'react-redux';
 
 
 
@@ -66,6 +67,10 @@ function Content(props) {
         setOpen(true);
     };
 
+    
+        const auth = useSelector(state => state.auth)
+        console.log("auth", auth);
+    
     // const Categorydata = useSelector(state => state.category)
 
     const catdrop = [{ value: '', label: '---Select Course--' }];
@@ -143,6 +148,8 @@ function Content(props) {
         },
         { field: 'name', headerName: 'Name', width: 130 },
         {field:'order' ,headerName: 'Order', width: 130 },
+        
+        { field: 'Instructor_id', headerName: 'Instructor_id', width: 260 },
         {
             field: 'contentFile', headerName: 'Source', width: 130,
             renderCell: (param) => (
@@ -225,6 +232,7 @@ function Content(props) {
 
         val.contentFile.forEach((v) => {
             if (v instanceof File) {
+                  formData.append('order',val.order);
                 formData.append('contentFile', v);
             } else {
                 formData.append('contentFile', v.url);
@@ -232,7 +240,26 @@ function Content(props) {
         });
 
 
+          const data = localStorage.getItem("user");
+
+        let storeuser = null;
+
+        if (data) {
+            storeuser = JSON.parse(data);
+        }
+
+        let Instructor_id = storeuser?.role === 'Instructor' ? storeuser._id : null
+
+        console.log(Instructor_id);
+         
+            formData.append('Instructor_id', Instructor_id);
+
         if (Object.keys(updatedata).length > 0) {
+            
+        // if (auth.auth?.role === 'Instructor') {
+        //     formData.append('Instructor_id', auth.auth._id);
+
+        // }
             formData.append('_id', updatedata._id);
 
             updateData(formData)
@@ -265,6 +292,7 @@ function Content(props) {
                                 name: '',
                                 section: '',
                                 course: '',
+                                Instructor_id: null,
                                 contentFile: [],
                                 order:''
 

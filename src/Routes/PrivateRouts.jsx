@@ -5,18 +5,18 @@ import { userCheck } from '../Redux/slice/auth.slice';
 
 function PrivateRouts(props) {
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(userCheck());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(userCheck());
+  // }, []);
 
 
-  const auth = useSelector(state => state.auth);
-  const user = auth?.auth;
-  console.log(user);
+  // const auth = useSelector(state => state.auth);
+  // const user = auth?.auth;
+  // console.log(user);
   
-  const isLoading = auth?.isLoading;
+  // const isLoading = auth?.isLoading;
 
   // console.log('PrivateRouts → isLoading:', isLoading, '| user:', user);
 const data = localStorage.getItem("user");
@@ -27,9 +27,9 @@ if (data) {
   storeuser = JSON.parse(data);
 }
   
-  if (isLoading) {
-    return <p>---Loading...</p>;
-  }
+  // if (isLoading) {
+  //   return <p>---Loading...</p>;
+  // }
 
   if (storeuser) {
     if (storeuser?.role === 'Instructor') {

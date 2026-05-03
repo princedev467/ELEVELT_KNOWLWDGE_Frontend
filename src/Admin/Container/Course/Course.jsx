@@ -259,10 +259,22 @@ function Course() {
         formData.append('price', val.price);
         // formData.append('Preview_url', val.Preview_url);
 
-        if (auth.auth?.role === 'Instructor') {
-            formData.append('Instructor_id', auth.auth._id);
 
+          const data = localStorage.getItem("user");
+
+        let storeuser = null;
+
+        if (data) {
+            storeuser = JSON.parse(data);
         }
+
+        let Instructor_id = storeuser?.role === 'Instructor' ? storeuser._id : null
+
+        console.log(Instructor_id);
+         
+        
+            formData.append('Instructor_id', Instructor_id);
+
 
 
         if (Object.keys(updatedata).length > 0) {
