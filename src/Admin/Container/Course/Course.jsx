@@ -68,8 +68,8 @@ function Course() {
 
 
 
-    let filterCourse=data?.data?.filter((v)=>v?.Instructor_id=== id);
-
+  
+    
     const Categorydata = useSelector(state => state.category)
     console.log(Categorydata.category);
 
@@ -282,7 +282,7 @@ function Course() {
         console.log(Instructor_id);
          
         
-            formData.append('Instructor_id', Instructor_id);
+            formData.append('Instructor_id', auth?.auth?._id);
 
 
 
@@ -328,6 +328,17 @@ function Course() {
 
     console.log("subData:", subData);
 
+    let  filterCourse 
+    
+    if(id){
+        filterCourse = data?.data?.filter((v)=>v?.Instructor_id=== id);
+     }else{
+        filterCourse = data?.data?.filter((v)=>v?.Instructor_id=== auth?.auth?._id);
+        
+     }
+
+      
+    console.log(filterCourse);
     return (
         <>
             <h1>Course</h1>

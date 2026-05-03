@@ -42,7 +42,7 @@ Page Banner START */}
                     </div>
                     {/* Button */}
                     <div className="d-flex align-items-center mt-2 mt-md-0">
-                       <NavLink to={`/admin/course/${insructorData._id}`} className="list-group-item"><i className="bi bi-graph-up fa-fw me-2" />Create a course</NavLink>
+                       <NavLink to={`/admin/course/${insructorData._id}`} className="btn btn-success mb-0"><i className="bi bi-graph-up fa-fw me-2" />Create a course</NavLink>
                        
                       {/* <a href="instructor-create-course.html" className="btn btn-success mb-0">Create a course</a> */}
                     </div>

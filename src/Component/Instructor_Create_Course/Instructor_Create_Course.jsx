@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
 import Carousel from 'react-material-ui-carousel';
+import { useSelector } from 'react-redux';
 
 function Instructor_Create_Course(props) {
 
@@ -54,7 +55,7 @@ Main Banner START */}
                 </div>
                 {/* Button */}
                 <div className="d-flex align-items-center mt-2 mt-md-0">
-                 <NavLink to={`/admin/course/${insructorData._id}`} className="btn btn-success mb-0"><i className="bi bi-graph-up fa-fw me-2" />Create a course</NavLink>
+                 <NavLink to={`/admin/course/${insructorData?._id}`} className="btn btn-success mb-0"><i className="bi bi-graph-up fa-fw me-2" />Create a course</NavLink>
                   </div>
               </div>
             </div>
