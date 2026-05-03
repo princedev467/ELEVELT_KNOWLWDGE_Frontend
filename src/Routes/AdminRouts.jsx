@@ -47,6 +47,7 @@ function AdminRouts(props) {
           {/* <Route path='/category/:id' element={<CategoryPage />} ></Route> */}
           <Route path='/Section' element={<Section />} ></Route>
           <Route path='/course' element={<Course />} > </Route>
+           <Route path='/course/:id' element={<Course />} > </Route>
           <Route path='/quiz' element={<Quiz />} > </Route>
            <Route path='/content' element={<Content />} > </Route>
           {/* <Route path='/quizPage/:id' element={<QuizPage />} > </Route> */}

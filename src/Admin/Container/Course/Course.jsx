@@ -19,12 +19,17 @@ import { useActiveCourseMutation, useAddCourseMutation, useDeleteCourseMutation,
 import { IMAGE_URL } from '../../../utility/url';
 import SwitchBtn from '../../Component/SwitchBtn/SwitchBtn';
 import { userCheck } from '../../../Redux/slice/auth.slice';
+import { useParams } from 'react-router-dom';
 
 
 function Course() {
     const [open, setOpen] = useState(false);
     const [updatedata, setUpdateData] = useState({})
 
+
+    const {id} =useParams();
+    console.log(id);
+    
     const dispatch = useDispatch()
 
     const display = () => {
@@ -60,6 +65,10 @@ function Course() {
 
         setOpen(true);
     };
+
+
+
+    let filterCourse=data?.data?.filter((v)=>v?.Instructor_id=== id);
 
     const Categorydata = useSelector(state => state.category)
     console.log(Categorydata.category);
@@ -391,7 +400,7 @@ function Course() {
                 </Dialog>
                 <br /><br />
                 <DataGrid
-                    rows={data?.data}
+                    rows={filterCourse}
                     columns={columns}
                     initialState={{ pagination: { paginationModel } }}
                     pageSizeOptions={[5, 10]}
