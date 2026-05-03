@@ -18,159 +18,165 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCategory } from '../../../Redux/slice/CategorySlice';
 import { useAddSectionMutation, useDeleteSectionMutation, useGetSectionQuery, useUpdateSectionMutation } from '../../../Redux/Api/Section.Api';
 import { useGetCourseQuery } from '../../../Redux/Api/Course.Api';
+import { userCheck } from '../../../Redux/slice/auth.slice';
 
 
 
 function Section(props) {
 
-        const [open, setOpen] = useState(false);
-        const [updatedata, setUpdateData] = useState({})
+    const [open, setOpen] = useState(false);
+    const [updatedata, setUpdateData] = useState({})
 
-        const { data: course, error: courseerror, isLoading: corseLoading } = useGetCourseQuery(); //get Data
-        console.log("course", course);
+    const { data: course, error: courseerror, isLoading: corseLoading } = useGetCourseQuery(); //get Data
+    console.log("course", course);
 
-        const { data: section } = useGetSectionQuery();
-        console.log("section", section);
-
-
-        let SectionData = section?.data
-        const [addData] = useAddSectionMutation();
-
-        const [updateData] = useUpdateSectionMutation();
-
-        const [deleteData] = useDeleteSectionMutation();
-
-        // const dispatch = useDispatch()
-
-        // const display = () => {
-        //     dispatch(getSubCategory())
-        // }
-
-        // useEffect(() => {
-        //     display();
-
-        //     dispatch(getCategory())
-        // }, [])
-
-        console.log(SectionData);
-
-        const handleClickOpen = () => {
-            setOpen(true);
-        };
-
-        // const Categorydata = useSelector(state => state.category)
-
-        const catdrop = [{ value: '', label: '---Select Course--' }];
-
-        course?.data?.map((v) => (
-            catdrop.push({ value: v._id, label: v.name })
-
-        ));
-
-        let data
-        if (section?.data.length > 0) {
-            data = section?.data
-        }
-
-        console.log(catdrop);
-        
-        const handleClose = () => {
-            setOpen(false);
-        };
+    const { data: section } = useGetSectionQuery();
+    console.log("section", section);
 
 
+    let SectionData = section?.data
+    const [addData] = useAddSectionMutation();
 
-        const handledelete = async (id) => {
-            console.log(id);
+    const [updateData] = useUpdateSectionMutation();
 
-            deleteData(id);
-        }
+    const [deleteData] = useDeleteSectionMutation();
+
+    const dispatch = useDispatch()
+
+    const display = () => {
+        dispatch(userCheck())
+    }
+
+    useEffect(() => {
+        display();
 
 
-        const handleedit = (val) => {
+    }, [])
+
+    console.log(SectionData);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    // const Categorydata = useSelector(state => state.category)
+
+    const catdrop = [{ value: '', label: '---Select Course--' }];
+
+    course?.data?.map((v) => (
+        catdrop.push({ value: v._id, label: v.name })
+
+    ));
+
+    let data
+    if (section?.data.length > 0) {
+        data = section?.data
+    }
+
+    console.log(catdrop);
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
 
-            handleClickOpen();
 
-            setUpdateData(val);
-        }
+    const auth = useSelector(state => state.auth)
+    console.log("auth", auth);
 
-        const paginationModel = { pae: 0, pageSize: 5 };
-        const columns = [
-            {
-                field: 'course', headerName: 'course', width: 200, renderCell: (parem) => {
-                    const c = course?.data?.find((v) => v._id === parem.row.course);
+    const handledelete = async (id) => {
+        console.log(id);
 
-                    console.log(c);
+        deleteData(id);
+    }
 
-                    return c?.name
-                }
-            },
-            { field: 'name', headerName: 'Name', width: 130 },
-            { field: 'description', headerName: 'description', width: 200 },
-            
+
+    const handleedit = (val) => {
+
+
+        handleClickOpen();
+
+        setUpdateData(val);
+    }
+
+    const paginationModel = { pae: 0, pageSize: 5 };
+    const columns = [
+        {
+            field: 'course', headerName: 'course', width: 200, renderCell: (parem) => {
+                const c = course?.data?.find((v) => v._id === parem.row.course);
+
+                console.log(c);
+
+                return c?.name
+            }
+        },
+        { field: 'name', headerName: 'Name', width: 130 },
+        { field: 'description', headerName: 'description', width: 200 },
+
         { field: 'Instructor_id', headerName: 'Instructor_id', width: 260 },
 
 
-            {
-                headerName: 'Action', width: 170, renderCell: (parem) => (
-                    <Stack direction="row" spacing={1}>
-                        <IconButton onClick={() => handledelete(parem.row._id)}>
-                            <DeleteIcon style={{ color: 'red' }} />
-                        </IconButton>
-                        <IconButton onClick={() => handleedit(parem.row)} >
-                            <EditIcon style={{ color: 'orange' }} />
+        {
+            headerName: 'Action', width: 170, renderCell: (parem) => (
+                <Stack direction="row" spacing={1}>
+                    <IconButton onClick={() => handledelete(parem.row._id)}>
+                        <DeleteIcon style={{ color: 'red' }} />
+                    </IconButton>
+                    <IconButton onClick={() => handleedit(parem.row)} >
+                        <EditIcon style={{ color: 'orange' }} />
 
-                        </IconButton>
-                    </Stack>
-                )
-            },
-        ];
-
-
-
-        let subcategorySchema = object({
-            name: string()
-                // .matches(/^[A-Za-z]{2,30}$/, "name can only contain alphabet")
-                .required('name field is required'),
-            description: string()
-                // .matches(/^[A-Za-z]{2,90}$/, "Description can only contain alphabet")
-                .required('Description field is required'),
-            course: string().required('select is required'),
-        })
+                    </IconButton>
+                </Stack>
+            )
+        },
+    ];
 
 
-        const handlesubmit = async (val) => {
-            console.log("submit", val);
-            console.log('updatedata:', updatedata);
+
+    let subcategorySchema = object({
+        name: string()
+            // .matches(/^[A-Za-z]{2,30}$/, "name can only contain alphabet")
+            .required('name field is required'),
+        description: string()
+            // .matches(/^[A-Za-z]{2,90}$/, "Description can only contain alphabet")
+            .required('Description field is required'),
+        course: string().required('select is required'),
+    })
 
 
-            
-        const data = localStorage.getItem("user");
+    const handlesubmit = async (val) => {
+        console.log("submit", val);
+        console.log('updatedata:', updatedata);
 
-        let storeuser = null;
 
-        if (data) {
-            storeuser = JSON.parse(data);
-        }
 
-        let Instructor_id = storeuser?.role === 'Instructor' ? storeuser._id : null
+        // const data = localStorage.getItem("user");
+
+        // let storeuser = null;
+
+        // if (data) {
+        //     storeuser = JSON.parse(data);
+        // }
+
+        let Instructor_id = auth?.auth?.role === 'Instructor' ?  auth?.auth?._id : null
 
         console.log(Instructor_id);
-        
-            if (Object.keys(updatedata).length > 0) {
-            await updateData({ _id: updatedata._id,Instructor_id: Instructor_id , ...val })
+
+        if (Object.keys(updatedata).length > 0) {
+            await updateData({ _id: updatedata._id, Instructor_id: Instructor_id, ...val })
             setUpdateData({});
 
-            } else {
+        } else {
             await addData(val)
-                }
-
-
-
-
         }
+
+
+
+
+    }
     //  
+
+    let filterSection=SectionData?.filter((s)=>s.Instructor_id===auth?.auth?._id)
 
     return (
         <>
@@ -190,7 +196,7 @@ function Section(props) {
                                 Instructor_id: null,
 
                             }}
-                             enableReinitialize
+                            enableReinitialize
                             validationSchema={subcategorySchema}
                             onSubmit={(values, { resetForm }) => {
                                 console.log(values);
@@ -204,7 +210,7 @@ function Section(props) {
                             <Form id="subscription-form">
 
                                 <TextForm
-                                   type="select"
+                                    type="select"
                                     name='course'
                                     data={catdrop}
                                     label='course'
@@ -233,7 +239,7 @@ function Section(props) {
                 </Dialog>
                 <br /><br />
                 <DataGrid
-                    rows={SectionData}
+                    rows={filterSection}
                     columns={columns}
                     initialState={{ pagination: { paginationModel } }}
                     pageSizeOptions={[5, 10]}

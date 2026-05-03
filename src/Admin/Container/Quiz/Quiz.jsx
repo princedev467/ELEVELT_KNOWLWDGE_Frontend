@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGetCourseQuery } from '../../../Redux/Api/Course.Api';
 import { useGetSectionQuery } from '../../../Redux/Api/Section.Api';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack } from '@mui/material';
@@ -11,6 +11,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import { NavLink } from 'react-router-dom';
 import { useAddquizMutation, useDeletequizMutation, useGetquizQuery, useUpdatequizMutation } from '../../../Redux/Api/Quiz.Api';
 import { useGetquizContentQuery } from '../../../Redux/Api/QuizContent.Api';
+import { useDispatch, useSelector } from 'react-redux';
+import { userCheck } from '../../../Redux/slice/auth.slice';
 
 function Quiz(props) {
 
@@ -23,6 +25,12 @@ function Quiz(props) {
 
     console.log("courseid", courseid);
 
+    const dispatch = useDispatch();
+    //contentData
+    const display = () => {
+
+        dispatch(userCheck())
+    }
 
     const { data: course, error: courseerror, isLoading: corseLoading } = useGetCourseQuery(); //get Data
     console.log("course", course);
@@ -32,6 +40,14 @@ function Quiz(props) {
 
     const { data: quiz } = useGetquizQuery()
 
+
+    useEffect(() => {
+        display()
+    }, []);
+
+
+    const auth = useSelector(state => state.auth)
+    console.log("auth", auth);
 
     let SectionData = section?.data
 
@@ -245,6 +261,8 @@ function Quiz(props) {
 
 
     }
+
+    let filterQuiz = QuizData?.filter((q) => q.Instructor_id === auth?.auth?._id)
     return (
         <>
             <h1>Quiz</h1>

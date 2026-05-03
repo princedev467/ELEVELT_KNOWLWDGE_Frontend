@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGetCourseQuery } from '../../../Redux/Api/Course.Api';
 import { useGetSectionQuery } from '../../../Redux/Api/Section.Api';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack } from '@mui/material';
@@ -11,7 +11,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import { NavLink } from 'react-router-dom';
 import { useAddcontentMutation, useDeletecontentMutation, useGetcontentQuery, useUpdatecontentMutation } from '../../../Redux/Api/Content.Api';
 import FileUpload from '../../Component/FileUpload/FileUpload';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { userCheck } from '../../../Redux/slice/auth.slice';
 
 
 
@@ -21,11 +22,6 @@ function Content(props) {
     const [open, setOpen] = useState(false);
     const [updatedata, setUpdateData] = useState({});
     const [courseid, setCourseId] = useState('');
-
-
-    // const { setFieldValue } = useFormikContext();
-
-    // console.log("courseid", courseid);
 
 
     const { data: course, error: courseerror, isLoading: corseLoading } = useGetCourseQuery(); //get Data
@@ -47,8 +43,12 @@ function Content(props) {
 
     // let QuizData = quiz?.data
 
+    const dispatch=useDispatch();
     //contentData
-
+ const display = () => {
+       
+        dispatch(userCheck())
+    }
     const { data: content } = useGetcontentQuery();
     console.log(content);
 
@@ -60,6 +60,12 @@ function Content(props) {
 
     const [deleteData] = useDeletecontentMutation();
 
+
+     useEffect(() => {
+            display()
+        }, [])
+    
+    
 
     console.log(SectionData);
 
@@ -277,6 +283,9 @@ function Content(props) {
 
     }
 
+    let filterContent=ContentData?.filter((c)=>c?.Instructor_id=== auth?.auth?._id)
+    console.log(filterContent);
+    
     return (
         <>
             <h1>Content</h1>
@@ -368,7 +377,7 @@ function Content(props) {
                 </Dialog>
                 <br /><br />
                 <DataGrid
-                    rows={ContentData}
+                    rows={filterContent}
                     columns={columns}
                     initialState={{ pagination: { paginationModel } }}
                     pageSizeOptions={[5, 10]}
