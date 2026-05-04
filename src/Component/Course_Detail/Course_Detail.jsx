@@ -1368,7 +1368,17 @@ Page content START */}
                   {/* Video START */}
                   <div className="card shadow p-2 mb-4 z-index-9">
                     <div className="overflow-hidden rounded-3">
-                      <img src="assets/images/courses/4by3/01.jpg" className="card-img" alt="course image" />
+                       {filterCourseData?.map((v) => (
+                            <Carousel indicators={false}>
+                              {
+                                   v.course_img?.map(v=> (
+                                      <img src={v.url} className="card-img-top" alt="course image" />
+                      
+                                   ))
+                              }
+                            </Carousel>                           )
+                           )}
+                      {/* <img src="assets/images/courses/4by3/01.jpg" className="card-img" alt="course image" /> */}
                       {/* Overlay */}
                       <div className="bg-overlay bg-dark opacity-6" />
                       <div className="card-img-overlay d-flex align-items-start flex-column p-3">
@@ -1412,7 +1422,7 @@ Page content START */}
                       </div>
                       {/* Buttons */}
                       <div className="mt-3 d-sm-flex justify-content-sm-between">
-                        <a href="#" className="btn btn-outline-primary mb-0">Free trial</a>
+                        <a href="#" className="btn btn-outline-primary mb-0"   >Add To Cart</a>
                         <a href="#" className="btn btn-success mb-0">Buy course</a>
                       </div>
                     </div>
@@ -1550,8 +1560,11 @@ Listed courses START */}
                       <div className="card p-2 border">
                         <div className="rounded-top overflow-hidden">
                           <div className="card-overlay-hover">
-                            <img src="assets/images/courses/4by3/17.jpg" className="card-img-top" alt="course image" />
-                          </div>
+                           
+                           
+                      
+                          
+                              </div>
                           {/* Hover element */}
                           <div className="card-img-overlay">
                             <div className="card-element-hover d-flex justify-content-end">

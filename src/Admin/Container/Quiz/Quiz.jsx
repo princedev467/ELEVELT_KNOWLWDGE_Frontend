@@ -349,7 +349,7 @@ function Quiz(props) {
                 </Dialog>
                 <br /><br />
                 <DataGrid
-                    rows={QuizData}
+                    rows={filterQuiz}
                     columns={columns}
                     initialState={{ pagination: { paginationModel } }}
                     pageSizeOptions={[5, 10]}
