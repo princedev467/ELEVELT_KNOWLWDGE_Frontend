@@ -64,7 +64,7 @@ function Course_Detail(props) {
 
   const [addData] = useAddCartMutation();
   const [updateData]=useUpdateCartMutation();
-  
+
 
   let filterCourseData
 
@@ -128,10 +128,18 @@ function Course_Detail(props) {
 
     console.log(ItemsData);
 
-    addData({
+    if(cartUser){
+      updateData({
+        user_id: auth.auth._id,
+      items: ItemsData
+      })
+    }else{
+       addData({
       user_id: auth.auth._id,
       items: ItemsData
     });
+    }
+   
 
 
 
