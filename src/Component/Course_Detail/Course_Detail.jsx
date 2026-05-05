@@ -130,6 +130,7 @@ function Course_Detail(props) {
 
     if (cartUser) {
       updateData({
+        _id:cartUser._id,
         user_id: auth.auth._id,
         items: ItemsData
       })
