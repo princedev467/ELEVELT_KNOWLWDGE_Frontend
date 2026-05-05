@@ -5,7 +5,7 @@ import { BASE_URL } from '../../utility/url'
 // Define a service using a base URL and expected endpoints
 export const sectionApi = createApi({
   reducerPath: 'sectionApi',
-  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL, credentials: 'include' }),
   endpoints: (builder) => ({
     getSection: builder.query({
       query: () => 'section/getAllSection',
@@ -35,15 +35,6 @@ export const sectionApi = createApi({
       }),
       invalidatesTags: ['section']
     }),
-    // ActiveCourse: builder.mutation({
-    //   query: (data) => ({
-    //     url: `section/activeCourses/${data._id}`,
-    //     method: 'PUT',
-    //     body: data
-    //   }),
-    //   // invalidatesTags:['course']
-    // }),
-
   })
 })
 

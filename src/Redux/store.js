@@ -8,7 +8,7 @@ import { sectionApi } from "./Api/Section.Api"
 import { quizApi } from "./Api/Quiz.Api"
 import { quizContentApi } from "./Api/QuizContent.Api"
 import { contentApi } from "./Api/Content.Api"
-
+import { cartApi } from "./Api/Cart.Api"
 
 
 export const confistore=()=>{
@@ -24,10 +24,10 @@ export const confistore=()=>{
             [quizApi.reducerPath]: quizApi.reducer,
             [quizContentApi.reducerPath]: quizContentApi.reducer,
              [contentApi.reducerPath]: contentApi.reducer,
-          
+          [cartApi.reducerPath]:cartApi.reducer,
         },
         middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat([courseApi.middleware,sectionApi.middleware,quizApi.middleware,quizContentApi.middleware,contentApi.middleware]),
+    getDefaultMiddleware().concat([courseApi.middleware,sectionApi.middleware,quizApi.middleware,quizContentApi.middleware,contentApi.middleware,cartApi.middleware]),
     })
 
     return store

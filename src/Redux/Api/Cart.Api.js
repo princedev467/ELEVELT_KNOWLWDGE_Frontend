@@ -3,41 +3,41 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { BASE_URL } from '../../utility/url'
 
 // Define a service using a base URL and expected endpoints
-export const quizApi = createApi({
-  reducerPath: 'quizApi',
+export const cartApi = createApi({
+  reducerPath: 'cartApi',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL, credentials: 'include' }),
   endpoints: (builder) => ({
-    getquiz: builder.query({
-      query: () => 'quiz/getAllquiz',
-      providesTags: ['quiz']
+    getCart: builder.query({
+      query: () => 'cart/getAllcart',
+      providesTags: ['cart']
     }),
-    addquiz: builder.mutation({
+    addCart: builder.mutation({
       query: (data) => ({
-        url: 'quiz/addquiz',
+        url: 'cart/addcart',
         method: 'POST',
         body: data
       }),
-      invalidatesTags:['quiz']    
+      invalidatesTags:['cart']    
     }),
-    updatequiz: builder.mutation({
+    updateCart: builder.mutation({
       query: (data) => ({
-        url: `quiz/updatequiz/${data._id}`,
+        url: `cart/updatecart/${data._id}`,
         method: 'PUT',
         body: data
       }),
-      invalidatesTags:['quiz']
+      invalidatesTags:['cart']
     }),
-    deletequiz: builder.mutation({
+    deleteCart: builder.mutation({
       query: (id) => ({
-        url: `quiz/deletequiz/${id}`,
+        url: `cart/deletecart/${id}`,
         method: 'DELETE',
         body: id
       }),
-      invalidatesTags: ['quiz']
+      invalidatesTags: ['cart']
     }),
-   
+ 
   })
 })
 
 
-export const {useGetquizQuery,useAddquizMutation,useUpdatequizMutation,useDeletequizMutation} = quizApi
+export const {useGetCartQuery,useAddCartMutation,useUpdateCartMutation,useDeleteCartMutation} = cartApi

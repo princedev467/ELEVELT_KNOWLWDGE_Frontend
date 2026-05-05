@@ -5,7 +5,7 @@ import { BASE_URL } from '../../utility/url'
 // Define a service using a base URL and expected endpoints
 export const contentApi = createApi({
   reducerPath: 'contentApi',
-  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL, credentials: 'include' }),
   endpoints: (builder) => ({
     getcontent: builder.query({
       query: () => 'content/getAllContent',

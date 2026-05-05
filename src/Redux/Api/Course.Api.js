@@ -5,7 +5,7 @@ import { BASE_URL } from '../../utility/url'
 // Define a service using a base URL and expected endpoints
 export const courseApi = createApi({
   reducerPath: 'courseApi',
-  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL, credentials: 'include' }),
   endpoints: (builder) => ({
     getCourse: builder.query({
       query: () => 'course/getAllCourse',

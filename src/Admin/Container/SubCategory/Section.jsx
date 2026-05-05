@@ -27,23 +27,7 @@ function Section(props) {
     const [open, setOpen] = useState(false);
     const [updatedata, setUpdateData] = useState({})
 
-    const { data: course, error: courseerror, isLoading: corseLoading } = useGetCourseQuery(); //get Data
-    console.log("course", course);
-
-    const { data: section } = useGetSectionQuery();
-    console.log("section", section);
-
-
-    let SectionData = section?.data
-    const [addData] = useAddSectionMutation();
-
-    const [updateData] = useUpdateSectionMutation();
-
-    const [deleteData] = useDeleteSectionMutation();
-
-    const dispatch = useDispatch()
-
-    const display = () => {
+     const display = () => {
         dispatch(userCheck())
     }
 
@@ -53,7 +37,27 @@ function Section(props) {
 
     }, [])
 
-    console.log(SectionData);
+    const { data: course } = useGetCourseQuery(); //get Data
+    console.log("course", course);
+
+    const { data: section } = useGetSectionQuery();
+    console.log("section", section);
+
+
+    // let SectionData = section?.data
+    // console.log(SectionData);
+    
+    const [addData] = useAddSectionMutation();
+
+    const [updateData] = useUpdateSectionMutation();
+
+    const [deleteData] = useDeleteSectionMutation();
+
+    const dispatch = useDispatch()
+
+   
+
+    // console.log(data);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -68,10 +72,11 @@ function Section(props) {
 
     ));
 
-    let data
-    if (section?.data.length > 0) {
-        data = section?.data
-    }
+    // let data
+
+    // if (section?.data.length > 0) {
+    //     data = section?.data
+    // }
 
     console.log(catdrop);
 
@@ -167,7 +172,7 @@ function Section(props) {
             setUpdateData({});
 
         } else {
-            await addData(val)
+            await addData({...val,Instructor_id: Instructor_id})
         }
 
 
@@ -176,8 +181,10 @@ function Section(props) {
     }
     //  
 
-    let filterSection=SectionData?.filter((s)=>s.Instructor_id===auth?.auth?._id)
+    let filterSection=section?.data?.filter((s)=>s.Instructor_id===auth?.auth?._id)
 
+    console.log(filterSection);
+    
     return (
         <>
             <h1>Section</h1>

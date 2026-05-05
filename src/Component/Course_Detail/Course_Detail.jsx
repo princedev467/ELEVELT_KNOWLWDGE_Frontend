@@ -12,6 +12,8 @@ import { ThemeContext } from '../../context/theme.context';
 import { useGetSectionQuery } from '../../Redux/Api/Section.Api';
 import { useGetquizQuery } from '../../Redux/Api/Quiz.Api';
 import { useGetcontentQuery } from '../../Redux/Api/Content.Api';
+import { useAddCartMutation, useGetCartQuery, useUpdateCartMutation } from '../../Redux/Api/Cart.Api';
+import { useSelector } from 'react-redux';
 
 function Course_Detail(props) {
   const themeData = useContext(ThemeContext);
@@ -21,6 +23,11 @@ function Course_Detail(props) {
   const [quizid, setQuizid] = useState(null)
 
   console.log(quizid);
+
+
+  //auth
+  const auth = useSelector(state => state.auth);
+  console.log(auth);
 
   let isDark = themeData.theme === 'light'
   const { id } = useParams();
@@ -50,13 +57,22 @@ function Course_Detail(props) {
   console.log(quiz);
 
 
+  //cart
+  const { data: cart } = useGetCartQuery()
+  console.log(cart?.data);
+  let cartData = cart?.data
+
+  const [addData] = useAddCartMutation();
+  const [updateData]=useUpdateCartMutation();
+  
+
   let filterCourseData
 
 
   let filterSectionData
   if (id) {
-    filterCourseData = course?.filter((v) => v._id === id);
-    filterSectionData = section?.filter((v) => v.course === id)
+    filterCourseData = course?.filter((v) => v?._id === id);
+    filterSectionData = section?.filter((v) => v?.course === id)
 
   } else {
     filterCourseData = course
@@ -75,13 +91,51 @@ function Course_Detail(props) {
 
   }
 
-  // console.log(filterQuizData);
-
-
-
+  // console.log(filterQuizData)
 
   console.log("filterSectionData", filterSectionData);
 
+
+  const handleCart = (val) => {
+    console.log(val);
+
+
+    if (!auth?.auth?._id) {
+      console.log("user not logged");
+
+    }
+
+
+    let cartUser = cartData?.find((v) => v.user_id === auth.auth._id)
+
+    console.log(cartUser);
+
+
+    let existData = cartUser?.items?.some((v) => v.course === val._id);
+
+    if (existData) {
+      console.log("you data already exist in cart");
+
+    }
+
+    const ItemsData = [...(cartUser?.items || [])];
+
+
+    ItemsData.push({
+      course: val._id,
+      price: val.price,
+    });
+
+    console.log(ItemsData);
+
+    addData({
+      user_id: auth.auth._id,
+      items: ItemsData
+    });
+
+
+
+  }
   return (
     <main>
       {/* =======================
@@ -205,7 +259,7 @@ Page content START */}
                         Chatbot</li>
                       <li className="list-group-item h6 fw-light d-flex mb-0"><i className="fas fa-check-circle text-success me-2" />Search engine
                         optimization tools</li>
-                   
+
                       <li className="list-group-item h6 fw-light d-flex mb-0"><i className="fas fa-check-circle text-success me-2" />Why SEO</li>
                       <li className="list-group-item h6 fw-light d-flex mb-0"><i className="fas fa-check-circle text-success me-2" />URL Structure</li>
                       <li className="list-group-item h6 fw-light d-flex mb-0"><i className="fas fa-check-circle text-success me-2" />Featured Snippet</li>
@@ -230,10 +284,10 @@ Page content START */}
 
                         filterSectionData?.map((v, i) => {
 
-                          let contentFilter = content?.data?.filter((c) => c.section === v._id).sort((a,b)=>a.order-b.order);
+                          let contentFilter = content?.data?.filter((c) => c.section === v._id).sort((a, b) => a.order - b.order);
                           console.log(contentFilter);
 
-                          
+
                           return (
                             <div className="accordion-item mb-3">
                               {/*  */}
@@ -1362,71 +1416,81 @@ Page content START */}
             </div>
             {/* Main content END */}
             {/* Right sidebar START */}
+
             <div className="col-lg-4 pt-5 pt-lg-0">
+
               <div className="row mb-5 mb-lg-0">
+
+
                 <div className="col-md-6 col-lg-12">
                   {/* Video START */}
-                  <div className="card shadow p-2 mb-4 z-index-9">
-                    <div className="overflow-hidden rounded-3">
-                       {filterCourseData?.map((v) => (
-                            <Carousel indicators={false}>
-                              {
-                                   v.course_img?.map(v=> (
-                                      <img src={v.url} className="card-img-top" alt="course image" />
-                      
-                                   ))
-                              }
-                            </Carousel>                           )
-                           )}
-                      {/* <img src="assets/images/courses/4by3/01.jpg" className="card-img" alt="course image" /> */}
-                      {/* Overlay */}
-                      <div className="bg-overlay bg-dark opacity-6" />
-                      <div className="card-img-overlay d-flex align-items-start flex-column p-3">
-                        {/* Video button and link */}
-                        <div className="m-auto">
-                          <a href="https://www.youtube.com/embed/tXHviS-4ygo" className="btn btn-lg text-danger btn-round btn-white-shadow mb-0" data-glightbox data-gallery="course-video">
-                            <i className="fas fa-play" />
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    {/* Card body */}
-                    <div className="card-body px-3">
-                      {/* Info */}
-                      <div className="d-flex justify-content-between align-items-center">
-                        {/* Price and time */}
-                        <div>
-                          <div className="d-flex align-items-center">
-                            <h3 className="fw-bold mb-0 me-2">$150</h3>
-                            <span className="text-decoration-line-through mb-0 me-2">$350</span>
-                            <span className="badge bg-orange text-white mb-0">60% off</span>
+                  {filterCourseData?.map((v) => (
+                    <div className="card shadow p-2 mb-4 z-index-9">
+
+                      <div className="overflow-hidden rounded-3">
+
+                        <Carousel indicators={false}>
+                          {
+                            v.course_img?.map(v => (
+                              <img src={v.url} className="card-img-top" alt="course image" />
+
+                            ))
+                          }
+                        </Carousel>                           )
+
+                        {/* <img src="assets/images/courses/4by3/01.jpg" className="card-img" alt="course image" /> */}
+                        {/* Overlay */}
+                        <div className="bg-overlay bg-dark opacity-6" />
+                        <div className="card-img-overlay d-flex align-items-start flex-column p-3">
+                          {/* Video button and link */}
+                          <div className="m-auto">
+                            <a href="https://www.youtube.com/embed/tXHviS-4ygo" className="btn btn-lg text-danger btn-round btn-white-shadow mb-0" data-glightbox data-gallery="course-video">
+                              <i className="fas fa-play" />
+                            </a>
                           </div>
-                          <p className="mb-0 text-danger"><i className="fas fa-stopwatch me-2" />5 days
-                            left at this price</p>
-                        </div>
-                        {/* Share button with dropdown */}
-                        <div className="dropdown">
-                          {/* Share button */}
-                          <a href="#" className="btn btn-sm btn-light rounded small" role="button" id="dropdownShare" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i className="fas fa-fw fa-share-alt" />
-                          </a>
-                          {/* dropdown button */}
-                          <ul className="dropdown-menu dropdown-w-sm dropdown-menu-end min-w-auto shadow rounded" aria-labelledby="dropdownShare">
-                            <li><a className="dropdown-item" href="#"><i className="fab fa-twitter-square me-2" />Twitter</a></li>
-                            <li><a className="dropdown-item" href="#"><i className="fab fa-facebook-square me-2" />Facebook</a>
-                            </li>
-                            <li><a className="dropdown-item" href="#"><i className="fab fa-linkedin me-2" />LinkedIn</a></li>
-                            <li><a className="dropdown-item" href="#"><i className="fas fa-copy me-2" />Copy link</a></li>
-                          </ul>
                         </div>
                       </div>
-                      {/* Buttons */}
-                      <div className="mt-3 d-sm-flex justify-content-sm-between">
-                        <a href="#" className="btn btn-outline-primary mb-0"   >Add To Cart</a>
-                        <a href="#" className="btn btn-success mb-0">Buy course</a>
+
+                      {/* Card body */}
+
+                      <div className="card-body px-3">
+                        {/* Info */}
+                        <div className="d-flex justify-content-between align-items-center">
+                          {/* Price and time */}
+                          <div>
+                            <div className="d-flex align-items-center">
+                              <h3 className="fw-bold mb-0 me-2">$150</h3>
+                              <span className="text-decoration-line-through mb-0 me-2">$350</span>
+                              <span className="badge bg-orange text-white mb-0">60% off</span>
+                            </div>
+                            <p className="mb-0 text-danger"><i className="fas fa-stopwatch me-2" />5 days
+                              left at this price</p>
+                          </div>
+                          {/* Share button with dropdown */}
+                          <div className="dropdown">
+                            {/* Share button */}
+                            <a href="#" className="btn btn-sm btn-light rounded small" role="button" id="dropdownShare" data-bs-toggle="dropdown" aria-expanded="false">
+                              <i className="fas fa-fw fa-share-alt" />
+                            </a>
+                            {/* dropdown button */}
+                            <ul className="dropdown-menu dropdown-w-sm dropdown-menu-end min-w-auto shadow rounded" aria-labelledby="dropdownShare">
+                              <li><a className="dropdown-item" href="#"><i className="fab fa-twitter-square me-2" />Twitter</a></li>
+                              <li><a className="dropdown-item" href="#"><i className="fab fa-facebook-square me-2" />Facebook</a>
+                              </li>
+                              <li><a className="dropdown-item" href="#"><i className="fab fa-linkedin me-2" />LinkedIn</a></li>
+                              <li><a className="dropdown-item" href="#"><i className="fas fa-copy me-2" />Copy link</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                        {/* Buttons */}
+                        <div className="mt-3 d-sm-flex justify-content-sm-between">
+                          <a href="#" className="btn btn-outline-primary mb-0" onClick={() => handleCart(v)}>Add To Cart</a>
+                          <a href="#" className="btn btn-success mb-0">Buy course</a>
+                        </div>
                       </div>
+
                     </div>
-                  </div>
+                  ))}
                   {/* Video END */}
                   {/* Course info START */}
                   <div className="card card-body shadow p-4 mb-4">
@@ -1560,11 +1624,11 @@ Listed courses START */}
                       <div className="card p-2 border">
                         <div className="rounded-top overflow-hidden">
                           <div className="card-overlay-hover">
-                           
-                           
-                      
-                          
-                              </div>
+
+
+
+
+                          </div>
                           {/* Hover element */}
                           <div className="card-img-overlay">
                             <div className="card-element-hover d-flex justify-content-end">

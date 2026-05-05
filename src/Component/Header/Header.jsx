@@ -511,6 +511,9 @@ function Header(props) {
               <li><a className="dropdown-item" href="#"><i className="bi bi-person fa-fw me-2" />Edit Profile</a></li>
               <li><a className="dropdown-item" href="#"><i className="bi bi-gear fa-fw me-2" />Account Settings</a></li>
               <li><a className="dropdown-item" href="#"><i className="bi bi-info-circle fa-fw me-2" />Help</a></li>
+                 {/* <li><a className="dropdown-item" href="#"><i className="bi bi-cart fa-fw me-2" />Cart </a></li> */}
+                  <li><NavLink className="dropdown-item" to={'/Cart'}><i className="bi bi-cart fa-fw me-2" />Cart </NavLink></li>
+           
               {
                 auth.auth ?
                   <li><a href='#' className={`${themeData.theme==='light'?'profile':''} dropdown-item bg-danger-soft-hover`} onClick={() => dispatch(userLogout(auth.auth._id))}><i className="bi bi-box-arrow-right" />    Sign Out</a></li> :
