@@ -66,3 +66,12 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* Custom Header Dark Mode Styles */
+.header-dark-mode .navbar-nav > li > .nav-link {
+  color: #ffffff !important;
+}
+
+.header-dark-mode .navbar-nav > li > .nav-link:hover {
+  color: #e9ecef !important;
+}

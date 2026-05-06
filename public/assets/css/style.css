@@ -22517,9 +22517,9 @@ li
   color: white !important;
 }
 
-.light h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1{
+/* .light h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1{
   color: #24292d !important;
-}
+} */
 .dark  .bg-body h1 , h2 , h3 , h4 , h5 , h6{
   color: white !important;
 }

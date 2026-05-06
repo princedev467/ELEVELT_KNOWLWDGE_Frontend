@@ -19,7 +19,7 @@ function Header(props) {
   const themeData = useContext(ThemeContext);
   console.log(themeData);
 
-     let isDark=themeData.theme==='light'
+  let isDark = themeData.theme === 'light'
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
@@ -28,7 +28,7 @@ function Header(props) {
   };
 
   console.log(themeData);
-  
+
   const Categorydata = useSelector(state => state.category)
   console.log(Categorydata.category);
 
@@ -42,8 +42,8 @@ function Header(props) {
   const auth = useSelector(state => state.auth)
   console.log(auth.auth);
 
-   localStorage.setItem("user", JSON.stringify(auth.auth));
-          
+  localStorage.setItem("user", JSON.stringify(auth.auth));
+
   const alert = useSelector(state => state.alert)
   console.log("alert:", alert);
 
@@ -52,15 +52,15 @@ function Header(props) {
   console.log(firstcategory);
 
   return (
-    <header className=" navbar-sticky header-static">
+    <header className={`navbar-sticky header-static ${isDark ? 'header-dark-mode' : ''}`}>
       {/* Logo Nav START */}
       <nav className="navbar navbar-expand-xl">
         <div className="container-fluid px-3 px-xl-5">
           {/* Logo START */}
-          <a className="navbar-brand" href="index.html">
+          <NavLink className="navbar-brand" to={'/'}>
             <img className="light-mode-item navbar-brand-item" src={logo} alt="logo" />
             <img className="dark-mode-item navbar-brand-item" src="assets/images/logo-light.svg" alt="logo" />
-          </a>
+          </NavLink>
           {/* Logo END */}
           {/* Responsive navbar toggler */}
           <button className="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,14 +76,14 @@ function Header(props) {
             <ul className="navbar-nav navbar-nav-scroll me-auto">
               {/* Nav item 1 Demos */}
               <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle active" href="#" id="categoryMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="bi bi-ui-radios-grid me-2" /><span>Category</span></a>
+                <a className="nav-link dropdown-toggle active flex" href="#" id="categoryMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="bi bi-ui-radios-grid me-2" /><span>Explore</span></a>
                 <ul className=" dropdown-menu" aria-labelledby="categoryMenu">
                   {
                     firstcategory?.map((v) => {
                       let secondCat = Categorydata.category.filter((v1) => v1.parent_category_id === v._id)
                       return (
                         <li className={secondCat.length > 0 ? "dropdown-submenu dropend" : ''}>
-                          <a className={secondCat.length > 0 ? "dropdown-item dropdown-toggle" : "dropdown-item"} href="#"> <NavLink className="nav-link" to={secondCat.length > 0 ? `/category/${v._id}` : `/course/${v._id}`}>{v.name}</NavLink></a>
+                          <NavLink className={secondCat.length > 0 ? "dropdown-item dropdown-toggle " : "dropdown-item"} to={secondCat.length > 0 ? `/category/${v._id}` : `/course/${v._id}`}>{v.name}</NavLink>
                           {/* Sub Category List */}
                           {
                             secondCat && (
@@ -92,14 +92,14 @@ function Header(props) {
                                   let thirdCat = Categorydata.category.filter((v4) => v4.parent_category_id === v3._id)
                                   return (
                                     <li className={thirdCat.length > 0 ? "dropdown-submenu dropend" : ''}>
-                                      <a className={thirdCat.length > 0 ? "dropdown-item dropdown-toggle" : "dropdown-item"} ><NavLink className="nav-link" to={thirdCat.length > 0 ? `/category/${v3._id}` : `/course/${v3._id}`}>{v3.name}</NavLink></a>
+                                      <NavLink className={thirdCat.length > 0 ? "dropdown-item dropdown-toggle" : "dropdown-item"} to={thirdCat.length > 0 ? `/category/${v3._id}` : `/course/${v3._id}`}>{v3.name}</NavLink>
                                       {
                                         thirdCat && (
                                           <ul className="dropdown-menu" data-bs-popper="none">
                                             {
                                               thirdCat.map((v5) => (
                                                 <li>
-                                                  <a className="dropdown-item"  ><NavLink className="nav-link" to={ `/course/${v5._id}`}>{v5.name}</NavLink></a>
+                                                  <NavLink className="dropdown-item" to={`/course/${v5._id}`}>{v5.name}</NavLink>
                                                 </li>
                                               )
                                               )
@@ -133,10 +133,17 @@ function Header(props) {
             {/* Nav Main menu START */}
             <ul className="navbar-nav navbar-nav-scroll me-auto">
               <li>
-                <NavLink className="nav-link" to={'/about'}>  About</NavLink>
+                <NavLink className="nav-link" to={'/about'}>About Us</NavLink>
               </li>
+
+              <li> <NavLink className="nav-link" to={'/course'}>Course</NavLink></li>
+
+              <li><NavLink className="nav-link" to={'/Pricing'}>Pricing</NavLink></li>
+              <li>  <NavLink className="nav-link" to={'/Contact_us'}>Contact Us</NavLink></li>
+
+
               {/* Nav item 1 Demos */}
-              <li className="nav-item dropdown">
+              {/* <li className="nav-item dropdown">
                 <a className="nav-link dropdown-toggle active" href="#" id="demoMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Demos</a>
                 <ul className="dropdown-menu" aria-labelledby="demoMenu">
                   <li> <a className="dropdown-item active" href="index.html">Home Default</a></li>
@@ -164,7 +171,7 @@ function Header(props) {
                     <a className="dropdown-item dropdown-toggle" href="#">Dropdown levels</a>
                     <ul className="dropdown-menu dropdown-menu-start" data-bs-popper="none">
                       {/* dropdown submenu open right */}
-                      <li className="dropdown-submenu dropend">
+              {/* <li className="dropdown-submenu dropend">
                         <a className="dropdown-item dropdown-toggle" href="#">Dropdown (end)</a>
                         <ul className="dropdown-menu" data-bs-popper="none">
                           <li> <a className="dropdown-item" href="#">Dropdown item</a> </li>
@@ -172,10 +179,10 @@ function Header(props) {
                             <a className="dropdown-item" href="#">Dropdown item</a> </li>
                         </ul>
                       </li>
-                      <li> <a className="dropdown-item" href="#">Dropdown item</a> </li>
-                      {/* dropdown submenu open left */}
-                      <li className="dropdown-submenu dropstart">
-                        <a className="dropdown-item dropdown-toggle" href="#">Dropdown (start)</a>
+                      <li> <a className="dropdown-item" href="#">Dropdown item</a> </li> */}
+              {/* dropdown submenu open left */}
+              {/* <li className="dropdown-submenu dropstart"> */}
+              {/* <a className="dropdown-item dropdown-toggle" href="#">Dropdown (start)</a>
                         <ul className="dropdown-menu dropdown-menu-end" data-bs-popper="none">
                           <li> <a className="dropdown-item" href="#">Dropdown item</a> </li>
                           <li> <a className="dropdown-item" href="#">Dropdown item</a> </li>
@@ -184,13 +191,13 @@ function Header(props) {
                       <li> <a className="dropdown-item" href="#">Dropdown item</a> </li>
                     </ul>
                   </li>
-                </ul>
-              </li>
+                </ul> */}
+              {/* </li> */}
               {/* Nav item 2 Pages */}
-              <li className="nav-item dropdown">
+              {/* <li className="nav-item dropdown">
                 <a className="nav-link dropdown-toggle" href="#" id="pagesMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
                 <ul className="dropdown-menu" aria-labelledby="pagesMenu">
-                  {/* Dropdown submenu */}
+                  Dropdown submenu
                   <li className="dropdown-submenu dropend">
                     <a className="dropdown-item dropdown-toggle" href="#">Course</a>
                       
@@ -216,7 +223,7 @@ function Header(props) {
 
                     </ul>
                   </li>
-                  {/* Dropdown submenu */}
+                  Dropdown submenu
                   <li className="dropdown-submenu dropend">
                     <a className="dropdown-item dropdown-toggle" href="#">About</a>
                     <ul className="dropdown-menu dropdown-menu-start" data-bs-popper="none">
@@ -235,7 +242,7 @@ function Header(props) {
                   <li><NavLink className="dropdown-item" to={'/Instructor_List'}>Instructor List</NavLink></li>
                   <li><NavLink className="dropdown-item" to={'/Instructor_Single'}>Instructor Single</NavLink></li>
                   <li>  <NavLink className="dropdown-item" to={'/Become_Instructor'}>Become an Instructor</NavLink></li>
-                  {/* Dropdown submenu */}
+                  Dropdown submenu
                   <li className="dropdown-submenu dropend">
                     <a className="dropdown-item dropdown-toggle" href="#">Authentication</a>
                     <ul className="dropdown-menu dropdown-menu-start" data-bs-popper="none">
@@ -267,12 +274,12 @@ function Header(props) {
 
 
                 </ul>
-              </li>
+              </li> */}
               {/* Nav item 3 Account */}
-              <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="#" id="accounntMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Accounts</a>
-                <ul className="dropdown-menu" aria-labelledby="accounntMenu">
-                  {/* Dropdown submenu */}
+              {/* <li className="nav-item dropdown"> */}
+              {/* <a className="nav-link dropdown-toggle" href="#" id="accounntMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Accounts</a> */}
+              {/* <ul className="dropdown-menu" aria-labelledby="accounntMenu">
+                  Dropdown submenu
                   <li className="dropdown-submenu dropend">
                     <a className="dropdown-item dropdown-toggle" href="#"><i className="fas fa-user-tie fa-fw me-1" />Instructor</a>
                     <ul className="dropdown-menu dropdown-menu-start" data-bs-popper="none">
@@ -302,7 +309,7 @@ function Header(props) {
 
                     </ul>
                   </li>
-                  {/* Dropdown submenu */}
+                  Dropdown submenu
                   <li className="dropdown-submenu dropend">
                     <a className="dropdown-item dropdown-toggle" href="#"><i className="fas fa-user-graduate fa-fw me-1" />Student</a>
                     <ul className="dropdown-menu dropdown-menu-start" data-bs-popper="none">
@@ -322,14 +329,14 @@ function Header(props) {
                   <li> <a className="dropdown-item" href="instructor-edit-profile.html"><i className="fas fa-fw fa-edit me-1" />Edit Profile</a> </li>
                   <li> <a className="dropdown-item" href="instructor-setting.html"><i className="fas fa-fw fa-cog me-1" />Settings</a> </li>
                   <li> <a className="dropdown-item" href="instructor-delete-account.html"><i className="fas fa-fw fa-trash-alt me-1" />Delete Profile</a> </li>
-                </ul>
-              </li>
+                </ul> */}
+              {/* </li> */}
               {/* Nav item 4 Megamenu*/}
-              <li className="nav-item dropdown dropdown-fullwidth">
+              {/* <li className="nav-item dropdown dropdown-fullwidth">
                 <a className="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Megamenu</a>
                 <div className="dropdown-menu dropdown-menu-end pb-0" data-bs-popper="none">
                   <div className="row p-4 g-4">
-                    {/* Dropdown column item */}
+                    Dropdown column item
                     <div className="col-xl-6 col-xxl-3">
                       <h6 className="mb-0">Get started</h6>
                       <hr />
@@ -347,31 +354,31 @@ function Header(props) {
                         <li> <a className="dropdown-item" href="#">Business marketing</a> </li>
                       </ul>
                     </div>
-                    {/* Dropdown column item */}
+                    Dropdown column item
                     <div className="col-xl-6 col-xxl-3">
                       <h6 className="mb-0">Degree</h6>
                       <hr />
-                      {/* Dropdown item */}
+                      Dropdown item
                       <div className="mb-2 position-relative bg-primary-soft-hover rounded-2 transition-base p-3">
                         <a className="stretched-link h6 mb-0" href="#">Contact management</a>
                         <p className="mb-0 small text-truncate-2">Speedily say has suitable disposal add boy. On forth doubt miles of child.</p>
                       </div>
-                      {/* Dropdown item */}
+                      Dropdown item
                       <div className="mb-2 position-relative bg-primary-soft-hover rounded-2 transition-base p-3">
                         <a className="stretched-link h6 mb-0" href="#">Sales pipeline</a>
                         <p className="mb-0 small text-truncate-2">Speedily say has suitable disposal add boy. On forth doubt miles of child.</p>
                       </div>
-                      {/* Dropdown item */}
+                      Dropdown item
                       <div className="mb-2 position-relative bg-primary-soft-hover rounded-2 transition-base p-3">
                         <a className="stretched-link h6 mb-0" href="#">Security &amp; Permission</a>
                         <p className="mb-0 small text-truncate-2">Speedily say has suitable disposal add boy. On forth doubt miles of child.</p>
                       </div>
                     </div>
-                    {/* Dropdown column item */}
+                    Dropdown column item
                     <div className="col-xl-6 col-xxl-3">
                       <h6 className="mb-0">Certificate</h6>
                       <hr />
-                      {/* Dropdown item */}
+                      Dropdown item
                       <div className="d-flex mb-4 position-relative">
                         <h2 className="mb-0"><i className="fab fa-fw fa-google text-google-icon" /></h2>
                         <div className="ms-2">
@@ -379,7 +386,7 @@ function Header(props) {
                           <p className="mb-0 small">No prerequisites</p>
                         </div>
                       </div>
-                      {/* Dropdown item */}
+                      Dropdown item
                       <div className="d-flex mb-4 position-relative">
                         <h2 className="mb-0"><i className="fab fa-fw fa-linkedin-in text-linkedin" /></h2>
                         <div className="ms-2">
@@ -387,7 +394,7 @@ function Header(props) {
                           <p className="mb-0 small">No prerequisites</p>
                         </div>
                       </div>
-                      {/* Dropdown item */}
+                      Dropdown item
                       <div className="d-flex mb-4 position-relative">
                         <h2 className="mb-0"><i className="fab fa-fw fa-facebook text-facebook" /></h2>
                         <div className="ms-2">
@@ -395,7 +402,7 @@ function Header(props) {
                           <p className="mb-0 small">Expert advice</p>
                         </div>
                       </div>
-                      {/* Dropdown item */}
+                      Dropdown item
                       <div className="d-flex mb-4 position-relative">
                         <h2 className="mb-0"><i className="fas fa-fw fa-basketball-ball text-dribbble" /></h2>
                         <div className="ms-2">
@@ -404,44 +411,44 @@ function Header(props) {
                         </div>
                       </div>
                     </div>
-                    {/* Dropdown column item */}
+                    Dropdown column item
                     <div className="col-xl-6 col-xxl-3">
                       <h6 className="mb-0">Download Eduport</h6>
                       <hr />
-                      {/* Image */}
+                      Image
                       <img src="assets/images/element/14.svg" alt />
-                      {/* Download button */}
+                      Download button
                       <div className="row g-2 justify-content-center mt-3">
-                        {/* Google play store button */}
+                        Google play store button
                         <div className="col-6 col-sm-4 col-xxl-6">
                           <a href="#"> <img src="assets/images/client/google-play.svg" className="btn-transition" alt="google-store" /> </a>
                         </div>
-                        {/* App store button */}
+                        App store button
                         <div className="col-6 col-sm-4 col-xxl-6">
                           <a href="#"> <img src="assets/images/client/app-store.svg" className="btn-transition" alt="app-store" /> </a>
                         </div>
                       </div>
                     </div>
-                    {/* Action box */}
+                    Action box
                     <div className="col-12">
                       <div className="alert alert-success alert-dismissible fade show mt-2 mb-0 rounded-3" role="alert">
-                        {/* Avatar */}
+                        Avatar
                         <div className="avatar avatar-xs me-2">
                           <img className="avatar-img rounded-circle" src="assets/images/avatar/09.jpg" alt="avatar" />
                         </div>
-                        {/* Info */}
+                        Info
                         The personality development class starts at 2:00 pm, click to <a href="#" className="alert-link">Join Now</a>
                       </div>
                     </div>
                   </div>
                 </div>
-              </li>
+              </li> */}
               {/* Nav item 5 link*/}
-              <li className="nav-item dropdown">
+              {/* <li className="nav-item dropdown">
                 <a className="nav-link" href="#" id="advanceMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i className="fas fa-ellipsis-h" />
-                </a>
-                <ul className="dropdown-menu dropdown-menu-end min-w-auto" data-bs-popper="none">
+                </a> */}
+              {/* <ul className="dropdown-menu dropdown-menu-end min-w-auto" data-bs-popper="none">
                   <li>
                     <a className="dropdown-item" href="https://support.webestica.com/" target="_blank">
                       <i className="text-warning fa-fw bi bi-life-preserver me-2" />Support
@@ -469,34 +476,70 @@ function Header(props) {
                       <i className="text-orange fa-fw bi bi-puzzle-fill me-2" />Components
                     </a>
                   </li>
-                </ul>
-              </li>
+                </ul> */}
+              {/* </li> */}
             </ul>
             {/* Nav Main menu END */}
             {/* Nav Search START */}
-            <div className="nav my-3 my-xl-0 px-4 flex-nowrap align-items-center">
+            {/* <div className="nav my-3 my-xl-0 px-4 flex-nowrap align-items-center">
               <div className="nav-item w-100">
                 <form className="position-relative">
                   <input className="form-control pe-5 bg-transparent" type="search" placeholder="Search" aria-label="Search" />
                   <button className="btn bg-transparent px-2 py-0 position-absolute top-50 end-0 translate-middle-y" type="submit"><i className="fas fa-search fs-6 " /></button>
                 </form>
               </div>
-            </div>
+            </div> */}
             {/* Nav Search END */}
           </div>
           {/* Main navbar END */}
 
-          
+
           {/* Profile START */}
-          <div className="dropdown ms-1 ms-lg-0">
+           {
+        
+            <NavLink  to={`${auth?.auth?._id? '/cart':'/Auth' }`}> <i className="bi bi-cart3 fa-fw me-2" style={{ fontSize: "1.5rem" }}></i></NavLink>
+            
+
+          }
+          <div className="dropdown ms-1 ms-lg-0 flex">
+            {
+              auth.auth ? (
+                <a
+                  href="#"
+                  onClick={() => {
+                    dispatch(dispatch(userLogout(auth.auth._id)));
+                    // dispatch(CheakAuthUser());
+                  }}
+                 className="btn btn-sm btn-primary-soft me-2 mb-4 mb-sm-0 border-primary rounded"
+                >
+                  Sign Out
+                </a>
+              ) : (
+                <>
+                  <div className="d-sm-flex align-items-center justify-content-center justify-content-lg-start">
+                    <NavLink className="btn btn-sm btn-primary-soft me-2 mb-4 mb-sm-0 border-primary" to="/Auth">
+                      Sign in as User
+                    </NavLink>
+
+
+                    <NavLink className="btn btn-sm btn-primary-soft me-2 mb-4 mb-sm-0 border-primary" to="/Auth/Instructor">
+                      Sign in as Instructor
+                    </NavLink>
+                  </div>
+
+                </>
+              )
+            }
+          </div>
+          {/* <div className="dropdown ms-1 ms-lg-0">
             <a className="avatar avatar-sm p-0" href="#" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
               <img className="avatar-img rounded-circle" src={avatar} alt="avatar" />
             </a>
             <ul className="dropdown-menu dropdown-animation dropdown-menu-end shadow pt-3" aria-labelledby="profileDropdown">
-              {/* Profile info */}
+              Profile info
               <li className="px-3">
                 <div className="d-flex align-items-center">
-                  {/* Avatar */}
+                  Avatar
                   <div className="avatar me-3">
                     <img className="avatar-img rounded-circle shadow" src={avatar} alt="avatar" />
                   </div>
@@ -507,11 +550,11 @@ function Header(props) {
                 </div>
                 <hr />
               </li>
-              {/* Links */}
+              Links
               <li><a className="dropdown-item" href="#"><i className="bi bi-person fa-fw me-2" />Edit Profile</a></li>
               <li><a className="dropdown-item" href="#"><i className="bi bi-gear fa-fw me-2" />Account Settings</a></li>
               <li><a className="dropdown-item" href="#"><i className="bi bi-info-circle fa-fw me-2" />Help</a></li>
-                 {/* <li><a className="dropdown-item" href="#"><i className="bi bi-cart fa-fw me-2" />Cart </a></li> */}
+                 <li><a className="dropdown-item" href="#"><i className="bi bi-cart fa-fw me-2" />Cart </a></li>
                   <li><NavLink className="dropdown-item" to={'/Cart'}><i className="bi bi-cart fa-fw me-2" />Cart </NavLink></li>
            
               {
@@ -530,7 +573,7 @@ function Header(props) {
 
 
               <li> <hr className="dropdown-divider" /></li>
-              {/* Dark mode switch START */}
+              Dark mode switch START
               <li>
                 <div className="modeswitch-wrap" id="darkModeSwitch">
                   <Switch
@@ -542,9 +585,9 @@ function Header(props) {
                   <span>Dark mode</span>
                 </div>
               </li>
-              {/* Dark mode switch END */}
+              Dark mode switch END
             </ul>
-          </div>
+          </div> */}
           {/* Profile START */}
         </div>
       </nav>

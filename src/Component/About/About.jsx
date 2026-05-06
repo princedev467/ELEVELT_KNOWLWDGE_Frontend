@@ -296,21 +296,21 @@ Client START */}
                             </div>
                         </div>
                         {/* Logo item */}
-                        <div className="col-6 col-sm-4 col-lg-2">
+                         <div className="col-6 col-sm-4 col-lg-2">
                             <div className="p-4 grayscale text-center">
-                                <img src="assets/images/client/shippable.svg" alt />
+                                <img src="assets/images/client/envato.svg" alt />
                             </div>
                         </div>
                         {/* Logo item */}
                         <div className="col-6 col-sm-4 col-lg-2">
                             <div className="p-4 grayscale text-center">
-                                <img src="assets/images/client/algolia.svg" alt />
+                                <img src="assets/images/client/android.svg" alt />
                             </div>
                         </div>
                         {/* Logo item */}
                         <div className="col-6 col-sm-4 col-lg-2">
                             <div className="p-4 grayscale text-center">
-                                <img src="assets/images/client/importio.svg" alt />
+                                <img src="assets/images/client/microsoft.svg" alt />
                             </div>
                         </div>
                         {/* Logo item */}

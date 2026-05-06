@@ -19,6 +19,8 @@ function Course_Detail(props) {
   const themeData = useContext(ThemeContext);
   console.log(themeData);
 
+  const [more, setmore] = useState(true);
+  const [text, setText] = useState('');
 
   const [quizid, setQuizid] = useState(null)
 
@@ -103,6 +105,7 @@ function Course_Detail(props) {
     if (!auth?.auth?._id) {
       console.log("user not logged");
 
+      return
     }
 
 
@@ -116,6 +119,7 @@ function Course_Detail(props) {
     if (existData) {
       console.log("you data already exist in cart");
 
+      return
     }
 
     const ItemsData = [...(cartUser?.items || [])];
@@ -128,9 +132,10 @@ function Course_Detail(props) {
 
     console.log(ItemsData);
 
+    //if user alredy exist obly
     if (cartUser) {
       updateData({
-        _id:cartUser._id,
+        _id: cartUser._id,
         user_id: auth.auth._id,
         items: ItemsData
       })
@@ -152,47 +157,51 @@ Page intro START */}
       <section className="bg-light py-0 py-sm-5">
         <div className="container" >
           <div className="row py-5 ">
-            {filterCourseData?.map((v) => (
-              <div key={v._id} style={{ display: 'flex', justifyContent: 'space-between' }} className='row g-4'>
-                <div className="position-relative col-5  rounded-3 ">
+            {filterCourseData?.map((v) =>  (
+                <div key={v._id} style={{ display: 'flex', justifyContent: 'space-between' }} className='row g-4'>
+                  <div className="position-relative col-5  rounded-3 ">
 
-                  {/* Image */}
-                  <Carousel indicators={false}>
-                    {
-                      v.course_img.map(v => (
-                        <img src={v.url} className="card-img-top" alt="course image"
-                          style={{
-                            width: "100%",
-                            height: "50vh",
-                            // objectFit: "contain",
-                            borderRadius: "8px"
-                          }} />
+                    {/* Image */}
+                    <Carousel indicators={false}>
+                      {
 
-                      ))
-                    }
+                        v.course_img.map(v => (
+                          <img src={v.url} className="card-img-top" alt="course image"
+                            style={{
+                              width: "100%",
+                              height: "50vh",
+                              // objectFit: "contain",
+                              borderRadius: "8px"
+                            }} />
 
-                  </Carousel>
+                        ))
 
+
+                      }
+
+                    </Carousel>
+
+                  </div>
+                  <div className="col-6">
+                    {/* Badge */}
+                    <h6 className="mb-3 font-base bg-primary text-white py-2 px-4 rounded-2 d-inline-block">{v.name}</h6>
+                    {/* Title */}
+                    <h1 className={`${isDark ? 'text-white' : ''}`}>{v.description}</h1>
+                    <p>Satisfied conveying a dependent contented he gentleman agreeable do be. Warrant private
+                      blushes removed an in equally totally if. Delivered dejection necessary objection do Mr
+                      prevailed. Mr feeling does chiefly cordial in do.</p>
+                    {/* Content */}
+                    <ul className="list-inline mb-0">
+                      <li className="list-inline-item h6 me-3 mb-1 mb-sm-0"><i className="fas fa-star text-warning me-2" />4.5/5.0</li>
+                      <li className="list-inline-item h6 me-3 mb-1 mb-sm-0"><i className="fas fa-user-graduate text-orange me-2" />12k Enrolled</li>
+                      <li className="list-inline-item h6 me-3 mb-1 mb-sm-0"><i className="fas fa-signal text-success me-2" />All levels</li>
+                      <li className="list-inline-item h6 me-3 mb-1 mb-sm-0"><i className="bi bi-patch-exclamation-fill text-danger me-2" />Last updated 09/2021</li>
+                      <li className="list-inline-item h6 mb-0"><i className="fas fa-globe text-info me-2" />English</li>
+                    </ul>
+                  </div>
                 </div>
-                <div className="col-6">
-                  {/* Badge */}
-                  <h6 className="mb-3 font-base bg-primary text-white py-2 px-4 rounded-2 d-inline-block">{v.name}</h6>
-                  {/* Title */}
-                  <h1 className={`${isDark ? 'text-white' : ''}`}>{v.description}</h1>
-                  <p>Satisfied conveying a dependent contented he gentleman agreeable do be. Warrant private
-                    blushes removed an in equally totally if. Delivered dejection necessary objection do Mr
-                    prevailed. Mr feeling does chiefly cordial in do.</p>
-                  {/* Content */}
-                  <ul className="list-inline mb-0">
-                    <li className="list-inline-item h6 me-3 mb-1 mb-sm-0"><i className="fas fa-star text-warning me-2" />4.5/5.0</li>
-                    <li className="list-inline-item h6 me-3 mb-1 mb-sm-0"><i className="fas fa-user-graduate text-orange me-2" />12k Enrolled</li>
-                    <li className="list-inline-item h6 me-3 mb-1 mb-sm-0"><i className="fas fa-signal text-success me-2" />All levels</li>
-                    <li className="list-inline-item h6 me-3 mb-1 mb-sm-0"><i className="bi bi-patch-exclamation-fill text-danger me-2" />Last updated 09/2021</li>
-                    <li className="list-inline-item h6 mb-0"><i className="fas fa-globe text-info me-2" />English</li>
-                  </ul>
-                </div>
-              </div>
-            ))
+              )
+            )
             }
           </div>
         </div>
@@ -1445,7 +1454,7 @@ Page content START */}
 
                             ))
                           }
-                        </Carousel>                           )
+                        </Carousel>
 
                         {/* <img src="assets/images/courses/4by3/01.jpg" className="card-img" alt="course image" /> */}
                         {/* Overlay */}

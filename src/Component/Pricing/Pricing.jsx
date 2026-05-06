@@ -1,6 +1,37 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useKeenSlider } from "keen-slider/react";
+import "keen-slider/keen-slider.min.css";
 
 function Pricing(props) {
+   const [sliderRef] = useKeenSlider({
+    loop: true,
+    renderMode: "performance",
+    drag: false,
+    slides: {
+      perView: 3,
+      spacing: 60,
+    },
+    created(s) {
+      s.moveToIdx(5, true, {
+        duration: 20000,
+        easing: (t) => t,
+      });
+    },
+    updated(s) {
+      s.moveToIdx(s.track.details.abs + 5, true, {
+        duration: 20000,
+        easing: (t) => t,
+      });
+    },
+    animationEnded(s) {
+      s.moveToIdx(s.track.details.abs + 5, true, {
+        duration: 20000,
+        easing: (t) => t,
+      });
+    },
+  });
+
+
     return (
      <main>
   {/* =======================
@@ -125,7 +156,7 @@ Page Banner START */}
             </div>
             {/* Card Footer */}
             <div className="card-footer text-center d-grid pb-0">
-              <button type="button" className="btn btn-dark mb-0">Get Started</button>
+              <button type="button" className="btn btn-light mb-0">Get Started</button>
             </div>
           </div>
         </div>
@@ -181,29 +212,30 @@ Page Banner START */}
 Page Banner END */}
   {/* =======================
 Client START */}
-  <section className="py-5 bg-light">
-    <div className="container">
-      <div className="row justify-content-center my-4">
-        <div className="col-12">
-          {/* Slider START */}
-          <div className="tiny-slider arrow-round">
-            <div className="tiny-slider-inner" data-arrow="false" data-autoplay="true" data-edge={2} data-dots="false" data-gutter={80} data-items-xl={6} data-items-lg={5} data-items-md={4} data-items-sm={3} data-items-xs={2}>
-              {/* Slide item START */}
-              <div className="item"><img src="assets/images/client/coca-cola.svg" className="grayscale" alt /> </div> 
-              <div className="item"><img src="assets/images/client/android.svg" className="grayscale" alt /> </div> 
-              <div className="item"><img src="assets/images/client/envato.svg" className="grayscale" alt /> </div> 
-              <div className="item"><img src="assets/images/client/microsoft.svg" className="grayscale" alt /> </div> 
-              <div className="item"><img src="assets/images/client/netflix.svg" className="grayscale" alt /> </div> 
-              <div className="item"><img src="assets/images/client/google.svg" className="grayscale" alt /> </div> 
-              <div className="item"><img src="assets/images/client/linkedin.svg" className="grayscale" alt /> </div> 
-              {/* Slide item END */}
-            </div>
-          </div>
-          {/* Slider END */}
-        </div>	
+  <div className="container py-5 bg-light">
+      <div ref={sliderRef} className="keen-slider">
+        <div className="keen-slider__slide">
+          <img src="/assets/images/client/coca-cola.svg" className="grayscale" alt="" />
+        </div>
+        <div className="keen-slider__slide">
+          <img src="/assets/images/client/android.svg" className="grayscale" alt="" />
+        </div>
+        <div className="keen-slider__slide">
+          <img src="/assets/images/client/envato.svg" className="grayscale" alt="" />
+        </div>
+        <div className="keen-slider__slide">
+          <img src="/assets/images/client/microsoft.svg" className="grayscale" alt="" />
+        </div>
+        <div className="keen-slider__slide">
+          <img src="/assets/images/client/netflix.svg" className="grayscale" alt="" />
+        </div>
+        <div className="keen-slider__slide">
+          <img src="/assets/images/client/google.svg" className="grayscale" alt="" />
+        </div>
       </div>
     </div>
-  </section>
+
+
   {/* =======================
 Client END */}
   {/* =======================

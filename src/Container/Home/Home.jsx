@@ -11,7 +11,7 @@ function Home(props) {
     const themeData = useContext(ThemeContext);
     console.log(themeData);
 
-    let isDark=themeData.theme==='light'
+    let isDark=themeData.theme==='dark'
   
   return (
     <main>
@@ -170,7 +170,7 @@ Main Banner START */}
               </ul>
               <div className="d-sm-flex align-items-center justify-content-center justify-content-lg-start">
                 {/* Button */}
-                <a href="#" className="btn btn-lg btn-danger-soft me-2 mb-4 mb-sm-0">Get Started</a>
+                <a href="#" className="btn btn-lg btn-danger-soft me-2 mb-4 mb-sm-0 border-danger">Get Started</a>
                 {/* Video button */}
                 <a data-glightbox data-gallery="office-tour" href="https://www.youtube.com/embed/tXHviS-4ygo" className="ms-0 ms-sm-4 d-block">
                   <div className="btn btn-round btn-primary-shadow mb-0 me-3 align-middle d-inline-block"> <i className="fas fa-play" /></div>
@@ -1238,7 +1238,7 @@ Trending courses START */}
           </div>
           <div className="row">
             {/* Slider START */}
-            <div className="tiny-slider arrow-round arrow-blur arrow-hover">
+            <div className="tiny-slider arrow-round arrow-blur arrow-hover border-gray">
               <div className="tiny-slider-inner pb-1" data-autoplay="true" data-arrow="true" data-edge={2} data-dots="false" data-items={3} data-items-lg={2} data-items-sm={1}>
                 {/* Card item START */}
                 <Swiper
@@ -1254,7 +1254,7 @@ Trending courses START */}
                 >
                   <SwiperSlide>
              
-                      <div className={`${isDark? ' profile-card ':'card'}  action-trigger-hover border`}>
+                      <div className={`${isDark?'profile-card ':'card'  }  action-trigger-hover `}>
                         {/* Image */}
                         <img src="assets/images/courses/4by3/14.jpg" className="card-img-top" alt="course image" />
                         {/* Ribbon */}
