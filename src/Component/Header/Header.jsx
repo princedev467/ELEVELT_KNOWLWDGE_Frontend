@@ -76,7 +76,7 @@ function Header(props) {
             <ul className="navbar-nav navbar-nav-scroll me-auto">
               {/* Nav item 1 Demos */}
               <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle active flex" href="#" id="categoryMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="bi bi-ui-radios-grid me-2" /><span>Explore</span></a>
+                <a className={`nav-link dropdown-toggle active flex ${isDark?'text-white':''}`} href="#" id="categoryMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="bi bi-ui-radios-grid me-2" /><span>Explore</span></a>
                 <ul className=" dropdown-menu" aria-labelledby="categoryMenu">
                   {
                     firstcategory?.map((v) => {
@@ -133,13 +133,13 @@ function Header(props) {
             {/* Nav Main menu START */}
             <ul className="navbar-nav navbar-nav-scroll me-auto">
               <li>
-                <NavLink className="nav-link" to={'/about'}>About Us</NavLink>
+                <NavLink className={`nav-link ${isDark?'text-white':''} `} to={'/about'}>About Us</NavLink>
               </li>
 
-              <li> <NavLink className="nav-link" to={'/course'}>Course</NavLink></li>
+              <li> <NavLink  className={`nav-link ${isDark?'text-white':''} `} to={'/course'}>Course</NavLink></li>
 
-              <li><NavLink className="nav-link" to={'/Pricing'}>Pricing</NavLink></li>
-              <li>  <NavLink className="nav-link" to={'/Contact_us'}>Contact Us</NavLink></li>
+              <li><NavLink  className={`nav-link ${isDark?'text-white':''} `} to={'/Pricing'}>Pricing</NavLink></li>
+              <li>  <NavLink  className={`nav-link ${isDark?'text-white':''} `} to={'/Contact_us'}>Contact Us</NavLink></li>
 
 
               {/* Nav item 1 Demos */}
@@ -252,7 +252,7 @@ function Header(props) {
                       <li>  <NavLink className="dropdown-item" to={'/Register'}>Register</NavLink></li>
 
 
-                      <li>  <NavLink className="dropdown-item" to={'/Forget_Password'}>Forgot Password </NavLink></li>
+                      <li>  <NavLink className="dropdown-item" to={'/Forget_Password'}>Forgot Pashesword </NavLink></li>
 
                     </ul>
                   </li>
