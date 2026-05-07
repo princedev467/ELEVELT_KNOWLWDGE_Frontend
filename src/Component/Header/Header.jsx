@@ -52,7 +52,7 @@ function Header(props) {
   console.log(firstcategory);
 
   return (
-    <header className={`navbar-sticky header-static ${isDark ? 'header-dark-mode' : ''}`}>
+    <header className={`navbar-sticky header-static headerShadow ${isDark ? 'header-dark-mode' : ''} `}>
       {/* Logo Nav START */}
       <nav className="navbar navbar-expand-xl">
         <div className="container-fluid px-3 px-xl-5">
@@ -497,7 +497,7 @@ function Header(props) {
           {/* Profile START */}
            {
         
-            <NavLink  to={`${auth?.auth?._id? '/cart':'/Auth' }`}> <i className="bi bi-cart3 fa-fw me-2" style={{ fontSize: "1.5rem" }}></i></NavLink>
+            <NavLink  to={`${auth?.auth?._id? '/cart':'/Auth' }`}> <i className="bi bi-cart3 fa-fw me-2" style={{ fontSize: "1.5rem",color:'white' }}></i></NavLink>
             
 
           }

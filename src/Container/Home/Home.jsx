@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import 'swiper/css';
@@ -6,13 +6,38 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { ThemeContext } from '../../context/theme.context';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCategory } from '../../Redux/slice/CategorySlice';
+import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
+import Carousel from 'react-material-ui-carousel';
 
 function Home(props) {
-    const themeData = useContext(ThemeContext);
-    console.log(themeData);
+  const themeData = useContext(ThemeContext);
+  console.log(themeData);
 
-    let isDark=themeData.theme==='dark'
+  const [category_id, setCategory_id] = useState('');
+  let isDark = themeData.theme === 'dark'
+
+  const dispatch = useDispatch();
+  const Categorydata = useSelector(state => state.category)
+  console.log(Categorydata.category);
+
+
+  useEffect(() => {
+    dispatch(getCategory())
+  }, [])
+
+  const parentCategoryData = Categorydata?.category?.filter((v) => v.parent_category_id === null);
+
+    const { data: courseData, isLoading, isError } = useGetCourseQuery(); //get Data
+    console.log("course", courseData);
   
+    let filterCourseData=courseData?.data?.filter((v)=>v.category_id===category_id);
+    console.log(filterCourseData);
+    
+    let course=category_id?filterCourseData:courseData?.data;
+    console.log(course);
+    
   return (
     <main>
       {/* =======================
@@ -149,7 +174,7 @@ Main Banner START */}
                 </svg>
               </figure>
               {/* Title */}
-              <h1 className={`${isDark?'text-white':''} mb-0 display-6`}>Limitless learning at your
+              <h1 className={`${isDark ? 'text-white' : ''} mb-0 display-6`}>Limitless learning at your
                 <span className="position-relative">fingertips
                   {/* SVG START */}
                   <span className="position-absolute top-50 start-50 translate-middle ms-3 z-index-n1">
@@ -164,9 +189,9 @@ Main Banner START */}
               <p className="my-4 lead">Online learning and teaching marketplace with 5K+ courses &amp; 10M students. Taught by experts to help you acquire new skills.</p>
               {/* Info */}
               <ul className="list-inline position-relative justify-content-center justify-content-lg-start mb-4">
-                <li className="list-inline-item me-2"> <i className={`bi bi-patch-check-fill ${isDark?'text-white':''}h6 me-1` }/>Learn with experts</li>
-                <li className="list-inline-item me-2"> <i className={`bi bi-patch-check-fill ${isDark?'text-white':''}h6 me-1` } />Get certificate</li>
-                <li className="list-inline-item"> <i className={`bi bi-patch-check-fill ${isDark?'text-white':''}h6 me-1` } />Get membership</li>
+                <li className="list-inline-item me-2"> <i className={`bi bi-patch-check-fill ${isDark ? 'text-white' : ''}h6 me-1`} />Learn with experts</li>
+                <li className="list-inline-item me-2"> <i className={`bi bi-patch-check-fill ${isDark ? 'text-white' : ''}h6 me-1`} />Get certificate</li>
+                <li className="list-inline-item"> <i className={`bi bi-patch-check-fill ${isDark ? 'text-white' : ''}h6 me-1`} />Get membership</li>
               </ul>
               <div className="d-sm-flex align-items-center justify-content-center justify-content-lg-start">
                 {/* Button */}
@@ -284,10 +309,10 @@ Counter START */}
                 <span className="display-6 lh-1 text-warning mb-0"><i className="fas fa-tv" /></span>
                 <div className="ms-4 h6 fw-normal">
                   <div className="d-flex">
-                    <h5 className={`${isDark?'text-white':''} purecounter mb-0 fw-bold`} data-purecounter-start={0} data-purecounter-end={10} data-purecounter-delay={200}>0</h5>
-                    <span className={`${isDark?'text-white':''} mb-0 h5`}>K</span>
+                    <h5 className={`${isDark ? 'text-white' : ''} purecounter mb-0 fw-bold`} data-purecounter-start={0} data-purecounter-end={10} data-purecounter-delay={200}>0</h5>
+                    <span className={`${isDark ? 'text-white' : ''} mb-0 h5`}>K</span>
                   </div>
-                  <p className={`${isDark?'text-white':''} mb-0`}>Online Courses</p>
+                  <p className={`${isDark ? 'text-white' : ''} mb-0`}>Online Courses</p>
                 </div>
               </div>
             </div>
@@ -297,10 +322,10 @@ Counter START */}
                 <span className="display-6 lh-1 text-blue mb-0"><i className="fas fa-user-tie" /></span>
                 <div className="ms-4 h6 fw-normal">
                   <div className="d-flex">
-                    <h5 className={`${isDark?'text-white':''} purecounter mb-0 fw-bold`} data-purecounter-start={0} data-purecounter-end={200} data-purecounter-delay={200}>0</h5>
-                    <span className={`${isDark?'text-white':''} mb-0 h5`}>+</span>
+                    <h5 className={`${isDark ? 'text-white' : ''} purecounter mb-0 fw-bold`} data-purecounter-start={0} data-purecounter-end={200} data-purecounter-delay={200}>0</h5>
+                    <span className={`${isDark ? 'text-white' : ''} mb-0 h5`}>+</span>
                   </div>
-                  <p className={`${isDark?'text-white':''} mb-0`}>Expert Tutors</p>
+                  <p className={`${isDark ? 'text-white' : ''} mb-0`}>Expert Tutors</p>
                 </div>
               </div>
             </div>
@@ -310,10 +335,10 @@ Counter START */}
                 <span className="display-6 lh-1 text-purple mb-0"><i className="fas fa-user-graduate" /></span>
                 <div className="ms-4 h6 fw-normal">
                   <div className="d-flex">
-                    <h5 className={`${isDark?'text-white':''} purecounter mb-0 fw-bold `} data-purecounter-start={0} data-purecounter-end={60} data-purecounter-delay={200}>0</h5>
-                    <span className={`${isDark?'text-white':''} mb-0 h5 `}>K+</span>
+                    <h5 className={`${isDark ? 'text-white' : ''} purecounter mb-0 fw-bold `} data-purecounter-start={0} data-purecounter-end={60} data-purecounter-delay={200}>0</h5>
+                    <span className={`${isDark ? 'text-white' : ''} mb-0 h5 `}>K+</span>
                   </div>
-                  <p className={`${isDark?'text-white':''} mb-0`}>Online Students</p>
+                  <p className={`${isDark ? 'text-white' : ''} mb-0`}>Online Students</p>
                 </div>
               </div>
             </div>
@@ -323,10 +348,10 @@ Counter START */}
                 <span className="display-6 lh-1 text-info mb-0"><i className="bi bi-patch-check-fill" /></span>
                 <div className="ms-4 h6 fw-normal">
                   <div className="d-flex">
-                    <h5 className={`${isDark?'text-white':''} purecounter mb-0 fw-bold`} data-purecounter-start={0} data-purecounter-end={6} data-purecounter-delay={300}>0</h5>
-                    <span className={`${isDark?'text-white':''} mb-0 h5 `}>K+</span>
+                    <h5 className={`${isDark ? 'text-white' : ''} purecounter mb-0 fw-bold`} data-purecounter-start={0} data-purecounter-end={6} data-purecounter-delay={300}>0</h5>
+                    <span className={`${isDark ? 'text-white' : ''} mb-0 h5 `}>K+</span>
                   </div>
-                  <p className={`${isDark?'text-white':''} mb-0`}>Certified Courses</p>
+                  <p className={`${isDark ? 'text-white' : ''} mb-0`}>Certified Courses</p>
                 </div>
               </div>
             </div>
@@ -342,32 +367,33 @@ Popular course START */}
           {/* Title */}
           <div className="row mb-4">
             <div className="col-lg-8 mx-auto text-center">
-              <h2 className={`${isDark?'text-white':''} fs-1`}>Most Popular Courses</h2>
+              <h2 className={`${isDark ? 'text-white' : ''} fs-1`}>Most Popular Courses</h2>
               <p className="mb-0">Choose from hundreds of courses from specialist organizations</p>
             </div>
           </div>
           {/* Tabs START */}
           <ul className="nav nav-pills nav-pills-bg-soft justify-content-sm-center mb-4 px-3" id="course-pills-tab" role="tablist">
             {/* Tab item */}
-            <li className="nav-item me-2 me-sm-5">
-              <button className="nav-link mb-2 mb-md-0 active" id="course-pills-tab-1" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-1" type="button" role="tab" aria-controls="course-pills-tabs-1" aria-selected="false">Web Design</button>
-            </li>
+            {
+              parentCategoryData.slice(1, 6).map((v, i) => {
+                console.log(v);
+
+                return (
+                  <li className="nav-item me-2 me-sm-5">
+                    <button className="nav-link mb-2 mb-md-0" onClick={()=>setCategory_id(v._id)}
+                      id={`course-pills-tab-${i}`} data-bs-toggle="pill"
+                      data-bs-target={`#course-pills-tabs-${i}`} type="button"
+                      role="tab" aria-controls={`course-pills-tabs-${i}`} aria-selected="false">{v.name.length>20?v.name.slice(0,20):v.name}</button>
+                  </li>
+                )
+              })
+
+            }
+
             {/* Tab item */}
-            <li className="nav-item me-2 me-sm-5">
-              <button className="nav-link mb-2 mb-md-0" id="course-pills-tab-2" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-2" type="button" role="tab" aria-controls="course-pills-tabs-2" aria-selected="false">Development</button>
-            </li>
-            {/* Tab item */}
-            <li className="nav-item me-2 me-sm-5">
-              <button className="nav-link mb-2 mb-md-0" id="course-pills-tab-3" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-3" type="button" role="tab" aria-controls="course-pills-tabs-3" aria-selected="false">Graphic Design</button>
-            </li>
-            {/* Tab item */}
-            <li className="nav-item me-2 me-sm-5">
-              <button className="nav-link mb-2 mb-md-0" id="course-pills-tab-4" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-4" type="button" role="tab" aria-controls="course-pills-tabs-4" aria-selected="false">Marketing</button>
-            </li>
-            {/* Tab item */}
-            <li className="nav-item me-2 me-sm-5">
+            {/* <li className="nav-item me-2 me-sm-5">
               <button className="nav-link mb-2 mb-md-0" id="course-pills-tab-5" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-5" type="button" role="tab" aria-controls="course-pills-tabs-5" aria-selected="false">Finance</button>
-            </li>
+            </li> */}
           </ul>
           {/* Tabs END */}
           {/* Tabs content START */}
@@ -376,10 +402,23 @@ Popular course START */}
             <div className="tab-pane fade show active" id="course-pills-tabs-1" role="tabpanel" aria-labelledby="course-pills-tab-1">
               <div className="row g-4">
                 {/* Card item START */}
-                <div className="col-sm-6 col-lg-4 col-xl-3">
+                {
+                  course?.slice(0,8)?.map((v)=>(
+                           <div className="col-sm-6 col-lg-4 col-xl-3">
                   <div className="card  shadow h-100 ">
                     {/* Image */}
-                    <img src="assets/images/courses/4by3/08.jpg" className="card-img-top" alt="course image" />
+                      <Carousel indicators={false}>
+                    {   
+                    v.course_img.map(v1 => ( 
+                    <img src={v1.url} className="card-img-top" alt="course image" style={{
+                              width: "100%",
+                              height: "40vh",
+                              // objectFit: "contain",
+                              borderRadius: "8px"
+                            }} />
+                    ))
+                  }
+                    </Carousel>
                     {/* Card body */}
                     <div className="card-body pb-0">
                       {/* Badge and favorite */}
@@ -388,8 +427,8 @@ Popular course START */}
                         <a href="#" className="h6 mb-0"><i className="far fa-heart" /></a>
                       </div>
                       {/* Title */}
-                      <h5 className="card-title fw-normal"><a href="#">Sketch from A to Z: for app designer</a></h5>
-                      <p className="mb-2 text-truncate-2">Proposal indulged no do sociable he throwing settling.</p>
+                      <h5 className="card-title fw-normal"><a href="#"> {v.name.length > 10? v.name.slice(0, 11) + "...": v.name}</a></h5>
+                      <p className="mb-2 text-truncate-2">{v.description}</p>
                       {/* Rating star */}
                       <ul className="list-inline mb-0">
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
@@ -397,264 +436,22 @@ Popular course START */}
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                        <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0`}>4.0/5.0</li>
+                        <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0`}>4.0/5.0</li>
                       </ul>
                     </div>
                     {/* Card footer */}
                     <div className="card-footer pt-0 pb-3">
                       <hr />
                       <div className="d-flex justify-content-between">
-                        <span className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />12h 56m</span>
-                        <span className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />15 lectures</span>
+                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />12h 56m</span>
+                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />15 lectures</span>
                       </div>
                     </div>
                   </div>
                 </div>
-                {/* Card item END */}
-                {/* Card item START */}
-                <div className="col-sm-6 col-lg-4 col-xl-3">
-                  <div className="card  shadow h-100 ">
-                    {/* Image */}
-                    <img src="assets/images/courses/4by3/02.jpg" className="card-img-top" alt="course image" />
-                    <div className="card-body pb-0">
-                      {/* Badge and favorite */}
-                      <div className="d-flex justify-content-between mb-2">
-                        <a href="#" className="badge bg-success bg-opacity-10 text-success">Beginner</a>
-                        <a href="#" className="text-danger"><i className="fas fa-heart" /></a>
-                      </div>
-                      {/* Title */}
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Graphic Design Masterclass</a></h5>
-                      <p className="mb-2 text-truncate-2">Rooms oh fully taken by worse do Points afraid but may end Rooms Points afraid but may end Rooms</p>
-                      {/* Rating star */}
-                      <ul className="list-inline mb-0">
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star-half-alt text-warning" /></li>
-                        <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0`}>4.5/5.0</li>
-                      </ul>
-                    </div>
-                    {/* Card footer */}
-                    <div className="card-footer pt-0 pb-3">
-                      <hr />
-                      <div className="d-flex justify-content-between ">
-                        <span className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />9h 56m</span>
-                        <span className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />65 lectures</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* Card item END */}
-                {/* Card item START */}
-                <div className="col-sm-6 col-lg-4 col-xl-3">
-                  <div className="card  shadow h-100 ">
-                    {/* Image */}
-                    <img src="assets/images/courses/4by3/03.jpg" className="card-img-top" alt="course image" />
-                    <div className="card-body pb-0">
-                      {/* Badge and favorite */}
-                      <div className="d-flex justify-content-between mb-2">
-                        <a href="#" className="badge bg-success bg-opacity-10 text-success">Beginner</a>
-                        <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
-                      </div>
-                      {/* Title */}
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Create a Design System in Figma</a></h5>
-                      <p className="mb-2 text-truncate-2">Rooms oh fully taken by worse do. Points afraid but may end afraid but may end.</p>
-                      {/* Rating star */}
-                      <ul className="list-inline mb-0">
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star-half-alt text-warning" /></li>
-                        <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0`}>4.5/5.0</li>
-                      </ul>
-                    </div>
-                    {/* Card footer */}
-                    <div className="card-footer pt-0 pb-3">
-                      <hr />
-                      <div className="d-flex justify-content-between">
-                        <span className={ `${isDark?'text-white':''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />5h 56m</span>
-                        <span className={ `${isDark?'text-white':''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />32 lectures</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* Card item END */}
-                {/* Card item START */}
-                <div className="col-sm-6 col-lg-4 col-xl-3">
-                  <div className="card  shadow h-100 ">
-                    {/* Image */}
-                    <img src="assets/images/courses/4by3/07.jpg" className="card-img-top" alt="course image" />
-                    <div className="card-body pb-0">
-                      {/* Badge and favorite */}
-                      <div className="d-flex justify-content-between mb-2">
-                        <a href="#" className="badge bg-success bg-opacity-10 text-success">Beginner</a>
-                        <a href="#" className="text-danger"><i className="fas fa-heart" /></a>
-                      </div>
-                      {/* Title */}
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Deep Learning with React-Native </a></h5>
-                      <p className="mb-2 text-truncate-2">Far advanced settling say finished raillery. Offered chiefly farther</p>
-                      {/* Rating star */}
-                      <ul className="list-inline mb-0">
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                        <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.0/5.0</li>
-                      </ul>
-                    </div>
-                    {/* Card footer */}
-                    <div className="card-footer pt-0 pb-3">
-                      <hr />
-                      <div className="d-flex justify-content-between">
-                        <span className={ `${isDark?'text-white':''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />18h 56m</span>
-                        <span className={ `${isDark?'text-white':''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />99 lectures</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* Card item END */}
-                {/* Card item START */}
-                <div className="col-sm-6 col-lg-4 col-xl-3">
-                  <div className="card  shadow h-100 ">
-                    {/* Image */}
-                    <img src="assets/images/courses/4by3/11.jpg" className="card-img-top" alt="course image" />
-                    <div className="card-body pb-0">
-                      {/* Badge and favorite */}
-                      <div className="d-flex justify-content-between mb-2">
-                        <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
-                        <a href="#" className="text-danger"><i className="fas fa-heart" /></a>
-                      </div>
-                      {/* Title */}
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Build Responsive Websites with HTML</a></h5>
-                      <p className="mb-2 text-truncate-2">Far advanced settling say finished raillery. Offered chiefly farther</p>
-                      {/* Rating star */}
-                      <ul className="list-inline mb-0">
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                        <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.0/5.0</li>
-                      </ul>
-                    </div>
-                    {/* Card footer */}
-                    <div className="card-footer pt-0 pb-3">
-                      <hr />
-                      <div className="d-flex justify-content-between">
-                        <span className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />15h 30m</span>
-                        <span className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />68 lectures</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* Card item END */}
-                {/* Card item START */}
-                <div className="col-sm-6 col-lg-4 col-xl-3">
-                  <div className="card  shadow h-100 ">
-                    {/* Image */}
-                    <img src="assets/images/courses/4by3/12.jpg" className="card-img-top" alt="course image" />
-                    <div className="card-body pb-0">
-                      {/* Badge and favorite */}
-                      <div className="d-flex justify-content-between mb-2">
-                        <a href="#" className="badge bg-success bg-opacity-10 text-success">Beginner</a>
-                        <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
-                      </div>
-                      {/* Title */}
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Build Websites with CSS</a></h5>
-                      <p className="text-truncate-2 mb-2">Far advanced settling say finished raillery. Offered chiefly farther</p>
-                      {/* Rating star */}
-                      <ul className="list-inline mb-0">
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star-half-alt text-warning" /></li>
-                        <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.5/5.0</li>
-                      </ul>
-                    </div>
-                    {/* Card footer */}
-                    <div className="card-footer pt-0 pb-3">
-                      <hr />
-                      <div className="d-flex justify-content-between mt-2">
-                        <span className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />36h 30m</span>
-                        <span className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />72 lectures</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* Card item END */}
-                {/* Card item START */}
-                <div className="col-sm-6 col-lg-4 col-xl-3">
-                  <div className="card  shadow h-100 ">
-                    {/* Image */}
-                    <img src="assets/images/courses/4by3/04.jpg" className="card-img-top" alt="course image" />
-                    <div className="card-body pb-0">
-                      {/* Badge and favorite */}
-                      <div className="d-flex justify-content-between mb-2">
-                        <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
-                        <a href="#" className="text-danger"><i className="fas fa-heart" /></a>
-                      </div>
-                      {/* Title */}
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Learn Invision</a></h5>
-                      <p className="mb-2">Arrived off she elderly beloved him Course regard to up he hardly.</p>
-                      {/* Rating star */}
-                      <ul className="list-inline mb-0">
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star-half-alt text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                        <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>3.5/5.0</li>
-                      </ul>
-                    </div>
-                    {/* Card footer */}
-                    <div className="card-footer pt-0 pb-3">
-                      <hr />
-                      <div className="d-flex justify-content-between mt-2">
-                        <span className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />6h 56m</span>
-                        <span className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />82 lectures</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* Card item END */}
-                {/* Card item START */}
-                <div className="col-sm-6 col-lg-4 col-xl-3">
-                  <div className="card  shadow h-100 ">
-                    {/* Image */}
-                    <img src="assets/images/courses/4by3/09.jpg" className="card-img-top" alt="course image" />
-                    <div className="card-body pb-0">
-                      {/* Badge and favorite */}
-                      <div className="d-flex justify-content-between mb-2">
-                        <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
-                        <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
-                      </div>
-                      {/* Title */}
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>JavaScript: Full Understanding</a></h5>
-                      <p className="text-truncate-2 mb-2">Far advanced settling say finished raillery. Offered chiefly farther.</p>
-                      {/* Rating star */}
-                      <ul className="list-inline mb-0">
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>5.0/5.0</li>
-                      </ul>
-                    </div>
-                    {/* Card footer */}
-                    <div className="card-footer pt-0 pb-3">
-                      <hr />
-                      <div className="d-flex justify-content-between">
-                        <span className={ `${isDark?'text-white':''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />35h 20m</span>
-                        <span className={ `${isDark?'text-white':''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />89 lectures</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                  ))
+            
+                }
                 {/* Card item END */}
               </div> {/* Row END */}
             </div>
@@ -674,7 +471,7 @@ Popular course START */}
                         <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
                       </div>
                       {/* Title */}
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>The Complete Web Development in python</a></h5>
+                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark ? 'a' : ''}`}>The Complete Web Development in python</a></h5>
                       <p className="text-truncate-2 mb-2">Mention Mr manners opinion if garrets enabled.</p>
                       {/* Rating star */}
                       <ul className="list-inline mb-0">
@@ -683,15 +480,15 @@ Popular course START */}
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star-half-alt text-warning" /></li>
-                        <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.5/5.0</li>
+                        <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.5/5.0</li>
                       </ul>
                     </div>
                     {/* Card footer */}
                     <div className="card-footer pt-0 pb-3">
                       <hr />
                       <div className="d-flex justify-content-between mt-2">
-                        <span className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />10h 00m</span>
-                        <span className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />26 lectures</span>
+                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />10h 00m</span>
+                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />26 lectures</span>
                       </div>
                     </div>
                   </div>
@@ -709,7 +506,7 @@ Popular course START */}
                         <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
                       </div>
                       {/* Title */}
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Angular – The Complete Guider</a></h5>
+                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark ? 'a' : ''}`}>Angular – The Complete Guider</a></h5>
                       <p className="text-truncate-2 mb-2">Rooms oh fully taken by worse do. Points afraid but may end.</p>
                       {/* Rating star */}
                       <ul className="list-inline mb-0">
@@ -718,15 +515,15 @@ Popular course START */}
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star-half-alt text-warning" /></li>
-                        <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.5/5.0</li>
+                        <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.5/5.0</li>
                       </ul>
                     </div>
                     {/* Card footer */}
                     <div className="card-footer pt-0 pb-3">
                       <hr />
                       <div className="d-flex justify-content-between mt-2">
-                        <span className={ `${isDark?'text-white':''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />9h 32m</span>
-                        <span className={ `${isDark?'text-white':''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />42 lectures</span>
+                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />9h 32m</span>
+                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />42 lectures</span>
                       </div>
                     </div>
                   </div>
@@ -744,7 +541,7 @@ Popular course START */}
                         <a href="#" className="text-danger"><i className="fas fa-heart" /></a>
                       </div>
                       {/* Title */}
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Deep Learning with React-Native</a></h5>
+                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark ? 'a' : ''}`}>Deep Learning with React-Native</a></h5>
                       <p className="text-truncate-2 mb-2">Far advanced settling say finished raillery. Offered chiefly farther</p>
                       {/* Rating star */}
                       <ul className="list-inline mb-0">
@@ -753,15 +550,15 @@ Popular course START */}
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                        <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.0/5.0</li>
+                        <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.0/5.0</li>
                       </ul>
                     </div>
                     {/* Card footer */}
                     <div className="card-footer pt-0 pb-3">
                       <hr />
                       <div className="d-flex justify-content-between">
-                        <span className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />18h 56m</span>
-                        <span className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />99 lectures</span>
+                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />18h 56m</span>
+                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />99 lectures</span>
                       </div>
                     </div>
                   </div>
@@ -779,7 +576,7 @@ Popular course START */}
                         <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
                       </div>
                       {/* Title */}
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>JavaScript: Full Understanding</a></h5>
+                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark ? 'a' : ''}`}>JavaScript: Full Understanding</a></h5>
                       <p className="text-truncate-2 mb-2">Far advanced settling say finished raillery. Offered chiefly farther</p>
                       {/* Rating star */}
                       <ul className="list-inline mb-0">
@@ -788,15 +585,15 @@ Popular course START */}
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>5.0/5.0</li>
+                        <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0 `}>5.0/5.0</li>
                       </ul>
                     </div>
                     {/* Card footer */}
                     <div className="card-footer pt-0 pb-3">
                       <hr />
                       <div className="d-flex justify-content-between">
-                        <span className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />35h 20m</span>
-                        <span className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />89 lectures</span>
+                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />35h 20m</span>
+                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />89 lectures</span>
                       </div>
                     </div>
                   </div>
@@ -814,7 +611,7 @@ Popular course START */}
                         <a href="#" className="text-danger"><i className="fas fa-heart" /></a>
                       </div>
                       {/* Title */}
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Bootstrap 5 From Scratch</a></h5>
+                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark ? 'a' : ''}`}>Bootstrap 5 From Scratch</a></h5>
                       <p className="text-truncate-2 mb-2">Far advanced settling say finished raillery. Offered chiefly farther</p>
                       {/* Rating star */}
                       <ul className="list-inline mb-0">
@@ -823,15 +620,15 @@ Popular course START */}
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star-half-alt text-warning" /></li>
-                        <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.5/5.0</li>
+                        <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.5/5.0</li>
                       </ul>
                     </div>
                     {/* Card footer */}
                     <div className="card-footer pt-0 pb-3">
                       <hr />
                       <div className="d-flex justify-content-between mt-2">
-                        <span className={ `${isDark?'text-white':''} h6 fw-light mb-0 `}><i className="far fa-clock text-danger me-2" />25h 56m</span>
-                        <span className={ `${isDark?'text-white':''} h6 fw-light mb-0 `}><i className="fas fa-table text-orange me-2" />38 lectures</span>
+                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0 `}><i className="far fa-clock text-danger me-2" />25h 56m</span>
+                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0 `}><i className="fas fa-table text-orange me-2" />38 lectures</span>
                       </div>
                     </div>
                   </div>
@@ -849,7 +646,7 @@ Popular course START */}
                         <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
                       </div>
                       {/* Title */}
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>PHP with - CMS Project</a></h5>
+                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark ? 'a' : ''}`}>PHP with - CMS Project</a></h5>
                       <p className="text-truncate-2 mb-2">Far advanced settling say finished raillery. Offered chiefly farther</p>
                       {/* Rating star */}
                       <ul className="list-inline mb-0">
@@ -858,15 +655,15 @@ Popular course START */}
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                        <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.0/5.0</li>
+                        <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.0/5.0</li>
                       </ul>
                     </div>
                     {/* Card footer */}
                     <div className="card-footer pt-0 pb-3">
                       <hr />
                       <div className="d-flex justify-content-between">
-                        <span className={ `${isDark?'text-white':''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />21h 22m</span>
-                        <span className={ `${isDark?'text-white':''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />30 lectures</span>
+                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />21h 22m</span>
+                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />30 lectures</span>
                       </div>
                     </div>
                   </div>
@@ -876,23 +673,23 @@ Popular course START */}
             </div>
             {/* Content END */}
             {/* Content START */}
-            <div className="tab-pane fade" id="course-pills-tabs-3" role="tabpanel" aria-labelledby="course-pills-tab-3">
+            {/* <div className="tab-pane fade" id="course-pills-tabs-3" role="tabpanel" aria-labelledby="course-pills-tab-3">
               <div className="row g-4">
-                {/* Card item START */}
+                Card item START
                 <div className="col-sm-6 col-lg-4 col-xl-3">
                   <div className="card  shadow h-100 ">
-                    {/* Image */}
+                    Image
                     <img src="assets/images/courses/4by3/08.jpg" className="card-img-top" alt="course image" />
                     <div className="card-body pb-0">
-                      {/* Badge and favorite */}
+                      Badge and favorite
                       <div className="d-flex justify-content-between mb-2">
                         <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
                         <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
                       </div>
-                      {/* Title */}
+                      Title
                       <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Sketch from A to Z: for app designer</a></h5>
                       <p className="text-truncate-2 mb-2">Proposal indulged no do sociable he throwing settling</p>
-                      {/* Rating star */}
+                      Rating star
                       <ul className="list-inline mb-0">
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
@@ -902,7 +699,7 @@ Popular course START */}
                         <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.0/5.0</li>
                       </ul>
                     </div>
-                    {/* Card footer */}
+                    Card footer
                     <div className="card-footer pt-0 pb-3">
                       <hr />
                       <div className="d-flex justify-content-between">
@@ -912,22 +709,22 @@ Popular course START */}
                     </div>
                   </div>
                 </div>
-                {/* Card item END */}
-                {/* Card item START */}
+                Card item END
+                Card item START
                 <div className="col-sm-6 col-lg-4 col-xl-3">
                   <div className="card  shadow h-100 ">
-                    {/* Image */}
+                    Image
                     <img src="assets/images/courses/4by3/04.jpg" className="card-img-top" alt="course image" />
                     <div className="card-body pb-0">
-                      {/* Badge and favorite */}
+                      Badge and favorite
                       <div className="d-flex justify-content-between mb-2">
                         <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
                         <a href="#" className="text-danger"><i className="fas fa-heart" /></a>
                       </div>
-                      {/* Title */}
+                      Title
                       <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Learn Invision</a></h5>
                       <p className="mb-2">Arrived off she elderly beloved him Course regard to up he hardly.</p>
-                      {/* Rating star */}
+                      Rating star
                       <ul className="list-inline mb-0">
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
@@ -937,7 +734,7 @@ Popular course START */}
                         <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>3.5/5.0</li>
                       </ul>
                     </div>
-                    {/* Card footer */}
+                    Card footer
                     <div className="card-footer pt-0 pb-3">
                       <hr />
                       <div className="d-flex justify-content-between mt-2">
@@ -947,22 +744,22 @@ Popular course START */}
                     </div>
                   </div>
                 </div>
-                {/* Card item END */}
-                {/* Card item START */}
+                Card item END
+                Card item START
                 <div className="col-sm-6 col-lg-4 col-xl-3">
                   <div className="card  shadow h-100 ">
-                    {/* Image */}
+                    Image
                     <img src="assets/images/courses/4by3/02.jpg" className="card-img-top" alt="course image" />
                     <div className="card-body pb-0">
-                      {/* Badge and favorite */}
+                      Badge and favorite
                       <div className="d-flex justify-content-between mb-2">
                         <a href="#" className="badge bg-success bg-opacity-10 text-success">Beginner</a>
                         <a href="#" className="text-danger"><i className="fas fa-heart" /></a>
                       </div>
-                      {/* Title */}
+                      Title
                       <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Graphic Design Masterclass</a></h5>
                       <p className="text-truncate-2 mb-2">Rooms oh fully taken by worse do. Points afraid but may end.</p>
-                      {/* Rating star */}
+                      Rating star
                       <ul className="list-inline mb-0">
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
@@ -972,7 +769,7 @@ Popular course START */}
                         <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.5/5.0</li>
                       </ul>
                     </div>
-                    {/* Card footer */}
+                    Card footer
                     <div className="card-footer pt-0 pb-3">
                       <hr />
                       <div className="d-flex justify-content-between">
@@ -982,22 +779,22 @@ Popular course START */}
                     </div>
                   </div>
                 </div>
-                {/* Card item END */}
-                {/* Card item START */}
+                Card item END
+                Card item START
                 <div className="col-sm-6 col-lg-4 col-xl-3">
                   <div className="card  shadow h-100 ">
-                    {/* Image */}
+                    Image
                     <img src="assets/images/courses/4by3/03.jpg" className="card-img-top" alt="course image" />
                     <div className="card-body pb-0">
-                      {/* Badge and favorite */}
+                      Badge and favorite
                       <div className="d-flex justify-content-between mb-2">
                         <a href="#" className="badge bg-success bg-opacity-10 text-success">Beginner</a>
                         <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
                       </div>
-                      {/* Title */}
+                      Title
                       <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Create a Design System in Figma</a></h5>
                       <p className="text-truncate-2 mb-2">Rooms oh fully taken by worse do. Points afraid but may end.</p>
-                      {/* Rating star */}
+                      Rating star
                       <ul className="list-inline mb-0">
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
@@ -1007,7 +804,7 @@ Popular course START */}
                         <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.5/5.0</li>
                       </ul>
                     </div>
-                    {/* Card footer */}
+                    Card footer
                     <div className="card-footer pt-0 pb-3">
                       <hr />
                       <div className="d-flex justify-content-between">
@@ -1017,28 +814,28 @@ Popular course START */}
                     </div>
                   </div>
                 </div>
-                {/* Card item END */}
+                Card item END
               </div>
-            </div>
+            </div> */}
             {/* Content END */}
             {/* Content START */}
-            <div className="tab-pane fade" id="course-pills-tabs-4" role="tabpanel" aria-labelledby="course-pills-tab-4">
+            {/* <div className="tab-pane fade" id="course-pills-tabs-4" role="tabpanel" aria-labelledby="course-pills-tab-4">
               <div className="row g-4">
-                {/* Card item START */}
+                Card item START
                 <div className=" col-sm-6 col-lg-4 col-xl-3">
                   <div className="card  shadow h-100 ">
-                    {/* Image */}
+                    Image
                     <img src="assets/images/courses/4by3/01.jpg" className="card-img-top" alt="course image" />
                     <div className="card-body pb-0">
-                      {/* Badge and favorite */}
+                      Badge and favorite
                       <div className="d-flex justify-content-between mb-2">
                         <a href="#" className="badge bg-success bg-opacity-10 text-success">Beginner</a>
                         <a href="#" className="text-danger"><i className="fas fa-heart" /></a>
                       </div>
-                      {/* Title */}
+                      Title
                       <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Digital Marketing Masterclass</a></h5>
                       <p className="text-truncate-2 mb-2">Delivered dejection necessary objection do Mr prevailed.</p>
-                      {/* Rating star */}
+                      Rating star
                       <ul className="list-inline mb-0">
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
@@ -1048,7 +845,7 @@ Popular course START */}
                         <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.5/5.0</li>
                       </ul>
                     </div>
-                    {/* Card footer */}
+                    Card footer
                     <div className="card-footer pt-0 pb-3">
                       <hr />
                       <div className="d-flex justify-content-between">
@@ -1058,22 +855,22 @@ Popular course START */}
                     </div>
                   </div>
                 </div>
-                {/* Card item END */}
-                {/* Card item START */}
+                Card item END
+                Card item START
                 <div className="col-sm-6 col-lg-4 col-xl-3">
                   <div className="card  shadow h-100 ">
-                    {/* Image */}
+                    Image
                     <img src="assets/images/courses/4by3/08.jpg" className="card-img-top" alt="course image" />
                     <div className="card-body pb-0">
-                      {/* Badge and favorite */}
+                      Badge and favorite
                       <div className="d-flex justify-content-between mb-2">
                         <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
                         <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
                       </div>
-                      {/* Title */}
+                      Title
                       <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Sketch from A to Z: for app designer</a></h5>
                       <p className="text-truncate-2 mb-2">Proposal indulged no do sociable he throwing settling.</p>
-                      {/* Rating star */}
+                      Rating star
                       <ul className="list-inline mb-0">
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
@@ -1083,7 +880,7 @@ Popular course START */}
                         <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.0/5.0</li>
                       </ul>
                     </div>
-                    {/* Card footer */}
+                    Card footer
                     <div className="card-footer pt-0 pb-3">
                       <hr />
                       <div className="d-flex justify-content-between">
@@ -1093,28 +890,28 @@ Popular course START */}
                     </div>
                   </div>
                 </div>
-                {/* Card item END */}
+                Card item END
               </div>
-            </div>
+            </div> */}
             {/* Content END */}
             {/* Content START */}
-            <div className="tab-pane fade" id="course-pills-tabs-5" role="tabpanel" aria-labelledby="course-pills-tab-5">
+            {/* <div className="tab-pane fade" id="course-pills-tabs-5" role="tabpanel" aria-labelledby="course-pills-tab-5">
               <div className="row g-4">
-                {/* Card item START */}
+                Card item START
                 <div className="col-sm-6 col-lg-4 col-xl-3">
                   <div className="card  shadow h-100 ">
-                    {/* Image */}
+                    Image
                     <img src="assets/images/courses/4by3/04.jpg" className="card-img-top" alt="course image" />
                     <div className="card-body pb-0">
-                      {/* Badge and favorite */}
+                      Badge and favorite
                       <div className="d-flex justify-content-between mb-2">
                         <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
                         <a href="#" className="text-danger"><i className="fas fa-heart" /></a>
                       </div>
-                      {/* Title */}
+                      Title
                       <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Learn Invision</a></h5>
                       <p className="text-truncate-2 mb-2">Arrived off she elderly beloved him Course regard to up he hardly.</p>
-                      {/* Rating star */}
+                      Rating star
                       <ul className="list-inline mb-0">
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
@@ -1124,7 +921,7 @@ Popular course START */}
                         <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>3.5/5.0</li>
                       </ul>
                     </div>
-                    {/* Card footer */}
+                    Card footer
                     <div className="card-footer pt-0 pb-3">
                       <hr />
                       <div className="d-flex justify-content-between">
@@ -1134,22 +931,22 @@ Popular course START */}
                     </div>
                   </div>
                 </div>
-                {/* Card item END */}
-                {/* Card item START */}
+                Card item END
+                Card item START
                 <div className="col-sm-6 col-lg-4 col-xl-3">
                   <div className="card  shadow h-100 ">
-                    {/* Image */}
+                    Image
                     <img src="assets/images/courses/4by3/09.jpg" className="card-img-top" alt="course image" />
                     <div className="card-body pb-0">
-                      {/* Badge and favorite */}
+                      Badge and favorite
                       <div className="d-flex justify-content-between mb-2">
                         <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
                         <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
                       </div>
-                      {/* Title */}
+                      Title
                       <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>JavaScript: Full Understanding</a></h5>
                       <p className="text-truncate-2 mb-2">Far advanced settling say finished raillery. Offered chiefly farther.</p>
-                      {/* Rating star */}
+                      Rating star
                       <ul className="list-inline mb-0">
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
@@ -1159,7 +956,7 @@ Popular course START */}
                         <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>5.0/5.0</li>
                       </ul>
                     </div>
-                    {/* Card footer */}
+                    Card footer
                     <div className="card-footer pt-0 pb-3">
                       <hr />
                       <div className="d-flex justify-content-between">
@@ -1169,9 +966,9 @@ Popular course START */}
                     </div>
                   </div>
                 </div>
-                {/* Card item END */}
+                Card item END
               </div>
-            </div>
+            </div> */}
             {/* Content END */}
           </div>
           {/* Tabs content END */}
@@ -1232,7 +1029,7 @@ Trending courses START */}
           {/* Title */}
           <div className="row mb-4">
             <div className="col-lg-8 mx-auto text-center">
-              <h2 className={`${isDark?'text-white':''} fs-1`}>Our Trending Courses</h2>
+              <h2 className={`${isDark ? 'text-white' : ''} fs-1`}>Our Trending Courses</h2>
               <p className="mb-0">Check out most 🔥 courses in the market</p>
             </div>
           </div>
@@ -1253,127 +1050,127 @@ Trending courses START */}
                   onSlideChange={() => console.log('slide change')}
                 >
                   <SwiperSlide>
-             
-                      <div className={`${isDark?'profile-card ':'card'  }  action-trigger-hover `}>
-                        {/* Image */}
-                        <img src="assets/images/courses/4by3/14.jpg" className="card-img-top" alt="course image" />
-                        {/* Ribbon */}
-                        <div className="ribbon mt-3"><span>Free</span></div>
-                        {/* Card body */}
-                        <div className="card-body pb-0">
-                          {/* Badge and favorite */}
-                          <div className="d-flex justify-content-between mb-3">
-                            <span className="hstack gap-2">
-                              <a href="#" className="badge bg-primary bg-opacity-10 text-primary">Design</a>
-                              <a href="#" className="badge bg-dark text-white">Beginner</a>
-                            </span>
-                            <a href="#" className={`${isDark?'a':''} h6 fw-light mb-0`}><i className="far fa-bookmark" /></a>
+
+                    <div className={`${isDark ? 'profile-card ' : 'card'}  action-trigger-hover `}>
+                      {/* Image */}
+                      <img src="assets/images/courses/4by3/14.jpg" className="card-img-top" alt="course image" />
+                      {/* Ribbon */}
+                      <div className="ribbon mt-3"><span>Free</span></div>
+                      {/* Card body */}
+                      <div className="card-body pb-0">
+                        {/* Badge and favorite */}
+                        <div className="d-flex justify-content-between mb-3">
+                          <span className="hstack gap-2">
+                            <a href="#" className="badge bg-primary bg-opacity-10 text-primary">Design</a>
+                            <a href="#" className="badge bg-dark text-white">Beginner</a>
+                          </span>
+                          <a href="#" className={`${isDark ? 'a' : ''} h6 fw-light mb-0`}><i className="far fa-bookmark" /></a>
+                        </div>
+                        {/* Title */}
+                        <h5 className="card-title"><a href="#" className={`${isDark ? 'a' : ''}`}>The complete Digital Marketing Course - 8 Course in 1</a></h5>
+                        {/* Rating */}
+                        <div className="d-flex justify-content-between mb-2">
+                          <div className="hstack gap-2">
+                            <p className="text-warning m-0">4.5<i className="fas fa-star text-warning ms-1" /></p>
+                            <span className="small">(6500)</span>
                           </div>
-                          {/* Title */}
-                          <h5 className="card-title"><a href="#" className={`${isDark?'a':''}` }>The complete Digital Marketing Course - 8 Course in 1</a></h5>
-                          {/* Rating */}
-                          <div className="d-flex justify-content-between mb-2">
-                            <div className="hstack gap-2">
-                              <p className="text-warning m-0">4.5<i className="fas fa-star text-warning ms-1" /></p>
-                              <span className="small">(6500)</span>
-                            </div>
-                            <div className="hstack gap-2">
-                              <p className={`${isDark?'text-white':''} h6 fw-light mb-0 m-0`}>6500</p>
-                              <span className="small">(Student)</span>
-                            </div>
-                          </div>
-                          {/* Time */}
-                          <div className="hstack gap-3">
-                            <span className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />6h 56m</span>
-                            <span className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />82 lectures</span>
+                          <div className="hstack gap-2">
+                            <p className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0 m-0`}>6500</p>
+                            <span className="small">(Student)</span>
                           </div>
                         </div>
-                        {/* Card footer */}
-                        <div className="card-footer pt-0">
-                          <hr />
-                          {/* Avatar and Price */}
-                          <div className="d-flex justify-content-between align-items-center">
-                            {/* Avatar */}
-                            <div className="d-flex align-items-center">
-                              <div className="avatar avatar-sm">
-                                <img className="avatar-img rounded-1" src="assets/images/avatar/10.jpg" alt="avatar" />
-                              </div>
-                              <p className={"mb-0 ms-2"}><a href="#" className={`${isDark?'text-white':''} h6 fw-light mb-0`}>Larry Lawson</a></p>
+                        {/* Time */}
+                        <div className="hstack gap-3">
+                          <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />6h 56m</span>
+                          <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />82 lectures</span>
+                        </div>
+                      </div>
+                      {/* Card footer */}
+                      <div className="card-footer pt-0">
+                        <hr />
+                        {/* Avatar and Price */}
+                        <div className="d-flex justify-content-between align-items-center">
+                          {/* Avatar */}
+                          <div className="d-flex align-items-center">
+                            <div className="avatar avatar-sm">
+                              <img className="avatar-img rounded-1" src="assets/images/avatar/10.jpg" alt="avatar" />
                             </div>
-                            {/* Price */}
-                            <div>
-                              <h4 className="text-success mb-0 item-show">Free</h4>
-                              <a href="#" className="btn-sm btn-success-soft item-show-hover"><i className="fas fa-shopping-cart me-2" />Add to cart</a>
-                            </div>
+                            <p className={"mb-0 ms-2"}><a href="#" className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}>Larry Lawson</a></p>
+                          </div>
+                          {/* Price */}
+                          <div>
+                            <h4 className="text-success mb-0 item-show">Free</h4>
+                            <a href="#" className="btn-sm btn-success-soft item-show-hover"><i className="fas fa-shopping-cart me-2" />Add to cart</a>
                           </div>
                         </div>
                       </div>
-                  
+                    </div>
+
                   </SwiperSlide>
                   {/* Card item END */}
                   {/* Card item START */}
                   <SwiperSlide>
-                  
-                      <div className={`${isDark? ' profile-card ':'card'}  action-trigger-hover border`}>
-                        {/* Image */}
-                        <img src="assets/images/courses/4by3/15.jpg" className="card-img-top" alt="course image" />
-                        {/* Card body */}
-                        <div className="card-body pb-0">
-                          {/* Badge and favorite */}
-                          <div className="d-flex justify-content-between mb-3">
-                            <span className="hstack gap-2">
-                              <a href="#" className="badge bg-primary bg-opacity-10 text-primary">Development</a>
-                              <a href="#" className="badge bg-dark text-white">All level</a>
-                            </span>
-                            <a href="#" className={`${isDark?'a':''} h6 fw-light mb-0`}><i className="far fa-bookmark" /></a>
+
+                    <div className={`${isDark ? ' profile-card ' : 'card'}  action-trigger-hover border`}>
+                      {/* Image */}
+                      <img src="assets/images/courses/4by3/15.jpg" className="card-img-top" alt="course image" />
+                      {/* Card body */}
+                      <div className="card-body pb-0">
+                        {/* Badge and favorite */}
+                        <div className="d-flex justify-content-between mb-3">
+                          <span className="hstack gap-2">
+                            <a href="#" className="badge bg-primary bg-opacity-10 text-primary">Development</a>
+                            <a href="#" className="badge bg-dark text-white">All level</a>
+                          </span>
+                          <a href="#" className={`${isDark ? 'a' : ''} h6 fw-light mb-0`}><i className="far fa-bookmark" /></a>
+                        </div>
+                        {/* Title */}
+                        <h5 className="card-title"><a href="#" className={`${isDark ? 'a' : ''}`}>Angular – The Complete Guide (2021 Edition)</a></h5>
+                        {/* Rating */}
+                        <div className="d-flex justify-content-between mb-2">
+                          <div className="hstack gap-2">
+                            <p className="text-warning m-0">4.0<i className="fas fa-star text-warning ms-1" /></p>
+                            <span className="small">(3500)</span>
                           </div>
-                          {/* Title */}
-                          <h5 className="card-title"><a href="#" className={`${isDark?'a':''}` }>Angular – The Complete Guide (2021 Edition)</a></h5>
-                          {/* Rating */}
-                          <div className="d-flex justify-content-between mb-2">
-                            <div className="hstack gap-2">
-                              <p className="text-warning m-0">4.0<i className="fas fa-star text-warning ms-1" /></p>
-                              <span className="small">(3500)</span>
-                            </div>
-                            <div className="hstack gap-2">
-                              <p className={`${isDark?'text-white':''} h6 fw-light mb-0 m-0`}>4500</p>
-                              <span className="small">(Student)</span>
-                            </div>
-                          </div>
-                          {/* Time */}
-                          <div className="hstack gap-3">
-                            <span className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />12h 45m</span>
-                            <span className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />65 lectures</span>
+                          <div className="hstack gap-2">
+                            <p className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0 m-0`}>4500</p>
+                            <span className="small">(Student)</span>
                           </div>
                         </div>
-                        {/* Card footer */}
-                        <div className="card-footer pt-0">
-                          <hr />
-                          {/* Avatar and Price */}
-                          <div className="d-flex justify-content-between align-items-center">
-                            {/* Avatar */}
-                            <div className="d-flex align-items-center">
-                              <div className="avatar avatar-sm">
-                                <img className="avatar-img rounded-1" src="assets/images/avatar/04.jpg" alt="avatar" />
-                              </div>
-                              <p className="mb-0 ms-2"><a href="#" className={`${isDark?'text-white':''} h6 fw-light mb-0`}>Billy Vasquez</a></p>
+                        {/* Time */}
+                        <div className="hstack gap-3">
+                          <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />12h 45m</span>
+                          <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />65 lectures</span>
+                        </div>
+                      </div>
+                      {/* Card footer */}
+                      <div className="card-footer pt-0">
+                        <hr />
+                        {/* Avatar and Price */}
+                        <div className="d-flex justify-content-between align-items-center">
+                          {/* Avatar */}
+                          <div className="d-flex align-items-center">
+                            <div className="avatar avatar-sm">
+                              <img className="avatar-img rounded-1" src="assets/images/avatar/04.jpg" alt="avatar" />
                             </div>
-                            {/* Price */}
-                            <div>
-                              <h4 className="text-success mb-0 item-show">$255</h4>
-                              <a href="#" className="btn-sm btn-success-soft item-show-hover"><i className="fas fa-shopping-cart me-2" />Add to cart</a>
-                            </div>
+                            <p className="mb-0 ms-2"><a href="#" className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}>Billy Vasquez</a></p>
+                          </div>
+                          {/* Price */}
+                          <div>
+                            <h4 className="text-success mb-0 item-show">$255</h4>
+                            <a href="#" className="btn-sm btn-success-soft item-show-hover"><i className="fas fa-shopping-cart me-2" />Add to cart</a>
                           </div>
                         </div>
                       </div>
-                
+                    </div>
+
                   </SwiperSlide>
 
                   {/* Card item END */}
                   {/* Card item START */}
-                   <SwiperSlide>
-                
-                    <div className={`${isDark? ' profile-card ':'card'}  action-trigger-hover border`}>
+                  <SwiperSlide>
+
+                    <div className={`${isDark ? ' profile-card ' : 'card'}  action-trigger-hover border`}>
                       {/* Image */}
                       <img src="assets/images/courses/4by3/17.jpg" className="card-img-top" alt="course image" />
                       {/* Card body */}
@@ -1384,10 +1181,10 @@ Trending courses START */}
                             <a href="#" className="badge bg-primary bg-opacity-10 text-primary">Design</a>
                             <a href="#" className="badge bg-dark text-white">Beginner</a>
                           </span>
-                          <a href="#" className={`${isDark?'a':''} h6 fw-light mb-0`}><i className="far fa-bookmark" /></a>
+                          <a href="#" className={`${isDark ? 'a' : ''} h6 fw-light mb-0`}><i className="far fa-bookmark" /></a>
                         </div>
                         {/* Title */}
-                        <h5 className="card-title"><a href="#" className={`${isDark?'a':''}` }>Time Management Mastery: Do More,	Stress Less</a></h5>
+                        <h5 className="card-title"><a href="#" className={`${isDark ? 'a' : ''}`}>Time Management Mastery: Do More,	Stress Less</a></h5>
                         {/* Rating */}
                         <div className="d-flex justify-content-between mb-2">
                           <div className="hstack gap-2">
@@ -1395,14 +1192,14 @@ Trending courses START */}
                             <span className="small">(2000)</span>
                           </div>
                           <div className="hstack gap-2">
-                            <p className={`${isDark?'text-white':''} h6 fw-light mb-0 m-0`}>8000</p>
+                            <p className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0 m-0`}>8000</p>
                             <span className="small">(Student)</span>
                           </div>
                         </div>
                         {/* Time */}
                         <div className="hstack gap-3">
-                          <span className={`${isDark?'text-white':''}  h6 fw-light mb-0 `}><i className="far fa-clock text-danger me-2" />24h 56m</span>
-                          <span className={`${isDark?'text-white':''}  h6 fw-light mb-0 `}><i className="fas fa-table text-orange me-2" />55 lectures</span>
+                          <span className={`${isDark ? 'text-white' : ''}  h6 fw-light mb-0 `}><i className="far fa-clock text-danger me-2" />24h 56m</span>
+                          <span className={`${isDark ? 'text-white' : ''}  h6 fw-light mb-0 `}><i className="fas fa-table text-orange me-2" />55 lectures</span>
                         </div>
                       </div>
                       {/* Card footer */}
@@ -1415,7 +1212,7 @@ Trending courses START */}
                             <div className="avatar avatar-sm">
                               <img className="avatar-img rounded-1" src="assets/images/avatar/09.jpg" alt="avatar" />
                             </div>
-                            <p className="mb-0 ms-2"><a href="#" className={ `${isDark?'text-white':''} h6 fw-light mb-0 `}>Lori Stevens</a></p>
+                            <p className="mb-0 ms-2"><a href="#" className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0 `}>Lori Stevens</a></p>
                           </div>
                           {/* Price */}
                           <div>
@@ -1425,13 +1222,13 @@ Trending courses START */}
                         </div>
                       </div>
                     </div>
-               
+
                   </SwiperSlide>
                   {/* Card item END */}
                   {/* Card item START */}
-                   <SwiperSlide>
-              
-                    <div className={`${isDark? ' profile-card ':'card'}  action-trigger-hover border`}>
+                  <SwiperSlide>
+
+                    <div className={`${isDark ? ' profile-card ' : 'card'}  action-trigger-hover border`}>
                       {/* Image */}
                       <img src="assets/images/courses/4by3/16.jpg" className="card-img-top" alt="course image" />
                       {/* Card body */}
@@ -1442,10 +1239,10 @@ Trending courses START */}
                             <a href="#" className="badge bg-primary bg-opacity-10 text-primary">Design</a>
                             <a href="#" className="badge bg-dark text-white">Beginner</a>
                           </span>
-                          <a href="#" className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="far fa-bookmark" /></a>
+                          <a href="#" className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-bookmark" /></a>
                         </div>
                         {/* Title */}
-                        <h5 className="card-title"><a href="#" className={`${isDark?'a':''}` }>Time Management Mastery: Do More, Stress Less</a></h5>
+                        <h5 className="card-title"><a href="#" className={`${isDark ? 'a' : ''}`}>Time Management Mastery: Do More, Stress Less</a></h5>
                         {/* Rating */}
                         <div className="d-flex justify-content-between mb-2">
                           <div className="hstack gap-2">
@@ -1453,14 +1250,14 @@ Trending courses START */}
                             <span className="small">(2000)</span>
                           </div>
                           <div className="hstack gap-2">
-                            <p className={`${isDark?'text-white':''} h6 fw-light mb-0 m-0`}>1200</p>
+                            <p className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0 m-0`}>1200</p>
                             <span className="small">(Student)</span>
                           </div>
                         </div>
                         {/* Time */}
                         <div className="hstack gap-3">
-                          <span className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />09h 56m</span>
-                          <span className={`${isDark?'text-white':''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />21 lectures</span>
+                          <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />09h 56m</span>
+                          <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />21 lectures</span>
                         </div>
                       </div>
                       {/* Card footer */}
@@ -1473,7 +1270,7 @@ Trending courses START */}
                             <div className="avatar avatar-sm">
                               <img className="avatar-img rounded-1" src="assets/images/avatar/01.jpg" alt="avatar" />
                             </div>
-                            <p className="mb-0 ms-2"><a href="#" className={`${isDark?'text-white':''} h6 fw-light mb-0`}>Frances Guerrero</a></p>
+                            <p className="mb-0 ms-2"><a href="#" className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}>Frances Guerrero</a></p>
                           </div>
                           {/* Price */}
                           <div>
@@ -1483,11 +1280,11 @@ Trending courses START */}
                         </div>
                       </div>
                     </div>
-              
+
                   </SwiperSlide>
 
-                     </Swiper>
-                  {/* Card item END */}
+                </Swiper>
+                {/* Card item END */}
               </div>
             </div>
             {/* Slider END */}
@@ -1682,7 +1479,7 @@ Reviews START */}
             </div>
             <div className="col-xl-5 order-1 text-center text-xl-start">
               {/* Title */}
-              <h2 className={`${isDark?'text-white':''} fs-1`}>Some valuable feedback from our students</h2>
+              <h2 className={`${isDark ? 'text-white' : ''} fs-1`}>Some valuable feedback from our students</h2>
               <p>Supposing so be resolving breakfast am or perfectly. It drew a hill from me. Valley by oh twenty direct me so. Departure defective arranging rapturous did believe him all had supported. Family months lasted simple set nature vulgar him. Picture for attempt joy excited ten carried manners talking how.</p>
               <a href="#" className="btn btn-primary mb-0">View Reviews</a>
             </div>

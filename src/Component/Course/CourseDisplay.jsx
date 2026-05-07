@@ -133,12 +133,12 @@ function CourseDisplay(props) {
                 {/* Card item START */}
 
                 {
-                  filterCourse?.map((v) => (
+                  filterCourse?.slice(0,8).map((v) => (
                     <div className="col-sm-6 col-lg-4 col-xl-3">
                       <NavLink to={`/Course_Detail/${v._id}`}>
                       <div className="card shadow h-100">
                         {/* Image */}
-                        <Carousel>
+                        <Carousel indicators={false}>
                           {
                             v.course_img.map(v => (
                               <img src={v.url} className="card-img-top" alt="course image"
@@ -161,7 +161,7 @@ function CourseDisplay(props) {
                             <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
                           </div>
                           {/* Title */}
-                          <h5 className="card-title"><a href="#"> {v.name}</a></h5>
+                          <h5 className="card-title"><a href="#">{ v.name.length > 10? v.name.slice(0, 11) + "...": v.name}</a></h5>
                           <p class="mb-2 text-truncate-2">{v.description}</p>
                           {/* Rating star */}
                           <ul className="list-inline mb-0">
