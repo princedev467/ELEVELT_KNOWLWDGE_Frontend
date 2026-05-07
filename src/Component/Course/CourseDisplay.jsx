@@ -151,7 +151,6 @@ function CourseDisplay(props) {
 
                             ))
                           }
-
                         </Carousel>
                         {/* Card body */}
                         <div className="card-body pb-0">

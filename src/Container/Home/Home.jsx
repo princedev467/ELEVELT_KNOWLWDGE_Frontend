@@ -29,15 +29,15 @@ function Home(props) {
 
   const parentCategoryData = Categorydata?.category?.filter((v) => v.parent_category_id === null);
 
-    const { data: courseData, isLoading, isError } = useGetCourseQuery(); //get Data
-    console.log("course", courseData);
-  
-    let filterCourseData=courseData?.data?.filter((v)=>v.category_id===category_id);
-    console.log(filterCourseData);
-    
-    let course=category_id?filterCourseData:courseData?.data;
-    console.log(course);
-    
+  const { data: courseData, isLoading, isError } = useGetCourseQuery(); //get Data
+  console.log("course", courseData);
+
+  let filterCourseData = courseData?.data?.filter((v) => v.category_id === category_id);
+  console.log(filterCourseData);
+
+  let course = category_id ? filterCourseData : courseData?.data;
+  console.log(course);
+
   return (
     <main>
       {/* =======================
@@ -380,10 +380,10 @@ Popular course START */}
 
                 return (
                   <li className="nav-item me-2 me-sm-5">
-                    <button className="nav-link mb-2 mb-md-0" onClick={()=>setCategory_id(v._id)}
+                    <button className="nav-link mb-2 mb-md-0" onClick={() => setCategory_id(v._id)}
                       id={`course-pills-tab-${i}`} data-bs-toggle="pill"
                       data-bs-target={`#course-pills-tabs-${i}`} type="button"
-                      role="tab" aria-controls={`course-pills-tabs-${i}`} aria-selected="false">{v.name.length>20?v.name.slice(0,20):v.name}</button>
+                      role="tab" aria-controls={`course-pills-tabs-${i}`} aria-selected="false">{v.name.length > 20 ? v.name.slice(0, 20) : v.name}</button>
                   </li>
                 )
               })
@@ -403,54 +403,54 @@ Popular course START */}
               <div className="row g-4">
                 {/* Card item START */}
                 {
-                  course?.slice(0,8)?.map((v)=>(
-                           <div className="col-sm-6 col-lg-4 col-xl-3">
-                  <div className="card  shadow h-100 ">
-                    {/* Image */}
-                      <Carousel indicators={false}>
-                    {   
-                    v.course_img.map(v1 => ( 
-                    <img src={v1.url} className="card-img-top" alt="course image" style={{
-                              width: "100%",
-                              height: "40vh",
-                              // objectFit: "contain",
-                              borderRadius: "8px"
-                            }} />
-                    ))
-                  }
-                    </Carousel>
-                    {/* Card body */}
-                    <div className="card-body pb-0">
-                      {/* Badge and favorite */}
-                      <div className="d-flex justify-content-between mb-2">
-                        <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
-                        <a href="#" className="h6 mb-0"><i className="far fa-heart" /></a>
+                  course?.slice(0, 8)?.map((v) => (
+                    <div className="col-sm-6 col-lg-4 col-xl-3">
+                      <div className="card  shadow h-100 ">
+                        {/* Image */}
+                        <Carousel indicators={false}>
+                          {
+                            v.course_img.map(v1 => (
+                              <img src={v1.url} className="card-img-top" alt="course image" style={{
+                                width: "100%",
+                                height: "40vh",
+                                // objectFit: "contain",
+                                borderRadius: "8px"
+                              }} />
+                            ))
+                          }
+                        </Carousel>
+                        {/* Card body */}
+                        <div className="card-body pb-0">
+                          {/* Badge and favorite */}
+                          <div className="d-flex justify-content-between mb-2">
+                            <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
+                            <a href="#" className="h6 mb-0"><i className="far fa-heart" /></a>
+                          </div>
+                          {/* Title */}
+                          <h5 className="card-title fw-normal"><a href="#"> {v.name.length > 10 ? v.name.slice(0, 11) + "..." : v.name}</a></h5>
+                          <p className="mb-2 text-truncate-2">{v.description}</p>
+                          {/* Rating star */}
+                          <ul className="list-inline mb-0">
+                            <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
+                            <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
+                            <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
+                            <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
+                            <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
+                            <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0`}>4.0/5.0</li>
+                          </ul>
+                        </div>
+                        {/* Card footer */}
+                        <div className="card-footer pt-0 pb-3">
+                          <hr />
+                          <div className="d-flex justify-content-between">
+                            <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />12h 56m</span>
+                            <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />15 lectures</span>
+                          </div>
+                        </div>
                       </div>
-                      {/* Title */}
-                      <h5 className="card-title fw-normal"><a href="#"> {v.name.length > 10? v.name.slice(0, 11) + "...": v.name}</a></h5>
-                      <p className="mb-2 text-truncate-2">{v.description}</p>
-                      {/* Rating star */}
-                      <ul className="list-inline mb-0">
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                        <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0`}>4.0/5.0</li>
-                      </ul>
                     </div>
-                    {/* Card footer */}
-                    <div className="card-footer pt-0 pb-3">
-                      <hr />
-                      <div className="d-flex justify-content-between">
-                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />12h 56m</span>
-                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />15 lectures</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
                   ))
-            
+
                 }
                 {/* Card item END */}
               </div> {/* Row END */}
