@@ -495,20 +495,20 @@ Popular course START */}
                 </div> */}
                 {/* Card item END */}
                 {/* Card item START */}
-                <div className="col-sm-6 col-lg-4 col-xl-3">
+                {/* <div className="col-sm-6 col-lg-4 col-xl-3">
                   <div className="card  shadow h-100 ">
-                    {/* Image */}
+                    Image
                     <img src="assets/images/courses/4by3/06.jpg" className="card-img-top" alt="course image" />
                     <div className="card-body pb-0">
-                      {/* Badge and favorite */}
+                      Badge and favorite
                       <div className="d-flex justify-content-between mb-2">
                         <a href="#" className="badge bg-info bg-opacity-10 text-info">Intermediate</a>
                         <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
                       </div>
-                      {/* Title */}
+                      Title
                       <h5 className="card-title fw-normal"><a href="#" className={`${isDark ? 'a' : ''}`}>Angular – The Complete Guider</a></h5>
                       <p className="text-truncate-2 mb-2">Rooms oh fully taken by worse do. Points afraid but may end.</p>
-                      {/* Rating star */}
+                      Rating star
                       <ul className="list-inline mb-0">
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
@@ -518,7 +518,7 @@ Popular course START */}
                         <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.5/5.0</li>
                       </ul>
                     </div>
-                    {/* Card footer */}
+                    Card footer
                     <div className="card-footer pt-0 pb-3">
                       <hr />
                       <div className="d-flex justify-content-between mt-2">
@@ -527,23 +527,23 @@ Popular course START */}
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* Card item END */}
                 {/* Card item START */}
-                <div className="col-sm-6 col-lg-4 col-xl-3">
+                {/* <div className="col-sm-6 col-lg-4 col-xl-3">
                   <div className="card  shadow h-100 ">
-                    {/* Image */}
+                    Image
                     <img src="assets/images/courses/4by3/07.jpg" className="card-img-top" alt="course image" />
                     <div className="card-body pb-0">
-                      {/* Badge and favorite */}
+                      Badge and favorite
                       <div className="d-flex justify-content-between mb-2">
                         <a href="#" className="badge bg-success bg-opacity-10 text-success">Beginner</a>
                         <a href="#" className="text-danger"><i className="fas fa-heart" /></a>
                       </div>
-                      {/* Title */}
+                      Title
                       <h5 className="card-title fw-normal"><a href="#" className={`${isDark ? 'a' : ''}`}>Deep Learning with React-Native</a></h5>
                       <p className="text-truncate-2 mb-2">Far advanced settling say finished raillery. Offered chiefly farther</p>
-                      {/* Rating star */}
+                      Rating star
                       <ul className="list-inline mb-0">
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
@@ -553,7 +553,7 @@ Popular course START */}
                         <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.0/5.0</li>
                       </ul>
                     </div>
-                    {/* Card footer */}
+                    Card footer
                     <div className="card-footer pt-0 pb-3">
                       <hr />
                       <div className="d-flex justify-content-between">
@@ -562,23 +562,23 @@ Popular course START */}
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* Card item END */}
                 {/* Card item START */}
-                <div className="col-sm-6 col-lg-4 col-xl-3">
+                {/* <div className="col-sm-6 col-lg-4 col-xl-3">
                   <div className="card  shadow h-100 ">
-                    {/* Image */}
+                    Image
                     <img src="assets/images/courses/4by3/09.jpg" className="card-img-top" alt="course image" />
                     <div className="card-body pb-0">
-                      {/* Badge and favorite */}
+                      Badge and favorite
                       <div className="d-flex justify-content-between mb-2">
                         <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
                         <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
                       </div>
-                      {/* Title */}
+                      Title
                       <h5 className="card-title fw-normal"><a href="#" className={`${isDark ? 'a' : ''}`}>JavaScript: Full Understanding</a></h5>
                       <p className="text-truncate-2 mb-2">Far advanced settling say finished raillery. Offered chiefly farther</p>
-                      {/* Rating star */}
+                      Rating star
                       <ul className="list-inline mb-0">
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
@@ -588,7 +588,7 @@ Popular course START */}
                         <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0 `}>5.0/5.0</li>
                       </ul>
                     </div>
-                    {/* Card footer */}
+                    Card footer
                     <div className="card-footer pt-0 pb-3">
                       <hr />
                       <div className="d-flex justify-content-between">
@@ -597,23 +597,23 @@ Popular course START */}
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* Card item END */}
                 {/* Card item START */}
-                <div className="col-sm-6 col-lg-4 col-xl-3">
+                {/* <div className="col-sm-6 col-lg-4 col-xl-3">
                   <div className="card  shadow h-100 ">
-                    {/* Image */}
+                    Image
                     <img src="assets/images/courses/4by3/10.jpg" className="card-img-top" alt="course image" />
                     <div className="card-body pb-0">
-                      {/* Badge and favorite */}
+                      Badge and favorite
                       <div className="d-flex justify-content-between mb-2">
                         <a href="#" className="badge bg-info bg-opacity-10 text-info">Intermediate</a>
                         <a href="#" className="text-danger"><i className="fas fa-heart" /></a>
                       </div>
-                      {/* Title */}
+                      Title
                       <h5 className="card-title fw-normal"><a href="#" className={`${isDark ? 'a' : ''}`}>Bootstrap 5 From Scratch</a></h5>
                       <p className="text-truncate-2 mb-2">Far advanced settling say finished raillery. Offered chiefly farther</p>
-                      {/* Rating star */}
+                      Rating star
                       <ul className="list-inline mb-0">
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
@@ -623,7 +623,7 @@ Popular course START */}
                         <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.5/5.0</li>
                       </ul>
                     </div>
-                    {/* Card footer */}
+                    Card footer
                     <div className="card-footer pt-0 pb-3">
                       <hr />
                       <div className="d-flex justify-content-between mt-2">
@@ -632,23 +632,23 @@ Popular course START */}
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* Card item END */}
                 {/* Card item START */}
-                <div className="col-sm-6 col-lg-4 col-xl-3">
+                {/* <div className="col-sm-6 col-lg-4 col-xl-3">
                   <div className="card  shadow h-100 ">
-                    {/* Image */}
+                    Image
                     <img src="assets/images/courses/4by3/13.jpg" className="card-img-top" alt="course image" />
                     <div className="card-body pb-0">
-                      {/* Badge and favorite */}
+                      Badge and favorite
                       <div className="d-flex justify-content-between mb-2">
                         <a href="#" className="badge bg-success bg-opacity-10 text-success">Beginner</a>
                         <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
                       </div>
-                      {/* Title */}
+                      Title
                       <h5 className="card-title fw-normal"><a href="#" className={`${isDark ? 'a' : ''}`}>PHP with - CMS Project</a></h5>
                       <p className="text-truncate-2 mb-2">Far advanced settling say finished raillery. Offered chiefly farther</p>
-                      {/* Rating star */}
+                      Rating star
                       <ul className="list-inline mb-0">
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
@@ -658,7 +658,7 @@ Popular course START */}
                         <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.0/5.0</li>
                       </ul>
                     </div>
-                    {/* Card footer */}
+                    Card footer
                     <div className="card-footer pt-0 pb-3">
                       <hr />
                       <div className="d-flex justify-content-between">
@@ -667,7 +667,7 @@ Popular course START */}
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* Card item END */}
               </div>
             </div>
