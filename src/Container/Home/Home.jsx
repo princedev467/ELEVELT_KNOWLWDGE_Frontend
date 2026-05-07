@@ -460,20 +460,20 @@ Popular course START */}
             <div className="tab-pane fade" id="course-pills-tabs-2" role="tabpanel" aria-labelledby="course-pills-tab-2">
               <div className="row g-4">
                 {/* Card item START */}
-                <div className="col-sm-6 col-lg-4 col-xl-3">
+                {/* <div className="col-sm-6 col-lg-4 col-xl-3">
                   <div className="card  shadow h-100 ">
-                    {/* Image */}
+                    Image
                     <img src="assets/images/courses/4by3/05.jpg" className="card-img-top" alt="course image" />
                     <div className="card-body pb-0">
-                      {/* Badge and favorite */}
+                      Badge and favorite
                       <div className="d-flex justify-content-between mb-2">
                         <a href="#" className="badge bg-success bg-opacity-10 text-success">Beginner</a>
                         <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
                       </div>
-                      {/* Title */}
+                      Title
                       <h5 className="card-title fw-normal"><a href="#" className={`${isDark ? 'a' : ''}`}>The Complete Web Development in python</a></h5>
                       <p className="text-truncate-2 mb-2">Mention Mr manners opinion if garrets enabled.</p>
-                      {/* Rating star */}
+                      Rating star
                       <ul className="list-inline mb-0">
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                         <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
@@ -483,7 +483,7 @@ Popular course START */}
                         <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.5/5.0</li>
                       </ul>
                     </div>
-                    {/* Card footer */}
+                    Card footer
                     <div className="card-footer pt-0 pb-3">
                       <hr />
                       <div className="d-flex justify-content-between mt-2">
@@ -492,7 +492,7 @@ Popular course START */}
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* Card item END */}
                 {/* Card item START */}
                 <div className="col-sm-6 col-lg-4 col-xl-3">
