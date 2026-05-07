@@ -3,7 +3,8 @@ import { ThemeContext } from '../../context/theme.context';
 import logo from '../../../public/assets/images/logo.svg';
 import google_play from '../../../public/assets/images/client/google-play.svg'
 import app_store  from '../../../public/assets/images/client/app-store.svg'
-import 'font-awesome/css/font-awesome.min.css';
+// import 'font-awesome/css/font-awesome.min.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 function Footer(props) {
    const themeData = useContext(ThemeContext);
