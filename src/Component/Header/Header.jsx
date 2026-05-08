@@ -511,18 +511,19 @@ function Header(props) {
                     // dispatch(CheakAuthUser());
                   }}
                  className="btn btn-sm btn-primary-soft me-2 mb-4 mb-sm-0 border-primary rounded"
+                style={{padding:'8px 10px',fontSize:'15px'}}
                 >
                   Sign Out
                 </a>
               ) : (
                 <>
                   <div className="d-sm-flex align-items-center justify-content-center justify-content-lg-start">
-                    <NavLink className="btn btn-sm btn-primary-soft me-2 mb-4 mb-sm-0 border-primary" to="/Auth">
+                    <NavLink className="btn btn-sm btn-primary-soft me-2 mb-4 mb-sm-0 border-primary" style={{padding:'6px 8px',fontSize:'15px'}} to="/Auth">
                       Sign in as User
                     </NavLink>
 
 
-                    <NavLink className="btn btn-sm btn-primary-soft me-2 mb-4 mb-sm-0 border-primary" to="/Auth/Instructor">
+                    <NavLink className="btn btn-sm btn-primary-soft me-2 mb-4 mb-sm-0 border-primary" style={{padding:'6px 8px',fontSize:'15px'}} to="/Auth/Instructor">
                       Sign in as Instructor
                     </NavLink>
                   </div>

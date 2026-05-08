@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useDeleteCartMutation, useGetCartQuery } from '../../Redux/Api/Cart.Api';
+import { useDeleteCartMutation, useGetCartQuery, useUpdateCartMutation } from '../../Redux/Api/Cart.Api';
 import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
 import Carousel from 'react-material-ui-carousel';
 
@@ -18,13 +18,30 @@ function Cart(props) {
   let cartData = cart?.data
 
 
-  let cartUser = cartData?.find((v) => v.user_id === auth.auth._id)
+  let cartUser = cartData?.find((v) => v.user_id === auth.auth?._id)
   console.log(cartUser);
 
 
   const { data: courseData, isLoading, isError } = useGetCourseQuery(); //get Data
   console.log("course", courseData);
 
+
+  const [updateData] = useUpdateCartMutation();
+  const handledelete=(id)=>{
+  //  let itemsindex= cartUser.items.findIndex((v)=>v._id===id);
+  //   console.log(itemsindex);
+
+
+   let deletdata= cartUser?.items.filter((v)=>v._id!==id);
+   console.log(deletdata);
+
+    updateData({
+        _id: cartUser._id,
+        user_id: auth.auth._id,
+        items: deletdata
+      })
+   
+  }
   return (
     <main>
       {/* =======================
@@ -121,7 +138,7 @@ Page content START */}
                               {/* Action item */}
                               <td>
                                 <a href="#" className="btn btn-sm btn-success-soft px-2 me-1 mb-1 mb-md-0"><i className="far fa-fw fa-edit" /></a>
-                                <button className="btn btn-sm btn-danger-soft px-2 mb-0" onClick={()=>deleteData(v._id)}><i className="fas fa-fw fa-times" /></button>
+                                <button className="btn btn-sm btn-danger-soft px-2 mb-0" onClick={()=>handledelete(v._id)}><i className="fas fa-fw fa-times" /></button>
                               </td>
                             </tr>
                           )
