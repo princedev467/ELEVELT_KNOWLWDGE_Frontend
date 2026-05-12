@@ -14,6 +14,7 @@ import Section from '../Admin/Container/SubCategory/Section';
 import Quiz from '../Admin/Container/Quiz/Quiz';
 import QuizContent from '../Admin/Container/Quiz/QuizContent';
 import Content from '../Admin/Container/Content/Content';
+import Coupon from '../Admin/Container/Coupon/Coupon';
 
 function AdminRouts(props) {
 
@@ -50,6 +51,7 @@ function AdminRouts(props) {
            <Route path='/course/:id' element={<Course />} > </Route>
           <Route path='/quiz' element={<Quiz />} > </Route>
            <Route path='/content' element={<Content />} > </Route>
+             <Route path='/coupon' element={<Coupon />} > </Route>
           {/* <Route path='/quizPage/:id' element={<QuizPage />} > </Route> */}
           <Route path='/quizContent/:id' element={<QuizContent />} > </Route>
         </Routes>

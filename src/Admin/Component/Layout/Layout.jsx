@@ -29,6 +29,8 @@ import BedtimeIcon from '@mui/icons-material/Bedtime';
 import QuizIcon from '@mui/icons-material/Quiz';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import { useSelector } from 'react-redux';
+import DiscountIcon from '@mui/icons-material/Discount';
+
 
 export default function Layout({ children }) {
   const [checked, setChecked] = React.useState(true);
@@ -61,10 +63,10 @@ export default function Layout({ children }) {
 
   let storeuser = null;
 
-if (data) {
-  storeuser = JSON.parse(data);
-}
-  
+  if (data) {
+    storeuser = JSON.parse(data);
+  }
+
 
   const openedMixin = (theme) => ({
     width: drawerWidth,
@@ -160,29 +162,32 @@ if (data) {
     setOpen(false);
   };
 
-    const auth = useSelector(state => state.auth)
-      console.log("auth", auth);
-  
-  
+  const auth = useSelector(state => state.auth)
+  console.log("auth", auth);
+
+
 
   let listBox
-  if (auth?.auth?.role==='Instructor') {
+  if (auth?.auth?.role === 'Instructor') {
 
     listBox = [
       { label: 'Section', icon: <AppsIcon />, to: '/admin/Section' },
       { label: 'Course', icon: <FoundationIcon />, to: '/admin/course' },
       { label: 'Quiz', icon: <QuizIcon />, to: '/admin/quiz' },
-      { label: 'Content', icon: <ContentPasteSearchIcon />, to: '/admin/content' }
+      { label: 'Content', icon: <ContentPasteSearchIcon />, to: '/admin/content' },
+      { label: 'Coupon', icon: <DiscountIcon />, to: '/admin/coupon' }
     ]
 
   } else {
     listBox = [
       { label: 'Dashboard', icon: <DashboardIcon />, to: '/admin/Dashboard' },
       { label: 'Category', icon: <CategoryIcon />, to: '/admin/category' },
-       { label: 'Section', icon: <AppsIcon />, to: '/admin/Section' },
+      { label: 'Section', icon: <AppsIcon />, to: '/admin/Section' },
       { label: 'Course', icon: <FoundationIcon />, to: '/admin/course' },
       { label: 'Quiz', icon: <QuizIcon />, to: '/admin/quiz' },
-      { label: 'Content', icon: <ContentPasteSearchIcon />, to: '/admin/content' }
+      { label: 'Content', icon: <ContentPasteSearchIcon />, to: '/admin/content' },
+      { label: 'Coupon', icon: <DiscountIcon />, to: '/admin/coupon' }
+
 
     ]
   }
@@ -209,7 +214,7 @@ if (data) {
           </IconButton>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between", width: "100%" }}>
             <Typography variant="h6" sx={{ flexGrow: 1, gap: 1 }}>
-             {auth?.auth?.role==='Instructor'?'Instructor Panel': 'Admin Panel'}
+              {auth?.auth?.role === 'Instructor' ? 'Instructor Panel' : 'Admin Panel'}
             </Typography>
             <IconButton size="large" onClick={() => themeData.ToggleTheme(themeData.theme)}>
               {

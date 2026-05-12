@@ -25,6 +25,7 @@ function Cart(props) {
   const { data: courseData, isLoading, isError } = useGetCourseQuery(); //get Data
   console.log("course", courseData);
 
+     
 
   const [updateData] = useUpdateCartMutation();
   const handledelete=(id)=>{
@@ -40,8 +41,18 @@ function Cart(props) {
         user_id: auth.auth._id,
         items: deletdata
       })
-   
+      console.log(cartUser);
+      
+
+     
   }
+    const OrignalPrice = cartUser?.items?.reduce((acc, v) => { 
+        let cur = v.price.replace(/[^\d.]/g, '');
+        return acc + Number(cur);
+    }, 0)
+
+    console.log(OrignalPrice);
+   
   return (
     <main>
       {/* =======================
@@ -95,7 +106,7 @@ Page content START */}
                       {
                         cartUser?.items?.map((v) => {
 
-                          let cartCourse = courseData?.data?.filter((v1) => v1._id === v.course);
+                         let cartCourse = courseData?.data?.filter((v1) => v1._id === v.course);
                           console.log(cartCourse);
 
                           return (
@@ -171,10 +182,12 @@ Page content START */}
                 {/* Title */}
                 <h4 className="mb-3">Cart Total</h4>
                 {/* Price and detail */}
+              {  
                 <ul className="list-group list-group-borderless mb-2">
+                  
                   <li className="list-group-item px-0 d-flex justify-content-between">
                     <span className="h6 fw-light mb-0">Original Price</span>
-                    <span className="h6 fw-light mb-0 fw-bold">$500</span>
+                    <span className="h6 fw-light mb-0 fw-bold">${OrignalPrice?OrignalPrice:0}</span>
                   </li>
                   <li className="list-group-item px-0 d-flex justify-content-between">
                     <span className="h6 fw-light mb-0">Coupon Discount</span>
@@ -184,7 +197,7 @@ Page content START */}
                     <span className="h5 mb-0">Total</span>
                     <span className="h5 mb-0">$480</span>
                   </li>
-                </ul>
+                </ul>}
                 {/* Button */}
                 <div className="d-grid">
                   <a href="checkout.html" className="btn btn-lg btn-success">Proceed to Checkout</a>
