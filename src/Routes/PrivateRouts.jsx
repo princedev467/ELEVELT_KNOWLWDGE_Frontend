@@ -5,20 +5,6 @@ import { userCheck } from '../Redux/slice/auth.slice';
 
 function PrivateRouts(props) {
 
-  // const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   dispatch(userCheck());
-  // }, []);
-
-
-  // const auth = useSelector(state => state.auth);
-  // const user = auth?.auth;
-  // console.log(user);
-  
-  // const isLoading = auth?.isLoading;
-
-  // console.log('PrivateRouts → isLoading:', isLoading, '| user:', user);
 const data = localStorage.getItem("user");
 
 let storeuser = null;

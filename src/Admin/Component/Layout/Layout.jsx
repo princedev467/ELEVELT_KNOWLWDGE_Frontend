@@ -189,7 +189,7 @@ export default function Layout({ children }) {
       { label: 'Coupon', icon: <DiscountIcon />, to: '/admin/coupon' }
 
 
-    ]
+    ];
   }
 
 
