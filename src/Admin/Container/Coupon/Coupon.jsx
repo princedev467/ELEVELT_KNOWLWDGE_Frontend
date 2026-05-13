@@ -88,9 +88,11 @@ function Coupon(props) {
     const columns = [
         { field: 'name', headerName: 'Name', width: 130 },
         { field: 'discount', headerName: 'Discount', width: 130 },
-        { field: 'startDate', headerName: 'Start Date', width: 260 },
-        { field: 'expiryDate', headerName: 'Expiry Date', width: 260 },
-        { field: 'userLimit', headerName: 'Limit', width: 260 },
+        { field: 'startDate', headerName: 'Start Date', width: 220 },
+        { field: 'expiryDate', headerName: 'Expiry Date', width: 220 },
+         { field: 'userLimit', headerName: 'Limit', width: 100 },
+         { field: 'use', headerName: 'coupon Use', width: 100 },
+       
         {
             field: 'action', headerName: 'Action', width: 170, renderCell: (parem) => (
                 <Stack direction="row" spacing={1}>

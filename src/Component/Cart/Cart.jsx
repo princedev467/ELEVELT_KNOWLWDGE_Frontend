@@ -1,20 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDeleteCartMutation, useGetCartQuery, useUpdateCartMutation } from '../../Redux/Api/Cart.Api';
 import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
 import Carousel from 'react-material-ui-carousel';
+import { useGetCouponQuery, useUpdateCouponMutation } from '../../Redux/Api/coupon.Api';
 
 function Cart(props) {
+
+  const [couponcode, setCouponCode] = useState('');
+  const [discount, setDiscount] = useState('');
+  const [selectedCoupon, setSelectedCoupon] = useState(null);
 
   const auth = useSelector(state => state.auth);
   console.log(auth);
 
 
+  // console.log(couponcode);
+
   //delete cart items
-  const [deleteData]=useDeleteCartMutation();
+  const [deleteData] = useDeleteCartMutation();
 
   const { data: cart } = useGetCartQuery();
   console.log(cart?.data);
+
   let cartData = cart?.data
 
 
@@ -25,34 +33,95 @@ function Cart(props) {
   const { data: courseData, isLoading, isError } = useGetCourseQuery(); //get Data
   console.log("course", courseData);
 
-     
+
 
   const [updateData] = useUpdateCartMutation();
-  const handledelete=(id)=>{
-  //  let itemsindex= cartUser.items.findIndex((v)=>v._id===id);
-  //   console.log(itemsindex);
 
 
-   let deletdata= cartUser?.items.filter((v)=>v._id!==id);
-   console.log(deletdata);
+  const [updateCoupon] = useUpdateCouponMutation();
+
+  const handledelete = (id) => {
+    //  let itemsindex= cartUser.items.findIndex((v)=>v._id===id);
+    //   console.log(itemsindex);
+
+
+    let deletdata = cartUser?.items.filter((v) => v._id !== id);
+    console.log(deletdata);
 
     updateData({
-        _id: cartUser._id,
-        user_id: auth.auth._id,
-        items: deletdata
-      })
-      console.log(cartUser);
-      
+      _id: cartUser._id,
+      user_id: auth.auth._id,
+      items: deletdata
+    })
+    console.log(cartUser);
 
-     
+
+
   }
-    const OrignalPrice = cartUser?.items?.reduce((acc, v) => { 
-        let cur = v.price.replace(/[^\d.]/g, '');
-        return acc + Number(cur);
-    }, 0)
 
-    console.log(OrignalPrice);
-   
+  const { data: coupon } = useGetCouponQuery();
+  console.log(coupon?.data);
+
+
+  const OrignalPrice = cartUser?.items?.reduce((acc, v) => {
+    let cur = v.price.replace(/[^\d.]/g, '');
+    return acc + Number(cur);
+  }, 0)
+
+  console.log(OrignalPrice);
+
+
+
+  const handleCoupon = () => {
+    
+    const discountper = coupon?.data.find(
+      (v) => v.name === couponcode
+    );
+
+    setSelectedCoupon(discountper);
+    if (discountper) {
+      const discoutnum = discountper.discount.replace('%', '');
+
+      setDiscount(Number(discoutnum));
+      setSelectedCoupon(discountper);
+    } else {
+      console.log('invalid coupon code');
+      setDiscount(0);
+      setSelectedCoupon(null);
+    }
+  };
+
+  console.log(discount);
+
+  // if(!cartUser?.items){
+  //   setDiscount('');
+  // }
+
+  // FINAL TOTAL
+  const discountPrice = OrignalPrice * discount / 100;
+  let finalPrice = OrignalPrice - discountPrice;
+  console.log(finalPrice);
+
+
+  const handleuse = () => {
+    if (!selectedCoupon) return;
+
+    if (selectedCoupon.userLimit > selectedCoupon.use) {
+      
+      updateCoupon({
+        _id: selectedCoupon._id,
+        use: selectedCoupon.use + 1,
+      });
+
+    } else {
+      console.log('Invalid Coupon Code');
+
+    }
+
+  }
+
+
+
   return (
     <main>
       {/* =======================
@@ -106,7 +175,7 @@ Page content START */}
                       {
                         cartUser?.items?.map((v) => {
 
-                         let cartCourse = courseData?.data?.filter((v1) => v1._id === v.course);
+                          let cartCourse = courseData?.data?.filter((v1) => v1._id === v.course);
                           console.log(cartCourse);
 
                           return (
@@ -124,7 +193,7 @@ Page content START */}
                                             <Carousel indicators={false}>
                                               {
                                                 v2.course_img.map(v3 => (
-                                                  <img src={v3.url} className="rounded" alt="course image"/>
+                                                  <img src={v3.url} className="rounded" alt="course image" />
 
                                                 ))
                                               }
@@ -132,7 +201,7 @@ Page content START */}
                                             </Carousel>
                                           }
                                         </div>
-                        
+
                                         {/* Title */}
                                         <h6 className="mb-0 ms-lg-3 mt-2 mt-lg-0">
                                           <a href="#">{v2.name}</a>
@@ -149,13 +218,13 @@ Page content START */}
                               {/* Action item */}
                               <td>
                                 <a href="#" className="btn btn-sm btn-success-soft px-2 me-1 mb-1 mb-md-0"><i className="far fa-fw fa-edit" /></a>
-                                <button className="btn btn-sm btn-danger-soft px-2 mb-0" onClick={()=>handledelete(v._id)}><i className="fas fa-fw fa-times" /></button>
+                                <button className="btn btn-sm btn-danger-soft px-2 mb-0" onClick={() => handledelete(v._id)}><i className="fas fa-fw fa-times" /></button>
                               </td>
                             </tr>
                           )
                         })
                       }
-                     
+
                     </tbody>
                   </table>
                 </div>
@@ -163,8 +232,8 @@ Page content START */}
                 <div className="row g-3 mt-2">
                   <div className="col-md-6">
                     <div className="input-group">
-                      <input className="form-control form-control " placeholder="COUPON CODE" />
-                      <button type="button" className="btn btn-primary">Apply coupon</button>
+                      <input className="form-control form-control " placeholder="COUPON CODE" onChange={(e) => setCouponCode(e.target.value)} />
+                      <button type="button" className="btn btn-primary" onClick={handleCoupon}>Apply coupon</button>
                     </div>
                   </div>
                   {/* Update button */}
@@ -182,25 +251,29 @@ Page content START */}
                 {/* Title */}
                 <h4 className="mb-3">Cart Total</h4>
                 {/* Price and detail */}
-              {  
-                <ul className="list-group list-group-borderless mb-2">
-                  
-                  <li className="list-group-item px-0 d-flex justify-content-between">
-                    <span className="h6 fw-light mb-0">Original Price</span>
-                    <span className="h6 fw-light mb-0 fw-bold">${OrignalPrice?OrignalPrice:0}</span>
-                  </li>
-                  <li className="list-group-item px-0 d-flex justify-content-between">
-                    <span className="h6 fw-light mb-0">Coupon Discount</span>
-                    <span className="text-danger">-$20</span>
-                  </li>
-                  <li className="list-group-item px-0 d-flex justify-content-between">
-                    <span className="h5 mb-0">Total</span>
-                    <span className="h5 mb-0">$480</span>
-                  </li>
-                </ul>}
+                {
+                  <ul className="list-group list-group-borderless mb-2">
+
+                    <li className="list-group-item px-0 d-flex justify-content-between">
+                      <span className="h6 fw-light mb-0">Original Price</span>
+                      <span className="h6 fw-light mb-0 fw-bold">${OrignalPrice ? OrignalPrice : 0}</span>
+                    </li>
+
+                    {discount && cartUser?.items ?
+                      <li className="list-group-item px-0 d-flex justify-content-between">
+                        <span className="h6 fw-light mb-0">Coupon Discount</span>
+                        <span className="text-danger">{discount + '%'}</span>
+                      </li> :
+                      ''
+                    }
+                    <li className="list-group-item px-0 d-flex justify-content-between">
+                      <span className="h5 mb-0">Total</span>
+                      <span className="h5 mb-0">{finalPrice}</span>
+                    </li>
+                  </ul>}
                 {/* Button */}
                 <div className="d-grid">
-                  <a href="checkout.html" className="btn btn-lg btn-success">Proceed to Checkout</a>
+                  <a className="btn btn-lg btn-success" onClick={handleuse}>Proceed to Checkout</a>
                 </div>
                 {/* Content */}
                 <p className="small mb-0 mt-2 text-center">By completing your purchase, you agree to these <a href="#"><strong>Terms of Service</strong></a></p>
