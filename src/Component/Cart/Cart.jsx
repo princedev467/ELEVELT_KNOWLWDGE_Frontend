@@ -4,6 +4,8 @@ import { useDeleteCartMutation, useGetCartQuery, useUpdateCartMutation } from '.
 import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
 import Carousel from 'react-material-ui-carousel';
 import { useGetCouponQuery, useUpdateCouponMutation } from '../../Redux/Api/coupon.Api';
+import { NavLink } from 'react-router-dom';
+import Checkout from '../Checkout/Checkout';
 
 function Cart(props) {
 
@@ -73,7 +75,7 @@ function Cart(props) {
 
 
   const handleCoupon = () => {
-    
+
     const discountper = coupon?.data.find(
       (v) => v.name === couponcode
     );
@@ -107,7 +109,7 @@ function Cart(props) {
     if (!selectedCoupon) return;
 
     if (selectedCoupon.userLimit > selectedCoupon.use) {
-      
+
       updateCoupon({
         _id: selectedCoupon._id,
         use: selectedCoupon.use + 1,
@@ -273,7 +275,15 @@ Page content START */}
                   </ul>}
                 {/* Button */}
                 <div className="d-grid">
-                  <a className="btn btn-lg btn-success" onClick={handleuse}>Proceed to Checkout</a>
+                  <NavLink className="btn btn-lg btn-success" to={'/checkout'}
+                   state={{
+                    cartData: cartUser,
+                    finalPrice,
+                    discount,
+                    originalPrice: OrignalPrice
+                  }}
+                    onClick={handleuse} >Proceed to Checkout</NavLink>
+                  {/* <a className="btn btn-lg btn-success" onClick={handleuse}>Proceed to Checkout</a> */}
                 </div>
                 {/* Content */}
                 <p className="small mb-0 mt-2 text-center">By completing your purchase, you agree to these <a href="#"><strong>Terms of Service</strong></a></p>
