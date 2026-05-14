@@ -113,7 +113,7 @@ function Cart(props) {
 try {
 
     const order = await createOrder({
-      amount: finalPrice * 100,
+      amount: finalPrice ,
     }).unwrap();
 
     console.log(order);
