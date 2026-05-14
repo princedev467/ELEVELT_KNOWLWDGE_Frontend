@@ -10,11 +10,11 @@ function Checkout(props) {
 
 
   const [couponcode, setCouponCode] = useState('');
-  const [discount, setDiscount] = useState('');
+  // const [discount, setDiscount] = useState('');
   // const [selectedCoupon, setSelectedCoupon] = useState(null);
 
-  // const location = useLocation();
-  // const { originalPrice } = location.state || {};
+  const location = useLocation();
+  const { discount } = location.state || {};
 
 
 
@@ -82,7 +82,14 @@ function Checkout(props) {
 
   }
 
-  const discountPrice = originalPrice * discount / 100;
+   let discountPrice
+   
+  if(discount){
+    discountPrice=originalPrice * discount / 100
+  }else{
+       discountPrice = 0;
+  }
+   
   let finalPrice = originalPrice - discountPrice;
   console.log(finalPrice);
 
@@ -323,19 +330,19 @@ Page content START */}
                   {/* Order summary START */}
                   <div className="card card-body shadow p-4 mb-4">
                     {/* Title */}
-                    <h4 className="mb-4">Order Summary</h4>
+                    <h4 className="mb-4">Payment Summary</h4>
                     {/* Coupon START */}
                     <div className="mb-3">
-                      <div className="d-flex justify-content-between align-items-center">
+                      {/* <div className="d-flex justify-content-between align-items-center">
                         <span>Transaction code</span>
                         <p className="mb-0 h6 fw-light">AB12365E</p>
-                      </div>
-                      <div className="input-group mt-2">
+                      </div> */}
+                      {/* <div className="input-group mt-2">
                         <input className="form-control form-control" placeholder="COUPON CODE" onChange={(e) => setCouponCode(e.target.value)} />
                         <button type="button" className="btn btn-primary" onClick={handleCoupon}>Apply</button>
-                      </div>
+                      </div> */}
                     </div>
-                    <hr />
+                    {/* <hr /> */}
                     {/* Coupon END */}
 
                     {/* Course item START */}
@@ -415,10 +422,12 @@ Page content START */}
                         <span className="h6 fw-light mb-0">Original Price</span>
                         <span className="h6 fw-light mb-0 fw-bold">${originalPrice}</span>
                       </li>
-                      <li className="list-group-item px-0 d-flex justify-content-between">
+                      {discount?
+                        <li className="list-group-item px-0 d-flex justify-content-between">
                         <span className="h6 fw-light mb-0">Coupon Discount</span>
                         <span className="text-danger">{discount}%</span>
                       </li>
+                      :''}
                       <li className="list-group-item px-0 d-flex justify-content-between">
                         <span className="h5 mb-0">Total</span>
                         <span className="h5 mb-0">${finalPrice}</span>
@@ -426,7 +435,7 @@ Page content START */}
                     </ul>
                     {/* Button */}
                     <div className="d-grid">
-                      <a href="#" className="btn btn-lg btn-success">Place Order</a>
+                      <a href="#" className="btn btn-lg btn-success">Purchase</a>
                     </div>
                     {/* Content */}
                     <p className="small mb-0 mt-2 text-center">By completing your purchase, you agree to

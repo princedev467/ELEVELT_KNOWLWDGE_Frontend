@@ -6,6 +6,8 @@ import Carousel from 'react-material-ui-carousel';
 import { useGetCouponQuery, useUpdateCouponMutation } from '../../Redux/Api/coupon.Api';
 import { NavLink } from 'react-router-dom';
 import Checkout from '../Checkout/Checkout';
+import { useCreateOrderMutation, useVerifyPaymentMutation } from '../../Redux/Api/Payment.Api';
+import { Button } from '@mui/material';
 
 function Cart(props) {
 
@@ -104,8 +106,50 @@ function Cart(props) {
   let finalPrice = OrignalPrice - discountPrice;
   console.log(finalPrice);
 
+  const [createOrder] = useCreateOrderMutation();
+  const [verifyPayment] = useVerifyPaymentMutation();
 
-  const handleuse = () => {
+  const handleuse = async() => {
+
+try {
+
+    const order = await createOrder({
+      amount: finalPrice * 100,
+    }).unwrap();
+
+    console.log(order);
+
+    const options = {
+      key: order.key,
+      amount: order.amount,
+      currency: order.currency,
+      order_id: order.id,
+
+      name: "Acme Corp",
+      description: "Test Transaction",
+
+      prefill: {
+        name: "Elevent Knowledge",
+        email: "gaurav.kumar@example.com",
+        contact: "9999999999",
+      },
+
+      theme: {
+        color: "#F37254",
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+
+    rzp.open();
+
+  } catch (error) {
+
+    console.log("ERROR", error);
+
+  }
+
+
     if (!selectedCoupon) return;
 
     if (selectedCoupon.userLimit > selectedCoupon.use) {
@@ -119,6 +163,8 @@ function Cart(props) {
       console.log('Invalid Coupon Code');
 
     }
+
+
 
   }
 
@@ -275,14 +321,14 @@ Page content START */}
                   </ul>}
                 {/* Button */}
                 <div className="d-grid">
-                  <NavLink className="btn btn-lg btn-success" to={'/checkout'}
-                   state={{
-                    cartData: cartUser,
-                    finalPrice,
-                    discount,
-                    originalPrice: OrignalPrice
-                  }}
-                    onClick={handleuse} >Proceed to Checkout</NavLink>
+                  <a className="btn btn-lg btn-success" 
+                    state={{
+                      cartData: cartUser,
+                      finalPrice,
+                      discount,
+                      originalPrice: OrignalPrice
+                    }}
+                    onClick={handleuse} >Proceed to Checkout</a>
                   {/* <a className="btn btn-lg btn-success" onClick={handleuse}>Proceed to Checkout</a> */}
                 </div>
                 {/* Content */}

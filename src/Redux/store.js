@@ -10,6 +10,7 @@ import { quizContentApi } from "./Api/QuizContent.Api"
 import { contentApi } from "./Api/Content.Api"
 import { cartApi } from "./Api/Cart.Api"
 import { couponApi } from "./Api/coupon.Api"
+import { PaymentApi } from "./Api/Payment.Api"
 
 export const confistore = () => {
 
@@ -25,6 +26,7 @@ export const confistore = () => {
             [contentApi.reducerPath]: contentApi.reducer,
             [cartApi.reducerPath]: cartApi.reducer,
             [couponApi.reducerPath]: couponApi.reducer,
+             [PaymentApi.reducerPath]: PaymentApi.reducer,
         },
         middleware: (getDefaultMiddleware) =>
             getDefaultMiddleware().concat([
@@ -34,7 +36,8 @@ export const confistore = () => {
                 quizContentApi.middleware,
                 contentApi.middleware,
                 cartApi.middleware,
-                couponApi.middleware
+                couponApi.middleware,
+                PaymentApi.middleware
             ]),
     })
 
