@@ -6,7 +6,7 @@ import Carousel from 'react-material-ui-carousel';
 import { useGetCouponQuery, useUpdateCouponMutation } from '../../Redux/Api/coupon.Api';
 import { NavLink } from 'react-router-dom';
 import Checkout from '../Checkout/Checkout';
-import { useCreateOrderMutation, useVerifyPaymentMutation } from '../../Redux/Api/Payment.Api';
+import { useCreateOrderMutation } from '../../Redux/Api/Payment.Api';
 import { Button } from '@mui/material';
 
 function Cart(props) {
@@ -107,7 +107,6 @@ function Cart(props) {
   console.log(finalPrice);
 
   const [createOrder] = useCreateOrderMutation();
-  const [verifyPayment] = useVerifyPaymentMutation();
 
   const handleuse = async() => {
 
