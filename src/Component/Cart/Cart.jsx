@@ -124,12 +124,12 @@ try {
       currency: order.currency,
       order_id: order.id,
 
-      name: "Acme Corp",
+      name: "Prince Movaliya",
       description: "Test Transaction",
 
       prefill: {
         name: "Elevent Knowledge",
-        email: "gaurav.kumar@example.com",
+        email: "example@gmail.com",
         contact: "9999999999",
       },
 
