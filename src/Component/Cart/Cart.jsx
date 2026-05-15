@@ -6,7 +6,7 @@ import Carousel from 'react-material-ui-carousel';
 import { useGetCouponQuery, useUpdateCouponMutation } from '../../Redux/Api/coupon.Api';
 import { NavLink } from 'react-router-dom';
 import Checkout from '../Checkout/Checkout';
-import { useCreateOrderMutation } from '../../Redux/Api/Payment.Api';
+import { useCreateOrderMutation, useVerifyPaymentMutation } from '../../Redux/Api/Payment.Api';
 import { Button } from '@mui/material';
 
 function Cart(props) {
@@ -19,29 +19,26 @@ function Cart(props) {
   console.log(auth);
 
 
-  // console.log(couponcode);
-
-  //delete cart items
-  const [deleteData] = useDeleteCartMutation();
-
   const { data: cart } = useGetCartQuery();
   console.log(cart?.data);
 
+  //update cartdata
+  const [updateData] = useUpdateCartMutation();
+
+  //delete cart items
+  const [deleteData] = useDeleteCartMutation();
   let cartData = cart?.data
 
-
+  //specifc user cart data
   let cartUser = cartData?.find((v) => v.user_id === auth.auth?._id)
   console.log(cartUser);
 
-
+  //courcedata
   const { data: courseData, isLoading, isError } = useGetCourseQuery(); //get Data
   console.log("course", courseData);
 
 
-
-  const [updateData] = useUpdateCartMutation();
-
-
+  //update for discountcoupon
   const [updateCoupon] = useUpdateCouponMutation();
 
   const handledelete = (id) => {
@@ -97,56 +94,81 @@ function Cart(props) {
 
   console.log(discount);
 
-  // if(!cartUser?.items){
-  //   setDiscount('');
-  // }
+
 
   // FINAL TOTAL
   const discountPrice = OrignalPrice * discount / 100;
   let finalPrice = OrignalPrice - discountPrice;
   console.log(finalPrice);
 
+  //for payment
   const [createOrder] = useCreateOrderMutation();
+  const [verifyPayment] = useVerifyPaymentMutation()
 
-  const handleuse = async() => {
+  
+  const handleuse = async () => {
 
-try {
+    try {
 
-    const order = await createOrder({
-      amount: finalPrice ,
-    }).unwrap();
 
-    console.log(order);
+      const purchasedCourses = cartUser?.items.map(v => ({
+        course: v.course,
+        price: Number(v.price.replace(/[^\d.]/g, ''))
+      }));
 
-    const options = {
-      key: order.key,
-      amount: order.amount,
-      currency: order.currency,
-      order_id: order.id,
 
-      name: "Prince Movaliya",
-      description: "Test Transaction",
+      console.log(purchasedCourses);
 
-      prefill: {
-        name: "Elevent Knowledge",
-        email: "example@gmail.com",
-        contact: "9999999999",
-      },
+      const amountInPaise = Math.round(finalPrice);
 
-      theme: {
-        color: "#F37254",
-      },
-    };
+      const order = await createOrder({
+        amount: amountInPaise,
+        user_id: auth.auth?._id,
+        cart_id: cartUser?._id,
+        purchased_courses: purchasedCourses
+      }).unwrap();
 
-    const rzp = new Razorpay(options);
+      console.log(order);
 
-    rzp.open();
+      const options = {
+        key: order.key,
+        amount: order.data.amount,
+        currency: order.data.currency,
+        order_id: order.data.id,
 
-  } catch (error) {
+        name: "Prince Movaliya",
+        description: "Test Transaction",
 
-    console.log("ERROR", error);
+        handler: async function (responce) {
+          console.log(responce);
 
-  }
+          await verifyPayment({
+            ...responce,
+            user_id: auth.auth?._id,
+            cart_id: cartUser?._id
+          });
+
+        },
+        prefill: {
+          name: "Elevent Knowledge",
+          email: "example@gmail.com",
+          contact: "9999999999",
+        },
+
+        theme: {
+          color: "rgb(243, 114, 84)",
+        },
+      };
+
+      const rzp = new Razorpay(options);
+
+      rzp.open();
+
+    } catch (error) {
+
+      console.log("ERROR", error);
+
+    }
 
 
     if (!selectedCoupon) return;
@@ -320,7 +342,7 @@ Page content START */}
                   </ul>}
                 {/* Button */}
                 <div className="d-grid">
-                  <a className="btn btn-lg btn-success" 
+                  <a className="btn btn-lg btn-success"
                     state={{
                       cartData: cartUser,
                       finalPrice,
