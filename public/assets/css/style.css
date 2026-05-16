@@ -22578,3 +22578,55 @@ li
         box-shadow: 0 0px 10px 0 rgba(255, 255, 255, 0.4);
    }
 
+/* Container styling */
+.cart-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+/* Empty cart layout */
+.empty-cart-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px;
+  background-color:#212529 !important ;
+  border-radius: 8px;
+  border: 1px solid #5f5656;
+}
+
+/* Typography */
+.empty-cart-message h2 {
+  color: #333333;
+  margin-bottom: 12px;
+  font-size: 24px;
+}
+
+.empty-cart-message p {
+  color:#bdadad;
+  max-width: 400px;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+/* Button link styling */
+.shop-link {
+  display: inline-block;
+  color: #ffffff;
+  padding: 12px 24px;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  background-color: #0056b3 !important;
+}
+
+/* Hover state */
+.shop-link:hover {
+  background-color: #066ac9;
+  color: #fff !important;
+}

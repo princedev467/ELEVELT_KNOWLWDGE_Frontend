@@ -6,8 +6,9 @@ import Carousel from 'react-material-ui-carousel';
 import { useGetCouponQuery, useUpdateCouponMutation } from '../../Redux/Api/coupon.Api';
 import { NavLink } from 'react-router-dom';
 import Checkout from '../Checkout/Checkout';
-import { useCreateOrderMutation, useVerifyPaymentMutation } from '../../Redux/Api/Payment.Api';
+import { useCreateOrderMutation, useGetPaymentQuery, useVerifyPaymentMutation } from '../../Redux/Api/Payment.Api';
 import { Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 function Cart(props) {
 
@@ -29,9 +30,24 @@ function Cart(props) {
   const [deleteData] = useDeleteCartMutation();
   let cartData = cart?.data
 
+
+
+
+
   //specifc user cart data
   let cartUser = cartData?.find((v) => v.user_id === auth.auth?._id)
   console.log(cartUser);
+
+
+
+  const { data: payment } = useGetPaymentQuery();
+  console.log(payment?.data);
+
+  let PaymentData = payment?.data;
+
+  const userPayment = PaymentData?.find((v) => v.user_id === auth.auth?._id);
+  console.log(userPayment);
+
 
   //courcedata
   const { data: courseData, isLoading, isError } = useGetCourseQuery(); //get Data
@@ -45,7 +61,7 @@ function Cart(props) {
     //  let itemsindex= cartUser.items.findIndex((v)=>v._id===id);
     //   console.log(itemsindex);
 
-
+    // deletecart Items
     let deletdata = cartUser?.items.filter((v) => v._id !== id);
     console.log(deletdata);
 
@@ -64,7 +80,14 @@ function Cart(props) {
   console.log(coupon?.data);
 
 
-  const OrignalPrice = cartUser?.items?.reduce((acc, v) => {
+
+  const filteritem = cartUser?.items?.filter((v) =>
+    !userPayment?.purchased_courses.some((v1) => v1.course === v.course)
+  );
+  console.log(filteritem);
+
+
+  const OrignalPrice = filteritem?.reduce((acc, v) => {
     let cur = v.price.replace(/[^\d.]/g, '');
     return acc + Number(cur);
   }, 0)
@@ -105,13 +128,13 @@ function Cart(props) {
   const [createOrder] = useCreateOrderMutation();
   const [verifyPayment] = useVerifyPaymentMutation()
 
-  
+
   const handleuse = async () => {
 
     try {
 
 
-      const purchasedCourses = cartUser?.items.map(v => ({
+      const purchasedCourses = filteritem.map(v => ({
         course: v.course,
         price: Number(v.price.replace(/[^\d.]/g, ''))
       }));
@@ -129,6 +152,7 @@ function Cart(props) {
       }).unwrap();
 
       console.log(order);
+
 
       const options = {
         key: order.key,
@@ -242,7 +266,8 @@ Page content START */}
                     <tbody className="border-top-0">
                       {/* Table item */}
                       {
-                        cartUser?.items?.map((v) => {
+                      filteritem && filteritem.length > 0?
+                        filteritem?.map((v) => {
 
                           let cartCourse = courseData?.data?.filter((v1) => v1._id === v.course);
                           console.log(cartCourse);
@@ -291,7 +316,14 @@ Page content START */}
                               </td>
                             </tr>
                           )
-                        })
+                        }) :
+                        
+                        <div className="empty-cart-message">
+                          <h2>Your cart is currently empty.</h2>
+                          <p>Before you can proceed to checkout, you must add some products to your shopping cart.</p>
+                          <Link to="/course" className="shop-link">Return to Shop</Link>
+                        </div>
+                        
                       }
 
                     </tbody>
