@@ -381,6 +381,7 @@ Page content START */}
                       discount,
                       originalPrice: OrignalPrice
                     }}
+                    disabled={!filteritem}
                     onClick={handleuse} >Proceed to Checkout</a>
                   {/* <a className="btn btn-lg btn-success" onClick={handleuse}>Proceed to Checkout</a> */}
                 </div>
