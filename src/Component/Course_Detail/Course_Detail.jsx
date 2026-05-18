@@ -28,6 +28,7 @@ function Course_Detail(props) {
   console.log(quizid);
   const videoRef = useRef(null);
   const [durations, setDurations] = useState({});
+  
 
 
 
@@ -370,10 +371,7 @@ Page content START */}
                                               onLoadedMetadata={(e) =>
                                                 handleLoadedMetadata(e, v2._id)
                                               }
-                                              onError={(e) =>
-                                                console.log("VIDEO ERROR", e)
-                                              }
-                                              src={file.url}
+                                               src={file.url}
                                             >
                                             </video>
                                           )}
@@ -391,34 +389,34 @@ Page content START */}
 
                                               </div>
                                               <div className='d-flex align-items-center'>
-                                                <div style={{marginRight:'10px'}}>
-                                              {file?.resource_type === "video" &&
-                                                (durations[v2._id]
-                                                  ? `${Math.floor(durations[v2._id] / 60)}:${Math.floor(
-                                                    durations[v2._id] % 60
-                                                  )
-                                                    .toString()
-                                                    .padStart(2, "0")}`
-                                                  : "Loading...")
-                                              }
+                                                <div style={{ marginRight: '10px' }}>
+                                                  {file?.resource_type === "video" &&
+                                                    (durations[v2._id]
+                                                      ? `${Math.floor(durations[v2._id] / 60)}:${Math.floor(
+                                                        durations[v2._id] % 60
+                                                      )
+                                                        .toString()
+                                                        .padStart(2, "0")}`
+                                                      : "Loading...")
+                                                  }
 
-                                              {/* {file?.resource_type === "image" && "Image"}
+                                                  {/* {file?.resource_type === "image" && "Image"}
 
                                               {file?.resource_type === "raw" && "PDF / Document"} */}
 
                                                 </div>
-                                              {(v2.content_type === "free" || purchaseCourse) ? (
-                                                <NavLink
-                                                  to={`/Course_Video_Player/${v2._id}`}
-                                                  className="btn btn-primary btn-sm"
-                                                >
-                                                  Preview
-                                                </NavLink>
-                                              ) : (
-                                                <span className="badge bg-danger">
-                                                  Locked
-                                                </span>
-                                              )}
+                                                {(v2.content_type === "free" || purchaseCourse) ? (
+                                                  <NavLink
+                                                    to={`/Course_Video_Player/${v2._id}`}
+                                                    className="btn btn-primary btn-sm"
+                                                  >
+                                                    Preview
+                                                  </NavLink>
+                                                ) : (
+                                                  <span className="badge bg-danger">
+                                                    Locked
+                                                  </span>
+                                                )}
                                               </div>
                                             </div>
                                             <hr />
