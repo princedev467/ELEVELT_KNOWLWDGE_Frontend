@@ -322,8 +322,9 @@ Page content START */}
                               <div id={"collapse-" + i} className="accordion-collapse collapse show" aria-labelledby={"heading-" + i} data-bs-parent="#accordionExample2">
                                 <div className="accordion-body mt-3">
                                   {/* Course lecture */}
-                                  {contentFilter?.map((v2) => (
-                                    <NavLink to={`/Course_Video_Player/${v2._id}`} key={v2._id}>
+                                  {
+                                  contentFilter?.map((v2) => (
+                                    <div>
                                       <div className="d-flex justify-content-between align-items-center">
                                         <div className="position-relative d-flex align-items-center">
                                           <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
@@ -334,9 +335,15 @@ Page content START */}
                                             {v2.name}
                                           </span>
                                         </div>
+
+                                        {
+                                          v2.content_type==='free'?
+                                          <button>
+                                         <NavLink to={`/Course_Video_Player/${v2._id}`} key={v2._id}>Preview</NavLink></button>:''
+                                        }
                                       </div>
                                       <hr />
-                                    </NavLink>
+                                    </div>
                                   ))}
                                   {/* <hr /> */}
                                   {/* Divider */}

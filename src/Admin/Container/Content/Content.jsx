@@ -13,6 +13,7 @@ import { useAddcontentMutation, useDeletecontentMutation, useGetcontentQuery, us
 import FileUpload from '../../Component/FileUpload/FileUpload';
 import { useDispatch, useSelector } from 'react-redux';
 import { userCheck } from '../../../Redux/slice/auth.slice';
+import RadioButton from '../../Component/RadioButton/RadioButton';
 
 
 
@@ -43,10 +44,10 @@ function Content(props) {
 
     // let QuizData = quiz?.data
 
-    const dispatch=useDispatch();
+    const dispatch = useDispatch();
     //contentData
- const display = () => {
-       
+    const display = () => {
+
         dispatch(userCheck())
     }
     const { data: content } = useGetcontentQuery();
@@ -61,11 +62,11 @@ function Content(props) {
     const [deleteData] = useDeletecontentMutation();
 
 
-     useEffect(() => {
-            display()
-        }, [])
-    
-    
+    useEffect(() => {
+        display()
+    }, [])
+
+
 
     console.log(SectionData);
 
@@ -73,10 +74,10 @@ function Content(props) {
         setOpen(true);
     };
 
-    
-        const auth = useSelector(state => state.auth)
-        console.log("auth", auth);
-    
+
+    const auth = useSelector(state => state.auth)
+    console.log("auth", auth);
+
     // const Categorydata = useSelector(state => state.category)
 
     const catdrop = [{ value: '', label: '---Select Course--' }];
@@ -127,13 +128,13 @@ function Content(props) {
         handleClickOpen();
 
         setUpdateData(val);
-        setCourseId(val.course); 
+        setCourseId(val.course);
     }
 
     const paginationModel = { pae: 0, pageSize: 5 };
     const columns = [
         {
-            field: 'course', headerName: 'course', width: 200, renderCell: (parem) => {
+            field: 'course', headerName: 'course', width: 150, renderCell: (parem) => {
                 const c = course?.data?.find((v) => v._id === parem.row.course);
 
                 console.log(c);
@@ -142,7 +143,7 @@ function Content(props) {
             }
         },
         {
-            field: 'section', headerName: 'section', width: 200, renderCell: (param) => {
+            field: 'section', headerName: 'section', width: 150, renderCell: (param) => {
                 const sec = section?.data?.find(
                     (v) => v._id === param?.row?.section
                 );
@@ -153,16 +154,16 @@ function Content(props) {
 
         },
         { field: 'name', headerName: 'Name', width: 130 },
-        {field:'order' ,headerName: 'Order', width: 130 },
-        
-        { field: 'Instructor_id', headerName: 'Instructor_id', width: 260 },
+        { field: 'order', headerName: 'Order', width: 80 },
+         { field: 'content_type', headerName: 'Type', width: 80 },
+        { field: 'Instructor_id', headerName: 'Instructor_id', width: 240 },
         {
             field: 'contentFile', headerName: 'Source', width: 130,
             renderCell: (param) => (
 
                 <div>
                     {
-                        param.row.contentFile.map((v,i) => {
+                        param.row.contentFile.map((v, i) => {
                             if (v.resource_type === 'image') {
                                 return (
                                     <img src={v.url} style={{ objectFit: 'cover', width: "50px", height: "50px" }} />
@@ -224,6 +225,10 @@ function Content(props) {
     })
 
 
+    const RadioData = [
+        { label: 'Free', value: 'free' },
+        { label: 'Paid', value: 'paid' },
+    ]
     const handlesubmit = async (val) => {
         console.log("submit", val);
         console.log('updatedata:', updatedata);
@@ -234,11 +239,13 @@ function Content(props) {
         formData.append('name', val.name);
         formData.append('section', val.section);
         formData.append('course', courseid);
-         formData.append('order',val.order);
+        formData.append('order', val.order);
+
+         formData.append('content_type', val.content_type);
 
         val.contentFile.forEach((v) => {
             if (v instanceof File) {
-                  formData.append('order',val.order);
+                formData.append('order', val.order);
                 formData.append('contentFile', v);
             } else {
                 formData.append('contentFile', v.url);
@@ -246,7 +253,7 @@ function Content(props) {
         });
 
 
-          const data = localStorage.getItem("user");
+        const data = localStorage.getItem("user");
 
         let storeuser = null;
 
@@ -257,15 +264,15 @@ function Content(props) {
         let Instructor_id = storeuser?.role === 'Instructor' ? storeuser._id : null
 
         console.log(Instructor_id);
-         
-            formData.append('Instructor_id', Instructor_id);
+
+        formData.append('Instructor_id', Instructor_id);
 
         if (Object.keys(updatedata).length > 0) {
-            
-        // if (auth.auth?.role === 'Instructor') {
-        //     formData.append('Instructor_id', auth.auth._id);
 
-        // }
+            // if (auth.auth?.role === 'Instructor') {
+            //     formData.append('Instructor_id', auth.auth._id);
+
+            // }
             formData.append('_id', updatedata._id);
 
             updateData(formData)
@@ -283,9 +290,9 @@ function Content(props) {
 
     }
 
-    let filterContent=ContentData?.filter((c)=>c?.Instructor_id=== auth?.auth?._id)
+    let filterContent = ContentData?.filter((c) => c?.Instructor_id === auth?.auth?._id)
     console.log(filterContent);
-    
+
     return (
         <>
             <h1>Content</h1>
@@ -303,7 +310,8 @@ function Content(props) {
                                 course: '',
                                 Instructor_id: null,
                                 contentFile: [],
-                                order:''
+                                order: '',
+                                content_type: ''
 
 
                             }}
@@ -345,7 +353,12 @@ function Content(props) {
 
                                 <TextForm name='name' id='name' label='Name' />
 
-                                  <TextForm name='order' id='order' label='Order' />
+                                <RadioButton name='content_type' id='content_type' label='content_type'
+                                    data={ RadioData} />
+
+                                <TextForm name='order' id='order' label='Order' />
+
+
 
                                 <FileUpload name='contentFile' />
 

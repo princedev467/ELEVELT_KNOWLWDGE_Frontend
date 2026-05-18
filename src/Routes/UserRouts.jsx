@@ -59,124 +59,128 @@ import { userCheck } from '../Redux/slice/auth.slice';
 import { ThemeContext } from '../context/theme.context';
 import CourseDisplay from '../Component/Course/CourseDisplay';
 // import Category from '../Component/Category/CategoryData';
-import AdminRouts  from './AdminRouts';
+import AdminRouts from './AdminRouts';
 import QuizPage from '../Component/QuizData/QuizPage';
 
 function UserRouts(props) {
-    const themeData = useContext(ThemeContext);
-      console.log(themeData);
+  const themeData = useContext(ThemeContext);
+  console.log(themeData);
 
-    const dispatch=useDispatch()
-     useEffect(() => {
-  
-      dispatch(userCheck())
-    
-    }, [])
+  const dispatch = useDispatch()
+  useEffect(() => {
+
+    dispatch(userCheck())
+
+  }, [])
 
 
-  
 
-  
-    return (
-        <div className={themeData.theme==='light'?'dark':'light'}>
-            <Header />
-            <Routes>
-                <Route path='/' element={<Home />} ></Route>
-                 {/* <Route path='/CategoryPage' element={<CategoryPage/>} ></Route> */}
-                 {/* category */}
-                  <Route path='/category' element={<CategoryData/>} ></Route>
-                 <Route path='/category/:id' element={<CategoryData/>} ></Route>
 
-                {/* course */}
-                  <Route path='/course' element={<CourseDisplay/>} ></Route>
-                   <Route path='/course/:id' element={<CourseDisplay/>} ></Route>
 
-                  {/* course Detail*/}  
-                <Route path='/Course_Detail' element={<Course_Detail />}></Route>
-                 <Route path='/Course_Detail/:id' element={<Course_Detail />}></Route>
-            
-                {/* quizPage */}
-                 <Route path='/quiz' element={< QuizPage />} ></Route>
-                 <Route path='/quiz/:id' element={< QuizPage />} ></Route>
-                 
-{/* video player */}
-                 <Route path='/Course_Video_Player/:id' element={< Course_Video_Player />} ></Route>
-                 
-                 {/* <Route path='/category/:id' element={<CategoryPage />} /> */}
+  return (
+    <div className={themeData.theme === 'light' ? 'dark' : 'light'}>
+      <Header />
+      <Routes>
+        <Route path='/' element={<Home />} ></Route>
+        {/* <Route path='/CategoryPage' element={<CategoryPage/>} ></Route> */}
+        {/* category */}
+        <Route path='/category' element={<CategoryData />} ></Route>
+        <Route path='/category/:id' element={<CategoryData />} ></Route>
 
-                 {/* Instructor */}
-                  <Route path='/Instructor_Create_Course' element={<Instructor_Create_Course />}></Route>
-                <Route path='/Instructor_Create_Course/:id' element={<Instructor_Create_Course />}></Route>
-                  <Route path='/Instructor_Earning' element={< Instructor_Earning />} ></Route>
-               <Route path='/Instructor_Review' element={<Instructor_Review />}></Route>
-                <Route path='/Instructor_Manage_Course' element={<Instructor_Manage_Course />}></Route>
-                <Route path='/Instructor_Order' element={<Instructor_Order />}></Route>
-                <Route path='/Instructor_Payout' element={<Instructor_Payout />}></Route>
-                <Route path='/Instructor_Single' element={<Instructor_Single />}></Route>
-                <Route path='/Instructor_List' element={< Instructor_List />} ></Route>
-                <Route path='/Instructor_Student_list' element={<Instructor_Student_list />}></Route>
-               
-                <Route path='/about' element={< About />} ></Route>
-                 <Route path='/chat' element={<Chat />} ></Route>
-                 <Route path='/about/:id' element={< About />} ></Route>
-                <Route path='/Become_Instructor' element={< Become_Instructor />} ></Route>
-                <Route path='/Blog_Detail' element={< Blog_Detail />} ></Route>
-                <Route path='/Blog_Grid' element={<Blog_Grid />}></Route>
-                <Route path='/Blog_Masonry' element={<Blog_Masonry />}></Route>
-                <Route path='/Book_Class' element={<Book_Class />}></Route>
-                <Route path='/Cart' element={<Cart />}></Route>
-                <Route path='/Coming_Soon' element={< Coming_Soon />} ></Route>
-                <Route path='/Contact_us' element={<Contact_us />}></Route>
-                <Route path='/Checkout' element={<Checkout />}></Route>
-                <Route path='/Course_Added' element={<Course_Added />}></Route>
-                <Route path='/Course_Detail_Advance' element={<Course_Detail_Advance />} ></Route>
-                <Route path='/Course_Detail_Minimal' element={< Course_Detail_Minimal />} ></Route>
-                <Route path='/Course_List_Minimal' element={< Course_List_Minimal />} ></Route>
-                <Route path='/Course_List_Classic' element={< Course_List_Classic />} ></Route>
-                <Route path='/Course_Video_Player' element={<Course_Video_Player />}></Route>
-                <Route path='/Course_Grid_Classic' element={<Course_Grid_Classic />}></Route>
-                <Route path='/Course_Grid_Minimal' element={<Course_Grid_Minimal />}></Route>
-                <Route path='/Empty_Cart' element={< Empty_Cart />} ></Route>
-                <Route path='/Error_404' element={<Error_404 />}></Route>
-                <Route path='/Faq' element={<Faq />}></Route>
-                <Route path='/Forget_Password' element={<Forget_Password />}></Route>
-               
-                <Route path='/Pricing' element={<Pricing />}></Route>
-                <Route path='/Request_Access' element={< Request_Access />} ></Route>
-                <Route path='/Request_Demo' element={<Request_Demo />}></Route>
-        
-                {/* Auth */}
-                
-                 <Route path='/Auth' element={<Auth />}></Route>
-                  <Route path='/Auth/:Instructor' element={<Auth />}></Route>
-               
-                {/* Notification */}
-                
-                {/* NotificationDemo */}
-                <Route path='/NotificationDemo' element={<NotificationDemo />}></Route>
-                <Route path='/University_Admission_Form' element={<University_Admission_Form />}></Route>
-                <Route path='/Student_Subscription' element={<Student_Subscription />}></Route>
-                <Route path='/Student_Course_list' element={< Student_Course_list />} ></Route>
-                <Route path='/Student_Payment_Info' element={<Student_Payment_Info />}></Route>
-                <Route path='/Wishitlist' element={<Wishitlist />}></Route>
+        {/* course */}
+        <Route path='/course' element={<CourseDisplay />} ></Route>
+        <Route path='/course/:id' element={<CourseDisplay />} ></Route>
+
+        {/* course Detail*/}
+        <Route path='/Course_Detail' element={<Course_Detail />}></Route>
+        <Route path='/Course_Detail/:id' element={<Course_Detail />}></Route>
+
+        {/* quizPage */}
+        <Route path='/quiz' element={< QuizPage />} ></Route>
+        <Route path='/quiz/:id' element={< QuizPage />} ></Route>
+
+        {/* video player */}
+        <Route path='/Course_Video_Player/:id' element={< Course_Video_Player />} ></Route>
+
+        {/* <Route path='/category/:id' element={<CategoryPage />} /> */}
+
+        {/* Instructor */}
+        <Route path='/Instructor_Create_Course' element={<Instructor_Create_Course />}></Route>
+        <Route path='/Instructor_Create_Course/:id' element={<Instructor_Create_Course />}></Route>
+        <Route path='/Instructor_Earning' element={< Instructor_Earning />} ></Route>
+        <Route path='/Instructor_Review' element={<Instructor_Review />}></Route>
+        <Route path='/Instructor_Manage_Course' element={<Instructor_Manage_Course />}></Route>
+        <Route path='/Instructor_Order' element={<Instructor_Order />}></Route>
+        <Route path='/Instructor_Payout' element={<Instructor_Payout />}></Route>
+        <Route path='/Instructor_Single' element={<Instructor_Single />}></Route>
+        <Route path='/Instructor_List' element={< Instructor_List />} ></Route>
+        <Route path='/Instructor_Student_list' element={<Instructor_Student_list />}></Route>
+
+        <Route path='/about' element={< About />} ></Route>
+        <Route path='/chat' element={<Chat />} ></Route>
+        <Route path='/about/:id' element={< About />} ></Route>
+        <Route path='/Become_Instructor' element={< Become_Instructor />} ></Route>
+        <Route path='/Blog_Detail' element={< Blog_Detail />} ></Route>
+        <Route path='/Blog_Grid' element={<Blog_Grid />}></Route>
+        <Route path='/Blog_Masonry' element={<Blog_Masonry />}></Route>
+        <Route path='/Book_Class' element={<Book_Class />}></Route>
+        <Route path='/Cart' element={<Cart />}></Route>
+        <Route path='/Coming_Soon' element={< Coming_Soon />} ></Route>
+        <Route path='/Contact_us' element={<Contact_us />}></Route>
+        <Route path='/Checkout' element={<Checkout />}></Route>
+        <Route path='/Course_Added' element={<Course_Added />}></Route>
+        <Route path='/Course_Detail_Advance' element={<Course_Detail_Advance />} ></Route>
+        <Route path='/Course_Detail_Minimal' element={< Course_Detail_Minimal />} ></Route>
+        <Route path='/Course_List_Minimal' element={< Course_List_Minimal />} ></Route>
+        <Route path='/Course_List_Classic' element={< Course_List_Classic />} ></Route>
+        <Route path='/Course_Video_Player' element={<Course_Video_Player />}></Route>
+        <Route path='/Course_Grid_Classic' element={<Course_Grid_Classic />}></Route>
+        <Route path='/Course_Grid_Minimal' element={<Course_Grid_Minimal />}></Route>
+        <Route path='/Empty_Cart' element={< Empty_Cart />} ></Route>
+        <Route path='/Error_404' element={<Error_404 />}></Route>
+        <Route path='/Faq' element={<Faq />}></Route>
+        <Route path='/Forget_Password' element={<Forget_Password />}></Route>
+
+        <Route path='/Pricing' element={<Pricing />}></Route>
+        <Route path='/Request_Access' element={< Request_Access />} ></Route>
+        <Route path='/Request_Demo' element={<Request_Demo />}></Route>
+
+        {/* Auth */}
+
+        <Route path='/Auth' element={<Auth />}></Route>
+        <Route path='/Auth/:Instructor' element={<Auth />}></Route>
+
+        {/* Notification */}
+
+        {/* NotificationDemo */}
+        <Route path='/NotificationDemo' element={<NotificationDemo />}></Route>
+        <Route path='/University_Admission_Form' element={<University_Admission_Form />}></Route>
+        <Route path='/Student_Subscription' element={<Student_Subscription />}></Route>
+        <Route path='/Student_Course_list' element={< Student_Course_list />} ></Route>
+        <Route path='/Student_Payment_Info' element={<Student_Payment_Info />}></Route>
+        <Route path='/Wishitlist' element={<Wishitlist />}></Route>
 
         <Route>
-              <Route path='*' element={<Error_404 />}></Route>
+          <Route path='*' element={<Error_404 />}></Route>
         </Route>
 
 
-                <Route element={<PrivateRouts  />}>
-                    <Route path='/Student_Dashboard' element={<Student_Dashboard />}></Route>
-                    <Route path='/Instructor_Dashboard' element={< Instructor_Dashboard />} ></Route>
-                </Route>
-                
+{/* Student Routes */}
+ 
+   <Route path='/Student_Dashboard' element={<Student_Dashboard />}></Route>
 
-            </Routes>
-            <Footer />
+         <Route element={<PrivateRouts />}>
+        
+          <Route path='/Instructor_Dashboard' element={< Instructor_Dashboard />} ></Route>
+        </Route> 
 
 
-        </div>
-    );
+      </Routes>
+      <Footer />
+
+
+    </div>
+  );
 }
 
 export default UserRouts;

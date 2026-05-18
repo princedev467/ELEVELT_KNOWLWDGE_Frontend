@@ -3,16 +3,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
 import { userCheck } from '../Redux/slice/auth.slice';
 
-function PrivateRouts(props) {
+function PrivateRouts() {
 
-const data = localStorage.getItem("user");
 
-let storeuser = null;
+  const data = localStorage.getItem("user");
 
-if (data) {
-  storeuser = JSON.parse(data);
-}
-  
+  let storeuser = null;
+
+  if (data) {
+    storeuser = JSON?.parse(data);
+  }
+
   // if (isLoading) {
   //   return <p>---Loading...</p>;
   // }
@@ -20,13 +21,13 @@ if (data) {
   if (storeuser) {
     if (storeuser?.role === 'Instructor') {
       return <Outlet />
-    } else{
-      return <Navigate to={'/'}  />
+    } else {
+      return <Navigate to={'/'} />
     }
-    
-  }else{
-    
- return <Navigate to={'/Auth'}  />
+
+  } else {
+
+    return <Navigate to={'/Auth'} />
   }
 }
 

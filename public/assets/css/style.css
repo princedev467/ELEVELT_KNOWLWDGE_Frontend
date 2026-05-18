@@ -22404,9 +22404,9 @@ li
     color: #ffffff !important;
 }
 
-.light h1>a , h2>a,  h3>a ,h4>a , h5>a , h6>a {
+/* .light h1>a , h2>a,  h3>a ,h4>a , h5>a , h6>a {
     color: #000000 !important;
-}
+} */
 .dark  .h1>a .h2>a .h3>a .h4>a .h5>a  .h6>a {
     color: #ffffff !important;
 }
