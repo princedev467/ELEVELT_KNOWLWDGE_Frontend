@@ -14,6 +14,7 @@ import FileUpload from '../../Component/FileUpload/FileUpload';
 import { useDispatch, useSelector } from 'react-redux';
 import { userCheck } from '../../../Redux/slice/auth.slice';
 import RadioButton from '../../Component/RadioButton/RadioButton';
+import { useGetPaymentQuery } from '../../../Redux/Api/Payment.Api';
 
 
 
@@ -79,6 +80,7 @@ function Content(props) {
     console.log("auth", auth);
 
     // const Categorydata = useSelector(state => state.category)
+   
 
     const catdrop = [{ value: '', label: '---Select Course--' }];
 
