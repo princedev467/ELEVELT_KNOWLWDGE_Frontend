@@ -27,9 +27,9 @@ function Course() {
     const [updatedata, setUpdateData] = useState({})
 
 
-    const {id} =useParams();
+    const { id } = useParams();
     console.log(id);
-    
+
     const dispatch = useDispatch()
 
     const display = () => {
@@ -68,8 +68,8 @@ function Course() {
 
 
 
-  
-    
+
+
     const Categorydata = useSelector(state => state.category)
     console.log(Categorydata.category);
 
@@ -115,6 +115,7 @@ function Course() {
         { field: 'name', headerName: 'Name', width: 130 },
         { field: 'description', headerName: 'Description', width: 200 },
 
+       
         { field: 'price', headerName: 'price', width: 80 },
         { field: 'week', headerName: 'week', width: 80 },
 
@@ -199,51 +200,18 @@ function Course() {
 
     let categorySchema = object({
         name: string()
-            // .matches(/^[A-Za-z]{2,30}$/, "name can only contain alphabet")
-            .required('name field is required'),
+               .required('name field is required'),
         description: string()
-            // .matches(/^[A-Za-z]{2,90}$/, "Description can only contain alphabet")
-            .required('Description field is required'),
+             .required('Description field is required'),
 
         category_id: string().required('please select category'),
 
-        price: number().required('please enter price'),
-
-        week: number().required('please enter week'),
-        // course_video: mixed().test("profile_pic", "only allowed png and jpeg formate", function (val) {
-        //     console.log(val);
-        //     if (typeof val?.url === 'string') {
-        //         return true;
-        //     }
-
-        //     let filetype = ['video/mp4']
-
-        //     return filetype.includes(val?.type?.toLowerCase());
-        // })
-        //     .required('photo is required'),
+       
+  
         course_img: mixed().required()
-        // .test("profile_pic", "only allowed png and jpeg formate", function (val) {
-        //     console.log(val);
-        //     if (typeof val?.url === 'string') {
-        //         return true;
-        //     }
-
-        //     let filetype = ['image/jpeg', 'image/png', 'image/jpg']
-
-        //     return filetype.includes(val?.type?.toLowerCase());
-        // })
-        // .required('photo is required')
-
+       
     })
-    // .test("profile_pic", "less than 2 MB file is allowed", function (val) {
-    //     console.log(val?.size);
-
-    //     if (typeof val === 'string') {
-    //         return true;
-    //     }
-
-    //     return val?.size <= 2 * 1024 * 1024
-    // })
+   
 
 
 
@@ -263,13 +231,15 @@ function Course() {
                 formData.append('course_img', v.url);
             }
         });
-        // formData.append('course_img', val.course_img);
+        if (val.course_type) {
+            formData.append('course_type', val.course_type);
+        }
         formData.append('week', val.week);
         formData.append('price', val.price);
         // formData.append('Preview_url', val.Preview_url);
 
 
-          const data = localStorage.getItem("user");
+        const data = localStorage.getItem("user");
 
         let storeuser = null;
 
@@ -280,9 +250,9 @@ function Course() {
         let Instructor_id = storeuser?.role === 'Instructor' ? storeuser._id : null
 
         console.log(Instructor_id);
-         
-        
-            formData.append('Instructor_id', auth?.auth?._id);
+
+
+        formData.append('Instructor_id', auth?.auth?._id);
 
 
 
@@ -296,7 +266,7 @@ function Course() {
 
             if (typeof val.course_img === 'object') {
                 console.log("formData", formData);
-               
+
 
                 updata(formData)
             } else {
@@ -306,8 +276,8 @@ function Course() {
 
             }
 
-            } else {
-           
+        } else {
+
 
             // dispatch(addCategory(val));
             adddata(formData)
@@ -328,16 +298,16 @@ function Course() {
 
     console.log("subData:", subData);
 
-    let  filterCourse 
-    
-    if(id){
-        filterCourse = data?.data?.filter((v)=>v?.Instructor_id=== id);
-     }else{
-        filterCourse = data?.data?.filter((v)=>v?.Instructor_id=== auth?.auth?._id);
-        
-     }
+    let filterCourse
 
-      
+    if (id) {
+        filterCourse = data?.data?.filter((v) => v?.Instructor_id === id);
+    } else {
+        filterCourse = data?.data?.filter((v) => v?.Instructor_id === auth?.auth?._id);
+
+    }
+
+
     console.log(filterCourse);
     return (
         <>
@@ -356,6 +326,7 @@ function Course() {
                                 category_id: '',
                                 course_img: [],
                                 Instructor_id: null,
+                                
                                 week: '',
                                 price: '',
                                 // Preview_url: []
@@ -385,7 +356,7 @@ function Course() {
 
                                 <TextForm name='description' id='Description' label='Description' />
 
-                                <TextForm name='price' id='price' label='price' />
+                                 <TextForm name='price' id='price' label='price' />
 
                                 <TextForm name='week' id='week' label='week' />
 

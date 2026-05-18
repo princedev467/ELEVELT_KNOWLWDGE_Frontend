@@ -1,29 +1,219 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useDeleteCartMutation, useGetCartQuery } from '../../Redux/Api/Cart.Api';
+import { useDeleteCartMutation, useGetCartQuery, useUpdateCartMutation } from '../../Redux/Api/Cart.Api';
 import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
 import Carousel from 'react-material-ui-carousel';
+import { useGetCouponQuery, useUpdateCouponMutation } from '../../Redux/Api/coupon.Api';
+import { NavLink } from 'react-router-dom';
+import Checkout from '../Checkout/Checkout';
+import { useCreateOrderMutation, useGetPaymentQuery, useVerifyPaymentMutation } from '../../Redux/Api/Payment.Api';
+import { Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 function Cart(props) {
+
+  const [couponcode, setCouponCode] = useState('');
+  const [discount, setDiscount] = useState('');
+  const [selectedCoupon, setSelectedCoupon] = useState(null);
 
   const auth = useSelector(state => state.auth);
   console.log(auth);
 
 
-  //delete cart items
-  const [deleteData]=useDeleteCartMutation();
-
   const { data: cart } = useGetCartQuery();
   console.log(cart?.data);
+
+  //update cartdata
+  const [updateData] = useUpdateCartMutation();
+
+  //delete cart items
+  const [deleteData] = useDeleteCartMutation();
   let cartData = cart?.data
 
 
-  let cartUser = cartData?.find((v) => v.user_id === auth.auth._id)
+
+
+
+  //specifc user cart data
+  let cartUser = cartData?.find((v) => v.user_id === auth.auth?._id)
   console.log(cartUser);
 
 
+
+  const { data: payment } = useGetPaymentQuery();
+  console.log(payment?.data);
+
+  let PaymentData = payment?.data;
+
+  const userPayment = PaymentData?.find((v) => v.user_id === auth.auth?._id);
+  console.log(userPayment);
+
+
+  //courcedata
   const { data: courseData, isLoading, isError } = useGetCourseQuery(); //get Data
   console.log("course", courseData);
+
+
+  //update for discountcoupon
+  const [updateCoupon] = useUpdateCouponMutation();
+
+  const handledelete = (id) => {
+    //  let itemsindex= cartUser.items.findIndex((v)=>v._id===id);
+    //   console.log(itemsindex);
+
+    // deletecart Items
+    let deletdata = cartUser?.items.filter((v) => v._id !== id);
+    console.log(deletdata);
+
+    updateData({
+      _id: cartUser._id,
+      user_id: auth.auth._id,
+      items: deletdata
+    })
+    console.log(cartUser);
+
+
+
+  }
+
+  const { data: coupon } = useGetCouponQuery();
+  console.log(coupon?.data);
+
+
+
+  const filteritem = cartUser?.items?.filter((v) =>
+    !userPayment?.purchased_courses.some((v1) => v1.course === v.course)
+  );
+  console.log(filteritem);
+
+
+  const OrignalPrice = filteritem?.reduce((acc, v) => {
+    let cur = v.price.replace(/[^\d.]/g, '');
+    return acc + Number(cur);
+  }, 0)
+
+  console.log(OrignalPrice);
+
+
+
+  const handleCoupon = () => {
+
+    const discountper = coupon?.data.find(
+      (v) => v.name === couponcode
+    );
+
+    setSelectedCoupon(discountper);
+    if (discountper) {
+      const discoutnum = discountper.discount.replace('%', '');
+
+      setDiscount(Number(discoutnum));
+      setSelectedCoupon(discountper);
+    } else {
+      console.log('invalid coupon code');
+      setDiscount(0);
+      setSelectedCoupon(null);
+    }
+  };
+
+  console.log(discount);
+
+
+
+  // FINAL TOTAL
+  const discountPrice = OrignalPrice * discount / 100;
+  let finalPrice = OrignalPrice - discountPrice;
+  console.log(finalPrice);
+
+  //for payment
+  const [createOrder] = useCreateOrderMutation();
+  const [verifyPayment] = useVerifyPaymentMutation()
+
+
+  const handleuse = async () => {
+
+    try {
+
+
+      const purchasedCourses = filteritem.map(v => ({
+        course: v.course,
+        price: Number(v.price.replace(/[^\d.]/g, ''))
+      }));
+
+
+      console.log(purchasedCourses);
+
+      const amountInPaise = Math.round(finalPrice);
+
+      const order = await createOrder({
+        amount: amountInPaise,
+        user_id: auth.auth?._id,
+        cart_id: cartUser?._id,
+        purchased_courses: purchasedCourses
+      }).unwrap();
+
+      console.log(order);
+
+
+      const options = {
+        key: order.key,
+        amount: order.data.amount,
+        currency: order.data.currency,
+        order_id: order.data.id,
+
+        name: "Prince Movaliya",
+        description: "Test Transaction",
+
+        handler: async function (responce) {
+          console.log(responce);
+
+          await verifyPayment({
+            ...responce,
+            user_id: auth.auth?._id,
+            cart_id: cartUser?._id
+          });
+
+        },
+        prefill: {
+          name: "Elevent Knowledge",
+          email: "example@gmail.com",
+          contact: "9999999999",
+        },
+
+        theme: {
+          color: "rgb(243, 114, 84)",
+        },
+      };
+
+      const rzp = new Razorpay(options);
+
+      rzp.open();
+
+    } catch (error) {
+
+      console.log("ERROR", error);
+
+    }
+
+
+    if (!selectedCoupon) return;
+
+    if (selectedCoupon.userLimit > selectedCoupon.use) {
+
+      updateCoupon({
+        _id: selectedCoupon._id,
+        use: selectedCoupon.use + 1,
+      });
+
+    } else {
+      console.log('Invalid Coupon Code');
+
+    }
+
+
+
+  }
+
+
 
   return (
     <main>
@@ -76,7 +266,8 @@ Page content START */}
                     <tbody className="border-top-0">
                       {/* Table item */}
                       {
-                        cartUser?.items?.map((v) => {
+                      filteritem && filteritem.length > 0?
+                        filteritem?.map((v) => {
 
                           let cartCourse = courseData?.data?.filter((v1) => v1._id === v.course);
                           console.log(cartCourse);
@@ -96,7 +287,7 @@ Page content START */}
                                             <Carousel indicators={false}>
                                               {
                                                 v2.course_img.map(v3 => (
-                                                  <img src={v3.url} className="rounded" alt="course image"/>
+                                                  <img src={v3.url} className="rounded" alt="course image" />
 
                                                 ))
                                               }
@@ -104,7 +295,7 @@ Page content START */}
                                             </Carousel>
                                           }
                                         </div>
-                        
+
                                         {/* Title */}
                                         <h6 className="mb-0 ms-lg-3 mt-2 mt-lg-0">
                                           <a href="#">{v2.name}</a>
@@ -121,13 +312,20 @@ Page content START */}
                               {/* Action item */}
                               <td>
                                 <a href="#" className="btn btn-sm btn-success-soft px-2 me-1 mb-1 mb-md-0"><i className="far fa-fw fa-edit" /></a>
-                                <button className="btn btn-sm btn-danger-soft px-2 mb-0" onClick={()=>deleteData(v._id)}><i className="fas fa-fw fa-times" /></button>
+                                <button className="btn btn-sm btn-danger-soft px-2 mb-0" onClick={() => handledelete(v._id)}><i className="fas fa-fw fa-times" /></button>
                               </td>
                             </tr>
                           )
-                        })
+                        }) :
+                        
+                        <div className="empty-cart-message">
+                          <h2>Your cart is currently empty.</h2>
+                          <p>Before you can proceed to checkout, you must add some products to your shopping cart.</p>
+                          <Link to="/course" className="shop-link">Return to Shop</Link>
+                        </div>
+                        
                       }
-                     
+
                     </tbody>
                   </table>
                 </div>
@@ -135,8 +333,8 @@ Page content START */}
                 <div className="row g-3 mt-2">
                   <div className="col-md-6">
                     <div className="input-group">
-                      <input className="form-control form-control " placeholder="COUPON CODE" />
-                      <button type="button" className="btn btn-primary">Apply coupon</button>
+                      <input className="form-control form-control " placeholder="COUPON CODE" onChange={(e) => setCouponCode(e.target.value)} />
+                      <button type="button" className="btn btn-primary" onClick={handleCoupon}>Apply coupon</button>
                     </div>
                   </div>
                   {/* Update button */}
@@ -154,23 +352,38 @@ Page content START */}
                 {/* Title */}
                 <h4 className="mb-3">Cart Total</h4>
                 {/* Price and detail */}
-                <ul className="list-group list-group-borderless mb-2">
-                  <li className="list-group-item px-0 d-flex justify-content-between">
-                    <span className="h6 fw-light mb-0">Original Price</span>
-                    <span className="h6 fw-light mb-0 fw-bold">$500</span>
-                  </li>
-                  <li className="list-group-item px-0 d-flex justify-content-between">
-                    <span className="h6 fw-light mb-0">Coupon Discount</span>
-                    <span className="text-danger">-$20</span>
-                  </li>
-                  <li className="list-group-item px-0 d-flex justify-content-between">
-                    <span className="h5 mb-0">Total</span>
-                    <span className="h5 mb-0">$480</span>
-                  </li>
-                </ul>
+                {
+                  <ul className="list-group list-group-borderless mb-2">
+
+                    <li className="list-group-item px-0 d-flex justify-content-between">
+                      <span className="h6 fw-light mb-0">Original Price</span>
+                      <span className="h6 fw-light mb-0 fw-bold">${OrignalPrice ? OrignalPrice : 0}</span>
+                    </li>
+
+                    {discount && cartUser?.items ?
+                      <li className="list-group-item px-0 d-flex justify-content-between">
+                        <span className="h6 fw-light mb-0">Coupon Discount</span>
+                        <span className="text-danger">{discount + '%'}</span>
+                      </li> :
+                      ''
+                    }
+                    <li className="list-group-item px-0 d-flex justify-content-between">
+                      <span className="h5 mb-0">Total</span>
+                      <span className="h5 mb-0">{finalPrice}</span>
+                    </li>
+                  </ul>}
                 {/* Button */}
                 <div className="d-grid">
-                  <a href="checkout.html" className="btn btn-lg btn-success">Proceed to Checkout</a>
+                  <a className="btn btn-lg btn-success"
+                    state={{
+                      cartData: cartUser,
+                      finalPrice,
+                      discount,
+                      originalPrice: OrignalPrice
+                    }}
+                  
+                    onClick={handleuse} >Proceed to Checkout</a>
+                  {/* <a className="btn btn-lg btn-success" onClick={handleuse}>Proceed to Checkout</a> */}
                 </div>
                 {/* Content */}
                 <p className="small mb-0 mt-2 text-center">By completing your purchase, you agree to these <a href="#"><strong>Terms of Service</strong></a></p>

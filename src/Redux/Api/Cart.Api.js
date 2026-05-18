@@ -28,8 +28,8 @@ export const cartApi = createApi({
       invalidatesTags:['cart']
     }),
     deleteCart: builder.mutation({
-      query: (id) => ({
-        url: `cart/deletecart/${id}`,
+      query: (id1,id2) => ({
+        url: `cart/deletecart/${id1}/${id2}`,
         method: 'DELETE',
         body: id
       }),

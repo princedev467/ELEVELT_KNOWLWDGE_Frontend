@@ -1067,7 +1067,7 @@ Trending courses START */}
                           <a href="#" className={`${isDark ? 'a' : ''} h6 fw-light mb-0`}><i className="far fa-bookmark" /></a>
                         </div>
                         {/* Title */}
-                        <h5 className="card-title"><a href="#" className={`${isDark ? 'a' : ''}`}>The complete Digital Marketing Course - 8 Course in 1</a></h5>
+                        <h5 className="card-title"><a href="#" className={`${isDark ? 'a' : ''}`}>The Complete DigitalMarketing Course -8 Course in 1</a></h5>
                         {/* Rating */}
                         <div className="d-flex justify-content-between mb-2">
                           <div className="hstack gap-2">

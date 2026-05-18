@@ -15,6 +15,11 @@ function TextForm({ type = "text", data = [], ...props }) {
       margin="dense"
       variant="standard"
       select={type === "select"}   
+       InputLabelProps={
+        type === "date"
+          ? { shrink: true }
+          : undefined
+      }
       error={meta.touched && Boolean(meta.error)}
       helperText={meta.touched && meta.error ? meta.error : ""}
     >
