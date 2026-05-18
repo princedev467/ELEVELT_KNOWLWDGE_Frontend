@@ -27,23 +27,17 @@ function Course_Detail(props) {
 
   console.log(quizid);
   const videoRef = useRef(null);
-  const [duration, setDuration] = useState(0)
+  const [durations, setDurations] = useState({});
 
-  const formatDuration = (seconds) => {
 
-    console.log(seconds);
 
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
+  const handleLoadedMetadata = (e, id) => {
+    console.log("Duration:", e.target.duration);
 
-    return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
-  };
-  const handleLoadedMetadata = () => {
-    if (videoRef.current) {
-      // videoRef.current.duration returns length in seconds
-      setDuration(videoRef.current.duration);
-      console.log("Video duration:", videoRef.current.duration);
-    }
+    setDurations((prev) => ({
+      ...prev,
+      [id]: e.target.duration,
+    }));
   };
 
   //auth
@@ -372,10 +366,15 @@ Page content START */}
                                           {file?.resource_type === "video" && (
                                             <video
                                               style={{ display: "none" }}
-                                              ref={videoRef}
-                                              onLoadedMetadata={handleLoadedMetadata}
+                                              preload="metadata"
+                                              onLoadedMetadata={(e) =>
+                                                handleLoadedMetadata(e, v2._id)
+                                              }
+                                              onError={(e) =>
+                                                console.log("VIDEO ERROR", e)
+                                              }
+                                              src={file.url}
                                             >
-                                              <source src={v2.video_url} type="video/mp4" />
                                             </video>
                                           )}
                                           <div>
@@ -391,13 +390,23 @@ Page content START */}
 
 
                                               </div>
-                                              {/* {file?.resource_type === "video" &&
-                                                // (durations[v2._id] || "Loading...")
-                                              } */}
+                                              <div className='d-flex align-items-center'>
+                                                <div style={{marginRight:'10px'}}>
+                                              {file?.resource_type === "video" &&
+                                                (durations[v2._id]
+                                                  ? `${Math.floor(durations[v2._id] / 60)}:${Math.floor(
+                                                    durations[v2._id] % 60
+                                                  )
+                                                    .toString()
+                                                    .padStart(2, "0")}`
+                                                  : "Loading...")
+                                              }
 
-                                              {file?.resource_type === "image" && "Image"}
+                                              {/* {file?.resource_type === "image" && "Image"}
 
-                                              {file?.resource_type === "raw" && "PDF / Document"}
+                                              {file?.resource_type === "raw" && "PDF / Document"} */}
+
+                                                </div>
                                               {(v2.content_type === "free" || purchaseCourse) ? (
                                                 <NavLink
                                                   to={`/Course_Video_Player/${v2._id}`}
@@ -410,6 +419,7 @@ Page content START */}
                                                   Locked
                                                 </span>
                                               )}
+                                              </div>
                                             </div>
                                             <hr />
                                           </div>
