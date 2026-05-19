@@ -15,6 +15,9 @@ import { useGetcontentQuery } from '../../Redux/Api/Content.Api';
 import { useAddCartMutation, useGetCartQuery, useUpdateCartMutation } from '../../Redux/Api/Cart.Api';
 import { useSelector } from 'react-redux';
 import { useGetPaymentQuery } from '../../Redux/Api/Payment.Api';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import PlayCircleFilledOutlinedIcon from '@mui/icons-material/PlayCircleFilledOutlined';
+
 
 function Course_Detail(props) {
   const themeData = useContext(ThemeContext);
@@ -371,7 +374,7 @@ Page content START */}
                                               onLoadedMetadata={(e) =>
                                                 handleLoadedMetadata(e, v2._id)
                                               }
-                                               src={file.url}
+                                               src={file.url} 
                                             >
                                             </video>
                                           )}
@@ -390,6 +393,7 @@ Page content START */}
                                               </div>
                                               <div className='d-flex align-items-center'>
                                                 <div style={{ marginRight: '10px' }}>
+
                                                   {file?.resource_type === "video" &&
                                                     (durations[v2._id]
                                                       ? `${Math.floor(durations[v2._id] / 60)}:${Math.floor(
@@ -397,7 +401,7 @@ Page content START */}
                                                       )
                                                         .toString()
                                                         .padStart(2, "0")}`
-                                                      : "Loading...")
+                                                      : "")
                                                   }
 
                                                   {/* {file?.resource_type === "image" && "Image"}
@@ -408,14 +412,14 @@ Page content START */}
                                                 {(v2.content_type === "free" || purchaseCourse) ? (
                                                   <NavLink
                                                     to={`/Course_Video_Player/${v2._id}`}
-                                                    className="btn btn-primary btn-sm"
+                                                   
                                                   >
-                                                    Preview
-                                                  </NavLink>
+                                                    <PlayCircleFilledOutlinedIcon  sx={{fontSize:'30px',color:'#d6293e'}}/>
+                                                       </NavLink>
                                                 ) : (
-                                                  <span className="badge bg-danger">
-                                                    Locked
-                                                  </span>
+                                                  <span >
+                                                    <LockOutlinedIcon />
+                                                    </span>
                                                 )}
                                               </div>
                                             </div>

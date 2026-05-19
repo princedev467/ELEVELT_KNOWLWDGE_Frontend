@@ -130,10 +130,7 @@ function Cart(props) {
 
 
   const handleuse = async () => {
-
     try {
-
-
       const purchasedCourses = filteritem.map(v => ({
         course: v.course,
         price: Number(v.price.replace(/[^\d.]/g, ''))
@@ -266,7 +263,7 @@ Page content START */}
                     <tbody className="border-top-0">
                       {/* Table item */}
                       {
-                      filteritem && filteritem.length > 0?
+                      filteritem && filteritem.length>0?
                         filteritem?.map((v) => {
 
                           let cartCourse = courseData?.data?.filter((v1) => v1._id === v.course);
@@ -318,11 +315,13 @@ Page content START */}
                           )
                         }) :
                         
+                        
                         <div className="empty-cart-message">
                           <h2>Your cart is currently empty.</h2>
                           <p>Before you can proceed to checkout, you must add some products to your shopping cart.</p>
                           <Link to="/course" className="shop-link">Return to Shop</Link>
                         </div>
+                        
                         
                       }
 
@@ -374,15 +373,7 @@ Page content START */}
                   </ul>}
                 {/* Button */}
                 <div className="d-grid">
-                  <a className="btn btn-lg btn-success"
-                    state={{
-                      cartData: cartUser,
-                      finalPrice,
-                      discount,
-                      originalPrice: OrignalPrice
-                    }}
-                  
-                    onClick={handleuse} >Proceed to Checkout</a>
+                  <a className="btn btn-lg btn-success"  onClick={handleuse} >Proceed to Checkout</a>
                   {/* <a className="btn btn-lg btn-success" onClick={handleuse}>Proceed to Checkout</a> */}
                 </div>
                 {/* Content */}
