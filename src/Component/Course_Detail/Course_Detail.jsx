@@ -17,6 +17,8 @@ import { useSelector } from 'react-redux';
 import { useGetPaymentQuery } from '../../Redux/Api/Payment.Api';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import PlayCircleFilledOutlinedIcon from '@mui/icons-material/PlayCircleFilledOutlined';
+import { useAddProgressMutation, useGetProgressQuery, useUpdateProgressMutation } from '../../Redux/Api/progress.Api';
+import { useGetEnrollmentQuery } from '../../Redux/Api/enrollment.Api';
 
 
 function Course_Detail(props) {
@@ -31,18 +33,6 @@ function Course_Detail(props) {
   console.log(quizid);
   const videoRef = useRef(null);
   const [durations, setDurations] = useState({});
-  
-
-
-
-  const handleLoadedMetadata = (e, id) => {
-    console.log("Duration:", e.target.duration);
-
-    setDurations((prev) => ({
-      ...prev,
-      [id]: e.target.duration,
-    }));
-  };
 
   //auth
   const auth = useSelector(state => state.auth);
@@ -52,6 +42,41 @@ function Course_Detail(props) {
   const { id } = useParams();
   console.log("id", id);
 
+
+
+
+  const { data: enroll } = useGetEnrollmentQuery();
+  console.log(enroll?.data);
+
+
+  const enrollmentData = enroll?.data?.find((v) => v.user_id === auth.auth._id);
+  console.log(enrollmentData);
+
+
+  const { data: Progress } = useGetProgressQuery()
+  const [addProgress] = useAddProgressMutation();
+  const [updateProgress] = useUpdateProgressMutation();
+
+
+  const handleLoadedMetadata = async (e, id) => {
+    console.log("Duration:", e.target.duration);
+
+    const duration = e.target.duration
+    const currenttime = localStorage.getItem(id);
+    console.log(currenttime);
+
+    const percentage = (currenttime / duration) * 100;
+    console.log(percentage);
+
+
+    setDurations((prev) => ({
+      ...prev,
+      [id]: e.target.duration,
+    }));
+  };
+
+
+  // track video position
 
 
 
@@ -122,18 +147,30 @@ function Course_Detail(props) {
 
   let PaymentData = payment?.data;
 
-  const userPayment = PaymentData?.find((v) => v.user_id === auth.auth?._id);
+  const userPayment = PaymentData?.filter((v) => v.user_id === auth.auth?._id);
   console.log(userPayment);
 
-  const purchase = userPayment?.purchased_courses
 
-  console.log(purchase);
+  const usermergePurchased = [];
 
-  const purchaseCourse = purchase?.some(v => v?.course === id);
-  // console.log(findpurchaseCourse);
+  userPayment?.map((v) => {
+
+    v.purchased_courses.map((v2) => {
+      usermergePurchased?.push(v2.course)
+    })
+
+  })
+
+  console.log(usermergePurchased);
 
 
+  const purchaseCourse = usermergePurchased?.some(v => v === id)
 
+  console.log(purchaseCourse);
+  // for(let v of userPayment?.purchased_courses){
+  //     console.log(v);
+
+  // }
 
 
   const handleCart = (val) => {
@@ -374,7 +411,8 @@ Page content START */}
                                               onLoadedMetadata={(e) =>
                                                 handleLoadedMetadata(e, v2._id)
                                               }
-                                               src={file.url} 
+
+                                              src={file.url}
                                             >
                                             </video>
                                           )}
@@ -412,14 +450,14 @@ Page content START */}
                                                 {(v2.content_type === "free" || purchaseCourse) ? (
                                                   <NavLink
                                                     to={`/Course_Video_Player/${v2._id}`}
-                                                   
+
                                                   >
-                                                    <PlayCircleFilledOutlinedIcon  sx={{fontSize:'30px',color:'#d6293e'}}/>
-                                                       </NavLink>
+                                                    <PlayCircleFilledOutlinedIcon sx={{ fontSize: '30px', color: '#d6293e' }} />
+                                                  </NavLink>
                                                 ) : (
                                                   <span >
                                                     <LockOutlinedIcon />
-                                                    </span>
+                                                  </span>
                                                 )}
                                               </div>
                                             </div>

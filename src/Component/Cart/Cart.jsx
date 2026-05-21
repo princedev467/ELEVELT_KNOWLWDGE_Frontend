@@ -23,6 +23,11 @@ function Cart(props) {
   const { data: cart } = useGetCartQuery();
   console.log(cart?.data);
 
+   const { data: payment } = useGetPaymentQuery();
+  console.log(payment?.data);
+
+  let PaymentData = payment?.data;
+
   //update cartdata
   const [updateData] = useUpdateCartMutation();
 
@@ -30,22 +35,12 @@ function Cart(props) {
   const [deleteData] = useDeleteCartMutation();
   let cartData = cart?.data
 
-
-
-
-
   //specifc user cart data
   let cartUser = cartData?.find((v) => v.user_id === auth.auth?._id)
   console.log(cartUser);
 
-
-
-  const { data: payment } = useGetPaymentQuery();
-  console.log(payment?.data);
-
-  let PaymentData = payment?.data;
-
-  const userPayment = PaymentData?.find((v) => v.user_id === auth.auth?._id);
+//specific 
+  const userPayment = PaymentData?.filter((v) => v.user_id === auth.auth?._id);
   console.log(userPayment);
 
 
@@ -58,9 +53,7 @@ function Cart(props) {
   const [updateCoupon] = useUpdateCouponMutation();
 
   const handledelete = (id) => {
-    //  let itemsindex= cartUser.items.findIndex((v)=>v._id===id);
-    //   console.log(itemsindex);
-
+   
     // deletecart Items
     let deletdata = cartUser?.items.filter((v) => v._id !== id);
     console.log(deletdata);
@@ -80,12 +73,14 @@ function Cart(props) {
   console.log(coupon?.data);
 
 
-
-  const filteritem = cartUser?.items?.filter((v) =>
-    !userPayment?.purchased_courses.some((v1) => v1.course === v.course)
-  );
-  console.log(filteritem);
-
+const filteritem = cartUser?.items?.filter(
+  (item) =>
+    !userPayment?.some((payment) =>
+      payment?.purchased_courses?.some(
+        (course) => course.course === item.course
+      )
+    )
+);
 
   const OrignalPrice = filteritem?.reduce((acc, v) => {
     let cur = v.price.replace(/[^\d.]/g, '');
@@ -95,7 +90,7 @@ function Cart(props) {
   console.log(OrignalPrice);
 
 
-
+ //handle coupon
   const handleCoupon = () => {
 
     const discountper = coupon?.data.find(
@@ -129,6 +124,7 @@ function Cart(props) {
   const [verifyPayment] = useVerifyPaymentMutation()
 
 
+  // create order and verify payment
   const handleuse = async () => {
     try {
       const purchasedCourses = filteritem.map(v => ({
