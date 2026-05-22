@@ -19,11 +19,28 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import PlayCircleFilledOutlinedIcon from '@mui/icons-material/PlayCircleFilledOutlined';
 import { useAddProgressMutation, useGetProgressQuery, useUpdateProgressMutation } from '../../Redux/Api/progress.Api';
 import { useGetEnrollmentQuery } from '../../Redux/Api/enrollment.Api';
-
+import CheckIcon from '@mui/icons-material/Check';
+import LinearProgress from '@mui/joy/LinearProgress';
+import Typography from '@mui/joy/Typography';
+import { useCountUp } from 'use-count-up'
 
 function Course_Detail(props) {
   const themeData = useContext(ThemeContext);
   console.log(themeData);
+
+
+  const { value } = useCountUp({
+    isCounting: true,
+    duration: 5,
+    easing: 'linear',
+    start: 0,
+    end: 100,
+    onComplete: () => ({
+      shouldRepeat: true,
+      delay: 2,
+    }),
+  });
+
 
   const [more, setmore] = useState(true);
   const [text, setText] = useState('');
@@ -33,6 +50,7 @@ function Course_Detail(props) {
   console.log(quizid);
   const videoRef = useRef(null);
   const [durations, setDurations] = useState({});
+  const [progress, setProgress] = useState({});
 
   //auth
   const auth = useSelector(state => state.auth);
@@ -58,7 +76,7 @@ function Course_Detail(props) {
   const [updateProgress] = useUpdateProgressMutation();
 
 
-  const handleLoadedMetadata = async (e, id) => {
+  const handleLoadedMetadata = async (e, content_id, section_id) => {
     console.log("Duration:", e.target.duration);
 
     const duration = e.target.duration
@@ -71,8 +89,18 @@ function Course_Detail(props) {
 
     setDurations((prev) => ({
       ...prev,
-      [id]: e.target.duration,
+      [content_id]: e.target.duration,
     }));
+
+
+
+    //  let contentFilter = content?.data?.filter((c) => c.section === section_id)
+    //  console.log(contentFilter);
+
+    // let progressContent=contentFilter.filter((v)=>v._id===content_id);
+    // console.log(progressContent);
+
+
   };
 
 
@@ -382,17 +410,107 @@ Page content START */}
                           let contentFilter = content?.data?.filter((c) => c.section === v._id).sort((a, b) => a.order - b.order);
                           console.log(contentFilter);
 
+                          // console.log(contentFilter.length);
+
+                          // Total lectures
+                          const totalLectures = contentFilter?.length || 0;
+                          console.log(totalLectures);
+
+                          // Completed lectures
+                          const completedLectures = contentFilter?.filter((item) => {
+                            return Progress?.data?.find(
+                              (p) =>
+                                p.content_Id === item._id &&
+                                p.enroll_Id === enrollmentData?._id &&
+                                p.is_complete === true
+                            );
+                          });
+
+                          console.log(completedLectures.length);
+
+                          // Percentage
+                          const percentage =
+                            totalLectures > 0
+                              ? Math.round((completedLectures.length / totalLectures) * 100)
+                              : 0;
+
+                          console.log(percentage);
 
                           return (
+
                             <div className="accordion-item mb-3">
                               {/*  */}
 
-                              <h6 className="accordion-header font-base" id={"heading-" + i}>
+                              <h6
+                                className="accordion-header font-base d-flex justify-content-between align-items-center gap-3"
+                                id={"heading-" + i}
+                              >
+                                <button
+                                  className="accordion-button fw-bold rounded collapsed"
+                                  type="button"
+                                  data-bs-toggle="collapse"
+                                  data-bs-target={`#collapse-` + i}
+                                  aria-expanded="true"
+                                  aria-controls={`collapse-` + i}
+                                >
 
-                                <button className="accordion-button fw-bold rounded d-sm-flex d-inline-block collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse-` + i} aria-expanded="true" aria-controls={`collapse-` + i}>
-                                  {v.name}
-                                  <span className="small ms-0 ms-sm-2">(3 Lectures)</span>
+                                  <div
+                                    className="d-flex align-items-center justify-content-between w-100"
+                                  >
+
+                                    {/* Left Side */}
+                                    <div className="d-flex align-items-center">
+                                      <span>{v.name}</span>
+
+                                      <span className="small ms-2">
+                                        ({totalLectures} Lectures)
+                                      </span>
+                                    </div>
+
+                                    {/* Right Side Progress */}
+                                    <div
+                                      style={{
+                                        width: "220px",
+                                        minWidth: "220px",
+                                        marginRight: "20px",
+                                      }}
+                                    >
+                                      <LinearProgress
+                                        determinate
+                                        value={percentage}
+                                        variant="soft"
+                                        size="md"
+                                        sx={{
+                                          "--LinearProgress-radius": "10px",
+                                          "--LinearProgress-thickness": "18px",
+                                          bgcolor: "#242121",
+
+                                          // Progress color
+                                          color: "#d6293e",
+                                          position: "relative",
+                                        }}
+
+                                      >
+                                        <Typography
+                                          level="body-sm"
+                                          sx={{
+                                            color: "white",
+                                            fontWeight: "bold",
+                                            fontSize: "12px",
+                                            position: "relative",
+                                            zIndex: 2,
+                                          }}
+                                        >
+                                          {percentage}% Completed
+                                        </Typography>
+                                      </LinearProgress>
+                                    </div>
+
+                                  </div>
                                 </button>
+
+                                {/* Right Side Progress */}
+
 
                               </h6>
 
@@ -402,6 +520,19 @@ Page content START */}
                                   {
                                     contentFilter?.map((v2) => {
                                       const file = v2.contentFile?.[0];
+
+                                      let isComplete = Progress?.data?.find((p) => p.content_Id === v2._id && p?.enroll_Id === enrollmentData?._id && p?.is_complete === true);
+                                      console.log(isComplete);
+
+                                      // console.log(isComplete?.length);
+
+
+
+
+                                      // setProgress((prev) => ({
+                                      //   ...prev,
+                                      //   [v._id]: ,
+                                      // }))
                                       return (
                                         <div>
                                           {file?.resource_type === "video" && (
@@ -409,7 +540,7 @@ Page content START */}
                                               style={{ display: "none" }}
                                               preload="metadata"
                                               onLoadedMetadata={(e) =>
-                                                handleLoadedMetadata(e, v2._id)
+                                                handleLoadedMetadata(e, v2._id, v._id)
                                               }
 
                                               src={file.url}
@@ -429,6 +560,9 @@ Page content START */}
 
 
                                               </div>
+                                              {
+                                                isComplete ? <CheckIcon sx={{ color: 'lightgreen' }} /> : null
+                                              }
                                               <div className='d-flex align-items-center'>
                                                 <div style={{ marginRight: '10px' }}>
 
@@ -483,6 +617,8 @@ Page content START */}
                                 </div>
                               </div>
                             </div>
+
+
                           )
 
                         }

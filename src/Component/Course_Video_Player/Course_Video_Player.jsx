@@ -15,16 +15,16 @@ function Course_Video_Player(props) {
 
   console.log(Content?.data);
 
-    const auth = useSelector(state => state.auth);
-    console.log(auth);
+  const auth = useSelector(state => state.auth);
+  console.log(auth);
 
-   const { data: enroll } = useGetEnrollmentQuery();
-    console.log(enroll?.data);
-  
-  
-    const enrollmentData = enroll?.data?.find((v) => v.user_id === auth.auth._id);
-    console.log(enrollmentData);
-  
+  const { data: enroll } = useGetEnrollmentQuery();
+  console.log(enroll?.data);
+
+
+  const enrollmentData = enroll?.data?.find((v) => v?.user_id === auth?.auth?._id);
+  console.log(enrollmentData);
+
   const Video_display = Content?.data?.filter((v) => v?._id === id);
 
   console.log(Video_display);
@@ -55,18 +55,20 @@ function Course_Video_Player(props) {
 
   };
 
-  const handlePause=async(e,id)=>{
-     const currentTime = e.target.currentTime;
+  const handlePause = async (e, id) => {
 
-       const findProgress = Progress?.data?.find((v) => v.content_Id === id);
+    const currentTime = e.target.currentTime;
+
+    const findProgress = Progress?.data?.find((v) => v?.content_Id === id && v?.enroll_Id === enrollmentData?._id) || null;
     console.log(findProgress);
 
-     if (findProgress) {
+
+
+    if (findProgress) {
       // UPDATE existing
       await updateProgress({
         _id: findProgress._id,
-        duration: currentTime,
-        is_complete: true,
+        duration: currentTime
       });
     } else {
       // ADD new
@@ -75,17 +77,19 @@ function Course_Video_Player(props) {
         duration: duration,
         enroll_Id: enrollmentData._id,
       });
+    }
   }
-}
-  const handleVideoEnd = async (e,id) => {
+  const handleVideoEnd = async (e, id) => {
 
-     const duration = e.target.duration;
-''
-    const findProgress = Progress?.data?.find((v) => v.content_Id === id);
+    const duration = e.target.duration;
+    ''
+    const findProgress = Progress?.data?.find((v) => v?.content_Id === id && v?.enroll_Id === enrollmentData?._id) || null;
     console.log(findProgress);
 
 
-   if (findProgress) {
+
+
+    if (findProgress) {
       // UPDATE existing
       await updateProgress({
         _id: findProgress._id,
@@ -97,7 +101,8 @@ function Course_Video_Player(props) {
       await addProgress({
         content_Id: id,
         duration: duration,
-         enroll_Id: enrollmentData._id,
+        enroll_Id: enrollmentData._id,
+        is_complete: true
       });
     }
   }
@@ -129,6 +134,13 @@ function Course_Video_Player(props) {
                         <video
                           controls
                           autoPlay
+                          onLoadedMetadata={(e) => {
+                            const savedTime = localStorage.getItem(v._id);
+
+                            if (savedTime) {
+                              e.target.currentTime = parseFloat(savedTime);
+                            }
+                          }}
                           onTimeUpdate={(e) =>
                             handleTimeUpdate(e, v._id)
                           }
@@ -136,8 +148,8 @@ function Course_Video_Player(props) {
                             handlePause(e, v._id)
                           }
                           onEnded={(e) =>
-                             handleVideoEnd(e, v._id)
-                            }
+                            handleVideoEnd(e, v._id)
+                          }
                           className="w-100">
                           <source src={file.url} type="video/mp4" />
                         </video>
