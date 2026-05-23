@@ -408,13 +408,13 @@ Page content START */}
                         filterSectionData?.map((v, i) => {
 
                           let contentFilter = content?.data?.filter((c) => c.section === v._id).sort((a, b) => a.order - b.order);
-                          console.log(contentFilter);
+                          // console.log(contentFilter);
 
                           // console.log(contentFilter.length);
 
                           // Total lectures
                           const totalLectures = contentFilter?.length || 0;
-                          console.log(totalLectures);
+                          // console.log(totalLectures);
 
                           // Completed lectures
                           const completedLectures = contentFilter?.filter((item) => {
@@ -426,7 +426,7 @@ Page content START */}
                             );
                           });
 
-                          console.log(completedLectures.length);
+                          // console.log(completedLectures.length);
 
                           // Percentage
                           const percentage =
@@ -434,7 +434,7 @@ Page content START */}
                               ? Math.round((completedLectures.length / totalLectures) * 100)
                               : 0;
 
-                          console.log(percentage);
+                          // console.log(percentage);
 
                           return (
 
