@@ -289,18 +289,8 @@ function Course_Detail(props) {
             grade: "A+"
         }).unwrap();
 
-      const url = window.URL.createObjectURL(certificate);
-
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "certificate.pdf";
-
-        document.body.appendChild(link);
-        link.click();
-
-        link.remove();
-
-        window.URL.revokeObjectURL(url);
+        console.log(certificate);
+        
 
     } catch (error) {
         console.log(error);
