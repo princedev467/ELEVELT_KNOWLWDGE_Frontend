@@ -160,40 +160,75 @@ function Content(props) {
          { field: 'content_type', headerName: 'Type', width: 80 },
         { field: 'Instructor_id', headerName: 'Instructor_id', width: 240 },
         {
-            field: 'contentFile', headerName: 'Source', width: 130,
-            renderCell: (param) => (
+    field: 'contentFile',
+    headerName: 'Source',
+    width: 150,
 
-                <div>
-                    {
-                        param.row.contentFile.map((v, i) => {
-                            if (v.resource_type === 'image') {
-                                return (
-                                    <img src={v.url} style={{ objectFit: 'cover', width: "50px", height: "50px" }} />
+    renderCell: (param) => (
+        <div
+            style={{
+                display: 'flex',
+                gap: '10px',
+                alignItems: 'center',
+                flexWrap: 'wrap'
+            }}
+        >
+            {param.row.contentFile?.map((v, i) => {
 
-                                )
-                            } else if (v.resource_type === 'video') {
-                                return (
+                // IMAGE
+                if (v.resource_type === 'image') {
+                    return (
+                        <img
+                            key={i}
+                            src={v.url}
+                            alt="preview"
+                            style={{
+                                objectFit: 'cover',
+                                width: '50px',
+                                height: '50px',
+                                borderRadius: '5px'
+                            }}
+                        />
+                    );
+                }
 
-                                    <video key={i} width="50" height="50" controls autoPlay>
-                                        <source src={v.url} />
-                                    </video>
-                                )
-                            } else if (v.url.toLowerCase().endsWith('.pdf')) {
-                                return (
+                // VIDEO
+                if (v.resource_type === 'video') {
+                    return (
+                        <video
+                            key={i}
+                            width="70"
+                            height="50"
+                            controls
+                        >
+                            <source src={v.url} />
+                        </video>
+                    );
+                }
 
-                                    <a key={i} href={v.url} target='_blank' rel="noreferrer" >
-                                        View PDF
-                                    </a>
-                                )
-                            }
+                // PDF
+                if (v.resource_type === 'raw') {
+                    return (
+                        <a
+                            key={i}
+                            href={v.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            style={{
+                                color: 'blue',
+                                textDecoration: 'underline'
+                            }}
+                        >
+                            📄 View PDF
+                        </a>
+                    );
+                }
 
-                        })
-                    }
-
-
-                </div>
-            )
-        },
+                return null;
+            })}
+        </div>
+    )
+},
         // { field: 'description', headerName: 'description', width: 200 },
 
 
@@ -241,13 +276,13 @@ function Content(props) {
         formData.append('name', val.name);
         formData.append('section', val.section);
         formData.append('course', courseid);
-        formData.append('order', val.order);
+        formData.append('order', String(val.order));
 
          formData.append('content_type', val.content_type);
 
         val.contentFile.forEach((v) => {
             if (v instanceof File) {
-                formData.append('order', val.order);
+               
                 formData.append('contentFile', v);
             } else {
                 formData.append('contentFile', v.url);

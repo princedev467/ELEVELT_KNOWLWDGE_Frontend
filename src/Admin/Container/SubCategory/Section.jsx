@@ -181,6 +181,8 @@ function Section(props) {
     }
     //  
 
+    console.log(section?.data);
+    
     let filterSection=section?.data?.filter((s)=>s.Instructor_id===auth?.auth?._id)
 
     console.log(filterSection);

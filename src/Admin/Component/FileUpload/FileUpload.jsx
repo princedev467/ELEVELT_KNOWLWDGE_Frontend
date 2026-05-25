@@ -3,7 +3,6 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import { useField } from 'formik';
-import { IMAGE_URL } from '../../../utility/url';
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -17,100 +16,143 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
 });
 
-
 function FileUpload(props) {
-    const [field, meta, helper] = useField(props)
-
+    const [field, meta, helper] = useField(props);
     const { setValue } = helper;
 
-    let filepath
+    // Always make it an array
+    const filepaths = Array.from(field?.value || []);
 
-    let filepaths
-    if (field?.value) {
-        filepaths = Array.from(field?.value);
-    }
-    console.log("filepath:", filepath);
-
-    const ImageData = filepaths?.map((v) => {
-        console.log(v);
-
+    // Prepare preview data
+    const ImageData = filepaths.map((v) => {
         if (v?.url) {
+            // Existing file from API/database
             return {
                 url: v.url,
-                type: v?.type,
-
-            }
-        } else {
-            return {
-                url: URL.createObjectURL(v),
-                type: v?.type,
-                //  firstName : type.split("/")[0]
-            }
+                type: v.type,
+            };
         }
-        // if (typeof v === 'string') {
-        //     return (filepath = v)
 
-        // } else if (typeof v === 'object' && v !== null) {
-
-        //     return (filepath = URL.createObjectURL(v))
-        // }
-    })
-
-    console.log("ImageData:", ImageData);
-
-
-
-    console.log("filepath", filepath);
-
-    // // console.log(field);
-
-
+        // Newly uploaded file
+        return {
+            url: URL.createObjectURL(v),
+            type: v.type,
+        };
+    });
 
     return (
         <>
             <Button
                 component="label"
-                role={undefined}
                 variant="contained"
                 tabIndex={-1}
-                {...props}
                 startIcon={<CloudUploadIcon />}
             >
-                Upload file
+                Upload File
+
                 <VisuallyHiddenInput
                     type="file"
+                    multiple
                     onChange={(event) => {
                         const files = Array.from(event.target.files || []);
+
                         setValue(files);
+
+                        // Reset input so same file can be selected again
                         event.target.value = null;
-
-                    }
-
-                    }
-                    multiple
-                // onBlur={handleBlur}
+                    }}
                 />
             </Button>
 
-
-            {ImageData.map((v, i) => {
-
-                if (v?.type === 'image' || v?.type?.startsWith('image')) {
-                    if (v.type == 'video' || v.type == 'video/mp4') {
-                        return <video src={v.url} width={"80px"} height={"50px"} />
-                    } else if (v.type == 'image' || v.type == 'image/png' || v.type == 'image/jpg' || v.type == 'image/jpeg') {
-                        return <img src={v.url} alt="" width={"80px"} height={"50px"} />
-                    } else {
-                        return <a href={v.url} target="_blank">Open File</a>
+            <div
+                style={{
+                    display: 'flex',
+                    gap: '10px',
+                    marginTop: '10px',
+                    flexWrap: 'wrap',
+                }}
+            >
+                {ImageData.map((v, i) => {
+                    // IMAGE
+                    if (v?.type?.startsWith('image')) {
+                        return (
+                            <img
+                                key={i}
+                                src={v.url}
+                                alt="preview"
+                                width="80"
+                                height="50"
+                                style={{
+                                    objectFit: 'cover',
+                                    borderRadius: '5px',
+                                    border: '1px solid #ccc',
+                                }}
+                            />
+                        );
                     }
-                }
 
-                return null;
-            })}
+                    // VIDEO
+                    if (v?.type === 'video/mp4') {
+                        return (
+                            <video
+                                key={i}
+                                src={v.url}
+                                width="120"
+                                height="80"
+                                controls
+                                style={{
+                                    borderRadius: '5px',
+                                    border: '1px solid #ccc',
+                                }}
+                            />
+                        );
+                    }
 
-            {
-                <p style={{ color: 'red' }}>{meta.error && meta.touched ? meta.error : null}</p>
-            }
+                    // PDF
+                    if (v?.type === 'application/pdf') {
+                        return (
+                            <a
+                                key={i}
+                                href={v.url}
+                                target="_blank"
+                                rel="noreferrer"
+                                style={{
+                                    padding: '10px',
+                                    border: '1px solid #ccc',
+                                    borderRadius: '5px',
+                                    textDecoration: 'none',
+                                }}
+                            >
+                                📄 Open PDF
+                            </a>
+                        );
+                    }
+
+                    // OTHER FILES
+                    return (
+                        <a
+                            key={i}
+                            href={v.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            style={{
+                                padding: '10px',
+                                border: '1px solid #ccc',
+                                borderRadius: '5px',
+                                textDecoration: 'none',
+                            }}
+                        >
+                            Open File
+                        </a>
+                    );
+                })}
+            </div>
+
+            {meta.error && meta.touched && (
+                <p style={{ color: 'red', marginTop: '5px' }}>
+                    {meta.error}
+                </p>
+            )}
         </>
     );
 }

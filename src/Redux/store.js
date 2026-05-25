@@ -13,6 +13,7 @@ import { couponApi } from "./Api/coupon.Api"
 import { PaymentApi } from "./Api/Payment.Api"
 import { progressApi } from "./Api/progress.Api"
 import { enrollmentApi } from "./Api/enrollment.Api"
+import { certificateApi } from "./Api/certificate.Api"
 
 export const confistore = () => {
 
@@ -30,7 +31,8 @@ export const confistore = () => {
             [couponApi.reducerPath]: couponApi.reducer,
             [PaymentApi.reducerPath]: PaymentApi.reducer,
             [progressApi.reducerPath]: progressApi.reducer,
-            [enrollmentApi.reducerPath]: enrollmentApi.reducer
+            [enrollmentApi.reducerPath]: enrollmentApi.reducer,
+            [certificateApi.reducerPath]:certificateApi.reducer
         },
         middleware: (getDefaultMiddleware) =>
             getDefaultMiddleware().concat([
@@ -43,7 +45,8 @@ export const confistore = () => {
                 couponApi.middleware,
                 PaymentApi.middleware,
                 progressApi.middleware,
-                enrollmentApi.middleware
+                enrollmentApi.middleware,
+                certificateApi.middleware
             ]),
     })
 

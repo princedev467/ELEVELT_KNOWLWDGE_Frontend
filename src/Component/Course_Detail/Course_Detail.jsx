@@ -23,10 +23,12 @@ import CheckIcon from '@mui/icons-material/Check';
 import LinearProgress from '@mui/joy/LinearProgress';
 import Typography from '@mui/joy/Typography';
 import { useCountUp } from 'use-count-up'
+import DownloadIcon from "@mui/icons-material/Download";
+import { useAddcertificateMutation } from '../../Redux/Api/certificate.Api';
 
 function Course_Detail(props) {
   const themeData = useContext(ThemeContext);
-  console.log(themeData);
+  // console.log(themeData);
 
 
   const { value } = useCountUp({
@@ -47,28 +49,27 @@ function Course_Detail(props) {
 
   const [quizid, setQuizid] = useState(null)
 
-  console.log(quizid);
+  // console.log(quizid);
   const videoRef = useRef(null);
   const [durations, setDurations] = useState({});
   const [progress, setProgress] = useState({});
 
   //auth
   const auth = useSelector(state => state.auth);
-  console.log(auth);
+  // console.log(auth);
 
   let isDark = themeData.theme === 'light'
   const { id } = useParams();
-  console.log("id", id);
+  // console.log("id", id);
 
 
 
 
-  const { data: enroll } = useGetEnrollmentQuery();
-  console.log(enroll?.data);
+  const { data: enroll } = useGetEnrollmentQuery(); // console.log(enroll?.data);
 
 
-  const enrollmentData = enroll?.data?.find((v) => v.user_id === auth.auth._id);
-  console.log(enrollmentData);
+  const enrollmentData = enroll?.data?.find((v) => v.user_id === auth?.auth?._id) || null;
+  // console.log(enrollmentData);
 
 
   const { data: Progress } = useGetProgressQuery()
@@ -77,14 +78,14 @@ function Course_Detail(props) {
 
 
   const handleLoadedMetadata = async (e, content_id, section_id) => {
-    console.log("Duration:", e.target.duration);
+    // console.log("Duration:", e.target.duration);
 
     const duration = e.target.duration
     const currenttime = localStorage.getItem(id);
-    console.log(currenttime);
+    // console.log(currenttime);
 
     const percentage = (currenttime / duration) * 100;
-    console.log(percentage);
+    // console.log(percentage);
 
 
     setDurations((prev) => ({
@@ -110,18 +111,18 @@ function Course_Detail(props) {
 
   // course
   const { data: courseData, isLoading, isError } = useGetCourseQuery(); //get Data
-  console.log("course", courseData);
+  // console.log("course", courseData);
 
   // Section
   const { data: sectionData } = useGetSectionQuery(); //get Data
-  console.log("Section", sectionData);
+  // console.log("Section", sectionData);
 
   //quiz
   const { data: quizData } = useGetquizQuery(); //get Data
-  console.log("quizData", quizData);
+  // console.log("quizData", quizData);
 
   const { data: content } = useGetcontentQuery()
-  console.log(content?.data);
+  // console.log(content?.data);
 
   //course
   let course = courseData?.data
@@ -129,12 +130,12 @@ function Course_Detail(props) {
   let section = sectionData?.data
 
   let quiz = quizData?.data
-  console.log(quiz);
+  // console.log(quiz);
 
 
   //cart
   const { data: cart } = useGetCartQuery()
-  console.log(cart?.data);
+  // console.log(cart?.data);
   let cartData = cart?.data
 
   const [addData] = useAddCartMutation();
@@ -147,7 +148,7 @@ function Course_Detail(props) {
   let filterSectionData
   if (id) {
     filterCourseData = course?.filter((v) => v?._id === id);
-    filterSectionData = section?.filter((v) => v?.course === id)
+    filterSectionData = section?.filter((v) => v?.course === id && v.Instructor_id !== null)
 
   } else {
     filterCourseData = course
@@ -156,7 +157,7 @@ function Course_Detail(props) {
 
 
   const handleNevigate = (section_id) => {
-    console.log(section_id);
+    // console.log(section_id);
 
 
     let filterQuizData = quiz?.find((v) => v?.section === section_id)
@@ -168,15 +169,15 @@ function Course_Detail(props) {
 
   // console.log(filterQuizData)
 
-  console.log("filterSectionData", filterSectionData);
+  // console.log("filterSectionData", filterSectionData);
 
   const { data: payment } = useGetPaymentQuery();
-  console.log(payment?.data);
+  // console.log(payment?.data);
 
   let PaymentData = payment?.data;
 
   const userPayment = PaymentData?.filter((v) => v.user_id === auth.auth?._id);
-  console.log(userPayment);
+  // console.log(userPayment);
 
 
   const usermergePurchased = [];
@@ -189,12 +190,12 @@ function Course_Detail(props) {
 
   })
 
-  console.log(usermergePurchased);
+  // console.log(usermergePurchased);
 
 
   const purchaseCourse = usermergePurchased?.some(v => v === id)
 
-  console.log(purchaseCourse);
+  // console.log(purchaseCourse);
   // for(let v of userPayment?.purchased_courses){
   //     console.log(v);
 
@@ -250,11 +251,63 @@ function Course_Detail(props) {
         items: ItemsData
       });
     }
+  }
 
+ //check allsection complete  return true id all complete otherwise false
+  const allSectionsCompleted = filterSectionData?.every((s) => {
+    const sectionContent = content?.data?.filter((c) => c.section === s._id) || [];
 
+    const totalLectures = sectionContent.length;
 
+    const completedLectures = sectionContent.filter((v) =>
+      Progress?.data?.find(
+        (p) =>
+          p.content_Id === v._id &&
+          p.enroll_Id === enrollmentData?._id &&
+          p.is_complete === true
+      )
+    );
+
+    // console.log(totalLectures);
+
+    const percentage = totalLectures > 0 ? Math.round((completedLectures.length / totalLectures) * 100) : 0;
+
+    return percentage === 100;
+  });
+  // console.log(allSectionsCompleted);
+
+  const [addCertificate]=useAddcertificateMutation();
+
+  const handleCertificate = async (course_id)=>{
+        console.log(course_id);
+        
+   try {
+        const certificate = await addCertificate({
+            course: course_id,
+            user: auth?.auth?._id,
+            issue_date: Date.now(),
+            grade: "A+"
+        }).unwrap();
+
+      const url = window.URL.createObjectURL(certificate);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "certificate.pdf";
+
+        document.body.appendChild(link);
+        link.click();
+
+        link.remove();
+
+        window.URL.revokeObjectURL(url);
+
+    } catch (error) {
+        console.log(error);
+    }
 
   }
+
   return (
     <main>
       {/* =======================
@@ -303,6 +356,16 @@ Page intro START */}
                     <li className="list-inline-item h6 me-3 mb-1 mb-sm-0"><i className="bi bi-patch-exclamation-fill text-danger me-2" />Last updated 09/2021</li>
                     <li className="list-inline-item h6 mb-0"><i className="fas fa-globe text-info me-2" />English</li>
                   </ul>
+
+                  {allSectionsCompleted && (
+                    <button 
+                    className="btn btn-success mb-0 mt-4"
+                    onClick={()=>handleCertificate(v._id)}
+                    >
+                      <DownloadIcon/>
+                     Certificate
+                    </button> 
+                  )}
                 </div>
               </div>
             )
@@ -522,7 +585,7 @@ Page content START */}
                                       const file = v2.contentFile?.[0];
 
                                       let isComplete = Progress?.data?.find((p) => p.content_Id === v2._id && p?.enroll_Id === enrollmentData?._id && p?.is_complete === true);
-                                      console.log(isComplete);
+                                      // console.log(isComplete);
 
                                       // console.log(isComplete?.length);
 

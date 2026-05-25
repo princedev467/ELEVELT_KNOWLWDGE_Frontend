@@ -154,17 +154,22 @@ function Course_Video_Player(props) {
                           <source src={file.url} type="video/mp4" />
                         </video>
                       )
-                    } else if (v.resource_type === 'application/pdf' || v.resource_type === 'raw' || v.type === 'pdf') {
-                      return (
-                        <a href={v.url} target='_blank'
-                          src={file.url}
-                          title="PDF Viewer"
-                          width="100%"
-                          height="600px">
-                          View Pdf
-                        </a>
-                      )
-                    }
+                    } else if (v.resource_type === 'raw') {
+    return (
+        <a
+            key={i}
+            href={v.url}
+            target="_blank"
+            rel="noreferrer"
+            style={{
+                color: 'blue',
+                textDecoration: 'underline'
+            }}
+        >
+            📄 View PDF
+        </a>
+    );
+}
 
                     // return (
                     //     <video  controls autoPlay className="w-100">
