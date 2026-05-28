@@ -25,6 +25,8 @@ import Typography from '@mui/joy/Typography';
 import { useCountUp } from 'use-count-up'
 import DownloadIcon from "@mui/icons-material/Download";
 import { useAddcertificateMutation } from '../../Redux/Api/certificate.Api';
+import { useFormik } from 'formik';
+import { useAddReviewMutation, useDeleteReviewMutation, useGetReviewQuery } from '../../Redux/Api/Review.Api';
 
 function Course_Detail(props) {
   const themeData = useContext(ThemeContext);
@@ -43,7 +45,7 @@ function Course_Detail(props) {
     }),
   });
 
-
+  const [rating, setRating] = useState()
   const [more, setmore] = useState(true);
   const [text, setText] = useState('');
 
@@ -56,7 +58,7 @@ function Course_Detail(props) {
 
   //auth
   const auth = useSelector(state => state.auth);
-  // console.log(auth);
+  console.log(auth);
 
   let isDark = themeData.theme === 'light'
   const { id } = useParams();
@@ -253,7 +255,8 @@ function Course_Detail(props) {
     }
   }
 
- //check allsection complete  return true id all complete otherwise false
+
+  //check allsection complete  return true id all complete otherwise false
   const allSectionsCompleted = filterSectionData?.every((s) => {
     const sectionContent = content?.data?.filter((c) => c.section === s._id) || [];
 
@@ -276,28 +279,79 @@ function Course_Detail(props) {
   });
   // console.log(allSectionsCompleted);
 
-  const [addCertificate]=useAddcertificateMutation();
+  const [addCertificate] = useAddcertificateMutation();
 
-  const handleCertificate = async (course_id)=>{
-        console.log(course_id);
-        
-   try {
-        const certificate = await addCertificate({
-            course: course_id,
-            user: auth?.auth?._id,
-            issue_date: Date.now(),
-            grade: "A+"
-        }).unwrap();
+  const handleCertificate = async (course_id) => {
+    console.log(course_id);
 
-        console.log(certificate);
-        
+    try {
+      const certificate = await addCertificate({
+        course: course_id,
+        user: auth?.auth?._id,
+        issue_date: Date.now(),
+        grade: "A+"
+      }).unwrap();
+
+      console.log(certificate);
+
+      window.location.href = certificate.data;
 
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
 
   }
 
+  const { data: reviewData } = useGetReviewQuery();
+  // console.log(reviewData);
+
+  const [addreview] = useAddReviewMutation();
+
+  const isUserreview = reviewData?.data?.some((v) => v.user._id === auth.auth._id);
+  // console.log(isUserreview);
+
+  const coursereview=reviewData?.data?.filter((v)=>v.course===id);
+  // console.log(coursereview);
+
+  let avarageRating=coursereview?.reduce((acc,v,i)=>acc+v.rating,0)/coursereview?.length;
+  // console.log(avarageRating);
+  
+  
+  const [deleteReview] = useDeleteReviewMutation()
+  const formik = useFormik({
+    initialValues: {
+      description: ''
+    },
+    enableReinitialize: true,
+    onSubmit: async (values) => {
+      console.log(values);
+
+      let course_id = course?.find((v) => v?._id === id)
+
+      await addreview({
+        user: auth?.auth?._id,
+        description: values.description,
+        course: course_id._id,
+        rating: rating
+      })
+    }
+  });
+
+  const handleEditReview = (val) => {
+    console.log(val);
+
+
+
+  }
+
+
+
+  let filterReview = reviewData?.data?.filter((v) => v.course === id);
+  console.log(filterReview);
+
+    let totalStars = 5;
+
+  const { handleSubmit, handleChange, handleBlur, values, errors, touched } = formik
   return (
     <main>
       {/* =======================
@@ -348,13 +402,13 @@ Page intro START */}
                   </ul>
 
                   {allSectionsCompleted && (
-                    <button 
-                    className="btn btn-success mb-0 mt-4"
-                    onClick={()=>handleCertificate(v._id)}
+                    <button
+                      className="btn btn-success mb-0 mt-4"
+                      onClick={() => handleCertificate(v._id)}
                     >
-                      <DownloadIcon/>
-                     Certificate
-                    </button> 
+                      <DownloadIcon />
+                      Certificate
+                    </button>
                   )}
                 </div>
               </div>
@@ -778,16 +832,23 @@ Page content START */}
                       <div className="col-md-4 mb-3 mb-md-0">
                         <div className="text-center">
                           {/* Info */}
-                          <h2 className="mb-0">4.5</h2>
+                          <h2 className="mb-0">{avarageRating?avarageRating:0}</h2>
                           {/* Star */}
-                          <ul className="list-inline mb-0">
-                            <li className="list-inline-item me-0"><i className="fas fa-star text-warning" /></li>
-                            <li className="list-inline-item me-0"><i className="fas fa-star text-warning" /></li>
-                            <li className="list-inline-item me-0"><i className="fas fa-star text-warning" /></li>
-                            <li className="list-inline-item me-0"><i className="fas fa-star text-warning" /></li>
-                            <li className="list-inline-item me-0"><i className="fas fa-star-half-alt text-warning" /></li>
-                          </ul>
-                          <p className="mb-0">(Based on todays review)</p>
+                           <div className="d-sm-flex mt-1 mt-md-0 align-items-center mx-6">
+                          {[...Array(totalStars)].map((_, index) => {
+                                  return (
+                                      <ul className="list-inline mb-0">
+                                    <i
+                                      key={index}
+                                      className={
+                                        index < avarageRating
+                                          ? "fas fa-star text-warning"
+                                          : "far fa-star text-warning" }/>
+                                    </ul>
+                                  );
+                                })}
+                                </div>
+                          <p className="mb-0">(Based on Course review)</p>
                         </div>
                       </div>
                       {/* Progress-bar and star */}
@@ -883,138 +944,188 @@ Page content START */}
                     </div>
                     {/* Review END */}
                     {/* Student review START */}
+
+
                     <div className="row">
                       {/* Review item START */}
-                      <div className="d-md-flex my-4">
-                        {/* Avatar */}
-                        <div className="avatar avatar-xl me-4 flex-shrink-0">
-                          <img className="avatar-img rounded-circle" src="assets/images/avatar/09.jpg" alt="avatar" />
-                        </div>
-                        {/* Text */}
-                        <div>
-                          <div className="d-sm-flex mt-1 mt-md-0 align-items-center">
-                            <h5 className="me-3 mb-0">Jacqueline Miller</h5>
-                            {/* Review star */}
-                            <ul className="list-inline mb-0">
-                              <li className="list-inline-item me-0"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0"><i className="far fa-star text-warning" /></li>
-                            </ul>
+
+                      {
+                        isUserreview ? '' : <div className="mt-2">
+                          <h5 className="mb-4">Leave a Review For This Course</h5>
+                          <div>
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <span
+                                key={star}
+                                onClick={() => setRating(star)}
+                                style={{ cursor: "pointer", margin: '4px 42px' }}
+                              >
+                                <i
+                                  className={
+                                    rating >= star
+                                      ? "fas fa-star text-warning"
+                                      : "far fa-star text-warning"
+                                  }
+                                  style={{
+                                    fontSize: "40px",
+                                    marginTop: "10px",
+                                    marginBottom: "20px",
+
+                                  }}
+                                />
+                              </span>
+                            ))}
                           </div>
-                          {/* Info */}
-                          <p className="small mb-2">2 days ago</p>
-                          <p className="mb-2">Perceived end knowledge certainly day sweetness why
-                            cordially. Ask a quick six seven offer see among. Handsome met
-                            debating sir dwelling age material. As style lived he worse dried.
-                            Offered related so visitors we private removed. Moderate do subjects
-                            to distance. </p>
-                          {/* Like and dislike button */}
-                          <div className="btn-group" role="group" aria-label="Basic radio toggle button group">
-                            {/* Like button */}
-                            <input type="radio" className="btn-check" name="btnradio" id="btnradio1" />
-                            <label className="btn btn-outline-light btn-sm mb-0" htmlFor="btnradio1"><i className="far fa-thumbs-up me-1" />25</label>
-                            {/* Dislike button */}
-                            <input type="radio" className="btn-check" name="btnradio" id="btnradio2" />
-                            <label className="btn btn-outline-light btn-sm mb-0" htmlFor="btnradio2"> <i className="far fa-thumbs-down me-1" />2</label>
+                          {/* review */}
+                          {rating ?
+                            <form className="row g-3" onSubmit={handleSubmit}>
+                              {/* Name */}
+                              {/* <div className="col-md-6 bg-light-input">
+                          <input
+                            type="text"
+                            name='name'
+                            className="form-control"
+                            id="inputtext" placeholder="Name"
+                            aria-label="First name"
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            value={values.name}
+                          />
+                        </div> */}
+                              {/* Email */}
+                              {/* <div className="col-md-6 bg-light-input">
+                          <input
+                            type="email"
+                            name='email'
+                            className="form-control"
+                            placeholder="Email"
+                            id="inputEmail4"
+                             onBlur={handleBlur}
+                            onChange={handleChange}
+                            value={values.email}
+                          />
+                        </div> */}
+                              {/* Rating */}
+                              {/* <div className="col-12 bg-light-input">
+                          <select id="inputState2" className="form-select js-choice" >
+                            <option selected >★★★★★ (5/5)</option>
+                            <option value={4}>★★★★☆ (4/5)</option>
+                            <option value={3}>★★★☆☆ (3/5)</option>
+                            <option value={2}>★★☆☆☆ (2/5)</option>
+                            <option value={1}>★☆☆☆☆ (1/5)</option>
+                          </select>
+                        </div> */}
+                              {/* Message */}
+
+
+                              <div className="col-12 bg-light-input">
+                                <textarea
+                                  name='description'
+                                  onBlur={handleBlur}
+                                  onChange={handleChange}
+                                  value={values.description}
+                                  className="form-control"
+                                  id="exampleFormControlTextarea1"
+                                  placeholder="Your review" rows={3}
+                                  defaultValue={""}
+                                />
+                              </div>
+                              {/* Button */}
+                              <div className="col-12">
+                                <button type="submit" className="btn btn-primary mb-0">Post Review</button>
+                              </div>
+                            </form> : ''}
+
+                        </div>}
+                      <hr />
+                      {filterReview?.map((v) => {
+
+                    
+                        const isMyReview = auth?.auth?._id === v.user._id;
+                        return (
+                          <div className="d-md-flex my-4">
+                            {/* Avatar */}
+                            <div className="avatar avatar-xl me-4 flex-shrink-0">
+                              <img className="avatar-img rounded-circle" src="../assets/images/avatar/09.jpg" alt="avatar" />
+                            </div>
+                            {/* Text */}
+                            <div>
+                              <div className="d-sm-flex mt-1 mt-md-0 align-items-center">
+                                <h5 className="me-3 mb-0">{v.user.name}</h5>
+                                {/* Review star */}
+
+                                {[...Array(totalStars)].map((_, index) => {
+                                  return (
+                                      <ul className="list-inline mb-0">
+                                    <i
+                                      key={index}
+                                      className={
+                                        index < v.rating
+                                          ? "fas fa-star text-warning"
+                                          : "far fa-star text-warning" }/>
+                                    </ul>
+                                  );
+                                })}
+                                {/* <ul className="list-inline mb-0">
+                                  <li className="list-inline-item me-0"><i className="fas fa-star text-warning" /></li>
+                                  <li className="list-inline-item me-0"><i className="fas fa-star text-warning" /></li>
+                                  <li className="list-inline-item me-0"><i className="fas fa-star text-warning" /></li>
+                                  <li className="list-inline-item me-0"><i className="fas fa-star text-warning" /></li>
+                                  <li className="list-inline-item me-0"><i className="far fa-star text-warning" /></li>
+                                </ul> */}
+                              </div>
+                              {/* Info */}
+                              <p className="small mb-2">2 days ago</p>
+                              <p className="mb-2">{v.description}.</p>
+                              {/* Like and dislike button */}
+                              {/* {isMyReview && (
+                                <div className="d-flex gap-2">
+                                  <button
+                                    className="btn btn-sm btn-primary"
+                                    onClick={() => handleEditReview(v)}
+                                  >
+                                    Edit Review
+                                  </button>
+
+
+                                </div>
+                              )} */}
+
+                            </div>
                           </div>
-                        </div>
-                      </div>
+                        )
+                      })
+                      }
                       {/* Comment children level 1 */}
-                      <div className="d-md-flex mb-4 ps-4 ps-md-5">
-                        {/* Avatar */}
+                      {/* <div className="d-md-flex mb-4 ps-4 ps-md-5">
+                        Avatar
                         <div className="avatar avatar-lg me-4 flex-shrink-0">
                           <img className="avatar-img rounded-circle" src="assets/images/avatar/02.jpg" alt="avatar" />
                         </div>
-                        {/* Text */}
+                        Text
                         <div>
                           <div className="d-sm-flex mt-1 mt-md-0 align-items-center">
                             <h5 className="me-3 mb-0">Louis Ferguson</h5>
                           </div>
-                          {/* Info */}
+                          Info
                           <p className="small mb-2">1 days ago</p>
                           <p className="mb-2">Water timed folly right aware if oh truth. Imprudence
                             attachment him for sympathize. Large above be to means. Dashwood
                             does provide stronger is. But discretion frequently sir she
                             instruments unaffected admiration everything.</p>
                         </div>
-                      </div>
+                      </div> */}
                       {/* Divider */}
                       <hr />
                       {/* Review item END */}
-                      {/* Review item START */}
-                      <div className="d-md-flex my-4">
-                        {/* Avatar */}
-                        <div className="avatar avatar-xl me-4 flex-shrink-0">
-                          <img className="avatar-img rounded-circle" src="assets/images/avatar/07.jpg" alt="avatar" />
-                        </div>
-                        {/* Text */}
-                        <div>
-                          <div className="d-sm-flex mt-1 mt-md-0 align-items-center">
-                            <h5 className="me-3 mb-0">Dennis Barrett</h5>
-                            {/* Review star */}
-                            <ul className="list-inline mb-0">
-                              <li className="list-inline-item me-0"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0"><i className="far fa-star text-warning" /></li>
-                            </ul>
-                          </div>
-                          {/* Info */}
-                          <p className="small mb-2">2 days ago</p>
-                          <p className="mb-2">Handsome met debating sir dwelling age material. As
-                            style lived he worse dried. Offered related so visitors we private
-                            removed. Moderate do subjects to distance. </p>
-                          {/* Like and dislike button */}
-                          <div className="btn-group" role="group" aria-label="Basic radio toggle button group">
-                            {/* Like button */}
-                            <input type="radio" className="btn-check" name="btnradio" id="btnradio3" />
-                            <label className="btn btn-outline-light btn-sm mb-0" htmlFor="btnradio3"><i className="far fa-thumbs-up me-1" />25</label>
-                            {/* Dislike button */}
-                            <input type="radio" className="btn-check" name="btnradio" id="btnradio4" />
-                            <label className="btn btn-outline-light btn-sm mb-0" htmlFor="btnradio4"> <i className="far fa-thumbs-down me-1" />2</label>
-                          </div>
-                        </div>
-                      </div>
-                      {/* Review item END */}
-                      {/* Divider */}
-                      <hr />
+                  
                     </div>
                     {/* Student review END */}
                     {/* Leave Review START */}
-                    <div className="mt-2">
-                      <h5 className="mb-4">Leave a Review</h5>
-                      <form className="row g-3">
-                        {/* Name */}
-                        <div className="col-md-6 bg-light-input">
-                          <input type="text" className="form-control" id="inputtext" placeholder="Name" aria-label="First name" />
-                        </div>
-                        {/* Email */}
-                        <div className="col-md-6 bg-light-input">
-                          <input type="email" className="form-control" placeholder="Email" id="inputEmail4" />
-                        </div>
-                        {/* Rating */}
-                        <div className="col-12 bg-light-input">
-                          <select id="inputState2" className="form-select js-choice">
-                            <option selected>★★★★★ (5/5)</option>
-                            <option>★★★★☆ (4/5)</option>
-                            <option>★★★☆☆ (3/5)</option>
-                            <option>★★☆☆☆ (2/5)</option>
-                            <option>★☆☆☆☆ (1/5)</option>
-                          </select>
-                        </div>
-                        {/* Message */}
-                        <div className="col-12 bg-light-input">
-                          <textarea className="form-control" id="exampleFormControlTextarea1" placeholder="Your review" rows={3} defaultValue={""} />
-                        </div>
-                        {/* Button */}
-                        <div className="col-12">
-                          <button type="submit" className="btn btn-primary mb-0">Post Review</button>
-                        </div>
-                      </form>
-                    </div>
+
+
+
+
+
                     {/* Leave Review END */}
                   </div>
                   {/* Content END */}

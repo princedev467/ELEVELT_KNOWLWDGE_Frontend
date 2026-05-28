@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCategory } from '../../Redux/slice/CategorySlice';
 import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
 import Carousel from 'react-material-ui-carousel';
+import { useGetWhistlistQuery } from '../../Redux/Api/Whistlist.Api';
+import { NavLink } from 'react-router-dom';
 
 function Home(props) {
   const themeData = useContext(ThemeContext);
@@ -37,6 +39,14 @@ function Home(props) {
 
   let course = category_id ? filterCourseData : courseData?.data;
   console.log(course);
+
+  
+    const auth = useSelector(state => state.auth);
+    console.log(auth);
+
+    const { data: whistlist } = useGetWhistlistQuery();
+    console.log(whistlist?.data);
+  
 
   return (
     <main>
@@ -403,7 +413,15 @@ Popular course START */}
               <div className="row g-4">
                 {/* Card item START */}
                 {
-                  course?.slice(0, 8)?.map((v) => (
+                  course?.slice(0, 8)?.map((v) => {
+
+                       let whistlistUser = whistlist?.data?.find((v) => v?.user_id === auth?.auth?._id);
+
+                    let existData = whistlistUser?.items?.some((v2) => v2.course === v._id);
+                    console.log(existData);
+
+
+                    return(
                     <div className="col-sm-6 col-lg-4 col-xl-3">
                       <div className="card  shadow h-100 ">
                         {/* Image */}
@@ -424,10 +442,12 @@ Popular course START */}
                           {/* Badge and favorite */}
                           <div className="d-flex justify-content-between mb-2">
                             <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
-                            <a href="#" className="h6 mb-0"><i className="far fa-heart" /></a>
-                          </div>
+                             <a href="#" className="h6 fw-light mb-0"><i className={existData ? "fa-solid fa-heart" : "far fa-heart"} style={{ color: '#1C81D2', fontSize: '20px' }} /></a>
+
+                           </div>
                           {/* Title */}
-                          <h5 className="card-title fw-normal"><a href="#"> {v.name.length > 10 ? v.name.slice(0, 11) + "..." : v.name}</a></h5>
+                          <NavLink to={`/Course_Detail/${v._id}`}>
+                          <h5 className="card-title fw-normal">{v.name.length > 10 ? v.name.slice(0, 11) + "..." : v.name}</h5>
                           <p className="mb-2 text-truncate-2">{v.description}</p>
                           {/* Rating star */}
                           <ul className="list-inline mb-0">
@@ -438,6 +458,7 @@ Popular course START */}
                             <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
                             <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0`}>4.0/5.0</li>
                           </ul>
+                          </NavLink>
                         </div>
                         {/* Card footer */}
                         <div className="card-footer pt-0 pb-3">
@@ -449,7 +470,7 @@ Popular course START */}
                         </div>
                       </div>
                     </div>
-                  ))
+                  )})
 
                 }
                 {/* Card item END */}

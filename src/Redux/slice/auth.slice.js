@@ -158,6 +158,27 @@ export const userLogout = createAsyncThunk(
     }
 )
 
+export const getAlluser = createAsyncThunk(
+    'auth/getAlluser',
+    async (_, { dispatch, rejectWithValue }) => {
+        try {
+            const responce = await axiosinstance.get('user/getAlluser')
+
+            console.log(responce);
+
+            if (responce.data.success) {
+                console.log("responce.data.data", responce.data.data);
+
+                return responce.data.data
+
+
+            }
+        } catch (error) {
+            return rejectWithValue(error.response.data.message);
+        }
+    }
+)
+
 export const userCheck = createAsyncThunk(
     'auth/userCheck',
     async (_, { dispatch, rejectWithValue }) => {
@@ -173,7 +194,7 @@ export const userCheck = createAsyncThunk(
 
                 return responce.data.data
 
-                
+
             }
         } catch (error) {
             // console.log(error);
@@ -189,6 +210,20 @@ const authSlice = createSlice({
     name: 'auth',
     initialState: initialState,
     extraReducers: (builder) => {
+        builder.addCase(getAlluser.pending, (state, action) => {
+            state.isloading = true;
+        })
+
+        builder.addCase(getAlluser.fulfilled, (state, action) => {
+            state.isloading = false;
+            state.auth = action.payload;
+        })
+
+        builder.addCase(getAlluser.rejected, (state, action) => {
+            state.isloading = false,
+                state.auth = [];
+            state.error = action.payload;
+        })
         builder.addCase(userLogin.pending, (state, action) => {
             state.isLoading = true;
             state.auth = null;
@@ -221,7 +256,7 @@ const authSlice = createSlice({
             state.auth = action.payload;
             state.error = null;
         })
-         builder.addCase(addRegister.pending, (state, action) => {
+        builder.addCase(addRegister.pending, (state, action) => {
             state.isLoading = true;
             state.auth = null;
             state.error = null;
@@ -240,14 +275,14 @@ const authSlice = createSlice({
         })
         builder.addCase(userCheck.pending, (state, action) => {
             state.isLoading = true;
-           })
+        })
         builder.addCase(userCheck.fulfilled, (state, action) => {
             console.log(action.payload);
 
-             state.isLoading = false;
+            state.isLoading = false;
             state.auth = action.payload;
             state.error = null;
-            
+
         })
         builder.addCase(userCheck.rejected, (state, action) => {
             console.log(action?.payload);
@@ -255,7 +290,7 @@ const authSlice = createSlice({
             state.auth = null;
             state.error = action.payload;
         })
-         builder.addCase(forgetPassword.pending, (state, action) => {
+        builder.addCase(forgetPassword.pending, (state, action) => {
             state.isLoading = true;
             state.auth = null;
             state.error = null;
