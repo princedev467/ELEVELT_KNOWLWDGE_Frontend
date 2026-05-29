@@ -15,6 +15,7 @@ import Quiz from '../Admin/Container/Quiz/Quiz';
 import QuizContent from '../Admin/Container/Quiz/QuizContent';
 import Content from '../Admin/Container/Content/Content';
 import Coupon from '../Admin/Container/Coupon/Coupon';
+import Blog from '../Admin/Container/Blog/Blog';
 
 function AdminRouts(props) {
 
@@ -48,10 +49,12 @@ function AdminRouts(props) {
           {/* <Route path='/category/:id' element={<CategoryPage />} ></Route> */}
           <Route path='/Section' element={<Section />} ></Route>
           <Route path='/course' element={<Course />} > </Route>
-           <Route path='/course/:id' element={<Course />} > </Route>
+          <Route path='/course/:id' element={<Course />} > </Route>
           <Route path='/quiz' element={<Quiz />} > </Route>
-           <Route path='/content' element={<Content />} > </Route>
-             <Route path='/coupon' element={<Coupon />} > </Route>
+          <Route path='/content' element={<Content />} > </Route>
+          <Route path='/coupon' element={<Coupon />} > </Route>
+          <Route path='/blog' element={<Blog />} > </Route>
+
           {/* <Route path='/quizPage/:id' element={<QuizPage />} > </Route> */}
           <Route path='/quizContent/:id' element={<QuizContent />} > </Route>
         </Routes>
@@ -59,6 +62,7 @@ function AdminRouts(props) {
       </Layout>
     </ThemeProvider>
 
-  );}
+  );
+}
 
 export default AdminRouts;

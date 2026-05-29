@@ -3,33 +3,33 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { BASE_URL } from '../../utility/url'
 
 // Define a service using a base URL and expected endpoints
-export const WhistlistApi = createApi({
-  reducerPath: 'WhistlistApi',
+export const blogApi = createApi({
+  reducerPath: 'blogApi',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL, credentials: 'include' }),
   endpoints: (builder) => ({
-    getWhistlist: builder.query({
-      query: () => 'whistlist/getAllWhistlist',
+    getBlog: builder.query({
+      query: () => 'blog/getAllblog',
       providesTags: ['whistlist']
     }),
-    addWhistlist: builder.mutation({
+    addBlog: builder.mutation({
       query: (data) => ({
-        url: 'whistlist/addWhistlist',
+        url: 'blog/addblog',
         method: 'POST',
         body: data
       }),
       invalidatesTags:['whistlist']    
     }),
-    updateWhistlist: builder.mutation({
+    updateBlog: builder.mutation({
       query: (data) => ({
-        url: `whistlist/updateWhistlist/${data._id}`,
+        url: `blog/updateblog/${data.get('_id')}`,
         method: 'PUT',
         body: data
       }),
       invalidatesTags:['whistlist']
     }),
-    deleteWhistlist: builder.mutation({
+    deleteBlog: builder.mutation({
       query: (id) => ({
-        url: `whistlist/updateWhistlist/${id}`,
+        url: `blog/deleteblog/${id}`,
         method: 'DELETE',
         body: id
       }),
@@ -39,4 +39,4 @@ export const WhistlistApi = createApi({
 })
 
 
-export const {useGetWhistlistQuery,useAddWhistlistMutation,useUpdateWhistlistMutation,useDeleteWhistlistMutation} = WhistlistApi
+export const {useGetBlogQuery,useAddBlogMutation,useUpdateBlogMutation,useDeleteBlogMutation} = blogApi

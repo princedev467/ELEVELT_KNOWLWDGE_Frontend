@@ -310,13 +310,13 @@ function Course_Detail(props) {
   const isUserreview = reviewData?.data?.some((v) => v.user._id === auth.auth._id);
   // console.log(isUserreview);
 
-  const coursereview=reviewData?.data?.filter((v)=>v.course===id);
+  const coursereview = reviewData?.data?.filter((v) => v.course === id);
   // console.log(coursereview);
 
-  let avarageRating=coursereview?.reduce((acc,v,i)=>acc+v.rating,0)/coursereview?.length;
+  let avarageRating = coursereview?.reduce((acc, v, i) => acc + v.rating, 0) / coursereview?.length;
   // console.log(avarageRating);
-  
-  
+
+
   const [deleteReview] = useDeleteReviewMutation()
   const formik = useFormik({
     initialValues: {
@@ -346,10 +346,31 @@ function Course_Detail(props) {
 
 
 
-  let filterReview = reviewData?.data?.filter((v) => v.course === id);
+  let filterReview = reviewData?.data?.filter((v) => v?.course === id);
   console.log(filterReview);
 
-    let totalStars = 5;
+  let totalStars = 5;
+
+  const ratingCount = {
+    5: 0,
+    4: 0,
+    3: 0,
+    2: 0,
+    1: 0,
+  };
+
+  filterReview?.forEach((review) => {
+    ratingCount[review.rating]++;
+  });
+
+  let totalReviews = filterReview?.length
+
+
+  const ratingProgress = [5, 4, 3, 2, 1].map((star) => ({
+    stars: star,
+    progress: totalReviews > 0 ? (ratingCount[star] / totalReviews) * 100 : 0,
+  }));
+  console.log(ratingProgress);
 
   const { handleSubmit, handleChange, handleBlur, values, errors, touched } = formik
   return (
@@ -832,115 +853,65 @@ Page content START */}
                       <div className="col-md-4 mb-3 mb-md-0">
                         <div className="text-center">
                           {/* Info */}
-                          <h2 className="mb-0">{avarageRating?avarageRating:0}</h2>
+                          <h2 className="mb-0">{avarageRating ? avarageRating : 0}</h2>
                           {/* Star */}
-                           <div className="d-sm-flex mt-1 mt-md-0 align-items-center mx-6">
-                          {[...Array(totalStars)].map((_, index) => {
-                                  return (
-                                      <ul className="list-inline mb-0">
-                                    <i
-                                      key={index}
-                                      className={
-                                        index < avarageRating
-                                          ? "fas fa-star text-warning"
-                                          : "far fa-star text-warning" }/>
-                                    </ul>
-                                  );
-                                })}
-                                </div>
+                          <div className="d-sm-flex mt-1 mt-md-0 align-items-center mx-6">
+                            {[...Array(totalStars)].map((_, index) => {
+                              return (
+                                <ul className="list-inline mb-0">
+                                  <i
+                                    key={index}
+                                    className={
+                                      index < avarageRating
+                                        ? "fas fa-star text-warning"
+                                        : "far fa-star text-warning"} />
+                                </ul>
+                              );
+                            })}
+                          </div>
                           <p className="mb-0">(Based on Course review)</p>
                         </div>
                       </div>
                       {/* Progress-bar and star */}
+
+                      {/* Progress bar and Rating */}
                       <div className="col-md-8">
-                        <div className="row align-items-center">
-                          {/* Progress bar and Rating */}
-                          <div className="col-6 col-sm-8">
-                            {/* Progress item */}
-                            <div className="progress progress-sm bg-warning bg-opacity-15">
-                              <div className="progress-bar bg-warning" role="progressbar" style={{ width: '100%' }} aria-valuenow={100} aria-valuemin={0} aria-valuemax={100} />
-                            </div>
-                          </div>
-                          <div className="col-6 col-sm-4">
-                            {/* Star item */}
-                            <ul className="list-inline mb-0">
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                            </ul>
-                          </div>
-                          {/* Progress bar and Rating */}
-                          <div className="col-6 col-sm-8">
-                            {/* Progress item */}
-                            <div className="progress progress-sm bg-warning bg-opacity-15">
-                              <div className="progress-bar bg-warning" role="progressbar" style={{ width: '80%' }} aria-valuenow={80} aria-valuemin={0} aria-valuemax={100} />
-                            </div>
-                          </div>
-                          <div className="col-6 col-sm-4">
-                            {/* Star item */}
-                            <ul className="list-inline mb-0">
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                            </ul>
-                          </div>
-                          {/* Progress bar and Rating */}
-                          <div className="col-6 col-sm-8">
-                            {/* Progress item */}
-                            <div className="progress progress-sm bg-warning bg-opacity-15">
-                              <div className="progress-bar bg-warning" role="progressbar" style={{ width: '60%' }} aria-valuenow={60} aria-valuemin={0} aria-valuemax={100} />
-                            </div>
-                          </div>
-                          <div className="col-6 col-sm-4">
-                            {/* Star item */}
-                            <ul className="list-inline mb-0">
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                            </ul>
-                          </div>
-                          {/* Progress bar and Rating */}
-                          <div className="col-6 col-sm-8">
-                            {/* Progress item */}
-                            <div className="progress progress-sm bg-warning bg-opacity-15">
-                              <div className="progress-bar bg-warning" role="progressbar" style={{ width: '40%' }} aria-valuenow={40} aria-valuemin={0} aria-valuemax={100} />
-                            </div>
-                          </div>
-                          <div className="col-6 col-sm-4">
-                            {/* Star item */}
-                            <ul className="list-inline mb-0">
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                            </ul>
-                          </div>
-                          {/* Progress bar and Rating */}
-                          <div className="col-6 col-sm-8">
-                            {/* Progress item */}
-                            <div className="progress progress-sm bg-warning bg-opacity-15">
-                              <div className="progress-bar bg-warning" role="progressbar" style={{ width: '20%' }} aria-valuenow={20} aria-valuemin={0} aria-valuemax={100} />
-                            </div>
-                          </div>
-                          <div className="col-6 col-sm-4">
-                            {/* Star item */}
-                            <ul className="list-inline mb-0">
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                            </ul>
-                          </div>
-                        </div>
+                        {
+                          ratingProgress.map((p) => {
+                            return (
+                              <div className="row align-items-center">
+                                <div className="col-6 col-sm-8">
+                                  {/* Progress item */}
+                                  <div className="progress progress-sm bg-warning bg-opacity-15">
+                                    <div className="progress-bar bg-warning" role="progressbar" style={{ width: `${p.progress}%` }} aria-valuenow={20} aria-valuemin={0} aria-valuemax={100} />
+                                  </div>
+                                </div>
+                                <div className="col-6 col-sm-4">
+                                  {/* Star item */}
+                                  <ul className="list-inline mb-0">
+                                  {[...Array(totalStars)].map((_, index) => {
+                                    return (
+                                      
+                                        <li className="list-inline-item me-0 small">
+                                          <i
+                                            key={index}
+                                            className={
+                                              index < p.stars
+                                                ? "fas fa-star text-warning"
+                                                : "far fa-star text-warning"} />
+                                        </li>
+                                   
+                                    );
+                                  })}
+                                     </ul>
+                                </div>
+                              </div>
+                            )
+                          })
+                        }
                       </div>
+
+
                     </div>
                     {/* Review END */}
                     {/* Student review START */}
@@ -1039,7 +1010,7 @@ Page content START */}
                       <hr />
                       {filterReview?.map((v) => {
 
-                    
+
                         const isMyReview = auth?.auth?._id === v.user._id;
                         return (
                           <div className="d-md-flex my-4">
@@ -1055,13 +1026,13 @@ Page content START */}
 
                                 {[...Array(totalStars)].map((_, index) => {
                                   return (
-                                      <ul className="list-inline mb-0">
-                                    <i
-                                      key={index}
-                                      className={
-                                        index < v.rating
-                                          ? "fas fa-star text-warning"
-                                          : "far fa-star text-warning" }/>
+                                    <ul className="list-inline mb-0">
+                                      <i
+                                        key={index}
+                                        className={
+                                          index < v.rating
+                                            ? "fas fa-star text-warning"
+                                            : "far fa-star text-warning"} />
                                     </ul>
                                   );
                                 })}
@@ -1117,7 +1088,7 @@ Page content START */}
                       {/* Divider */}
                       <hr />
                       {/* Review item END */}
-                  
+
                     </div>
                     {/* Student review END */}
                     {/* Leave Review START */}
@@ -1314,7 +1285,7 @@ Page content START */}
                           {/* Price and time */}
                           <div>
                             <div className="d-flex align-items-center">
-                              <h3 className="fw-bold mb-0 me-2">$150</h3>
+                              <h3 className="fw-bold mb-0 me-2">${v.price}</h3>
                               <span className="text-decoration-line-through mb-0 me-2">$350</span>
                               <span className="badge bg-orange text-white mb-0">60% off</span>
                             </div>

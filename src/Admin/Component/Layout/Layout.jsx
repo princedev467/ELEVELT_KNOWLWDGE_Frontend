@@ -30,6 +30,7 @@ import QuizIcon from '@mui/icons-material/Quiz';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import { useSelector } from 'react-redux';
 import DiscountIcon from '@mui/icons-material/Discount';
+import ArticleIcon from '@mui/icons-material/Article';
 
 
 export default function Layout({ children }) {
@@ -175,7 +176,9 @@ export default function Layout({ children }) {
       { label: 'Course', icon: <FoundationIcon />, to: '/admin/course' },
       { label: 'Quiz', icon: <QuizIcon />, to: '/admin/quiz' },
       { label: 'Content', icon: <ContentPasteSearchIcon />, to: '/admin/content' },
-      { label: 'Coupon', icon: <DiscountIcon />, to: '/admin/coupon' }
+      { label: 'Coupon', icon: <DiscountIcon />, to: '/admin/coupon' },
+      { label: 'BLog', icon: <ArticleIcon />, to: '/admin/blog' }
+
     ]
 
   } else {
@@ -186,8 +189,8 @@ export default function Layout({ children }) {
       { label: 'Course', icon: <FoundationIcon />, to: '/admin/course' },
       { label: 'Quiz', icon: <QuizIcon />, to: '/admin/quiz' },
       { label: 'Content', icon: <ContentPasteSearchIcon />, to: '/admin/content' },
-      { label: 'Coupon', icon: <DiscountIcon />, to: '/admin/coupon' }
-
+      { label: 'Coupon', icon: <DiscountIcon />, to: '/admin/coupon' },
+      { label: 'Blog', icon: <ArticleIcon />, to: '/admin/blog' }
 
     ];
   }

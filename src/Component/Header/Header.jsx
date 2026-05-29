@@ -140,6 +140,7 @@ function Header(props) {
 
               <li><NavLink  className={`nav-link ${isDark?'text-white':''} `} to={'/Pricing'}>Pricing</NavLink></li>
               <li>  <NavLink  className={`nav-link ${isDark?'text-white':''} `} to={'/Contact_us'}>Contact Us</NavLink></li>
+                    <li>  <NavLink  className={`nav-link ${isDark?'text-white':''} `} to={'/Blog_Grid'}>Blog</NavLink></li>
 
 
               {/* Nav item 1 Demos */}

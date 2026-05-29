@@ -16,6 +16,7 @@ import { enrollmentApi } from "./Api/enrollment.Api"
 import { certificateApi } from "./Api/certificate.Api"
 import { ReviewApi } from "./Api/Review.Api"
 import { WhistlistApi } from "./Api/Whistlist.Api"
+import { blogApi } from "./Api/blog.Api"
 
 export const confistore = () => {
 
@@ -36,7 +37,8 @@ export const confistore = () => {
             [enrollmentApi.reducerPath]: enrollmentApi.reducer,
             [certificateApi.reducerPath]:certificateApi.reducer,
             [ReviewApi.reducerPath]:ReviewApi.reducer,
-            [WhistlistApi.reducerPath]:WhistlistApi.reducer
+            [WhistlistApi.reducerPath]:WhistlistApi.reducer,
+            [blogApi.reducerPath]:blogApi.reducer
 
 
         },
@@ -54,7 +56,8 @@ export const confistore = () => {
                 enrollmentApi.middleware,
                 certificateApi.middleware,
                 ReviewApi.middleware,
-                WhistlistApi.middleware
+                WhistlistApi.middleware,
+                blogApi.middleware
             ]),
     })
 

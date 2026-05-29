@@ -212,7 +212,7 @@ Page Banner START */}
 Page Banner END */}
   {/* =======================
 Client START */}
-  <div className="container py-5 bg-light">
+  <div className="container py-5 ">
       <div ref={sliderRef} className="keen-slider">
         <div className="keen-slider__slide">
           <img src="/assets/images/client/coca-cola.svg" className="grayscale" alt="" />
