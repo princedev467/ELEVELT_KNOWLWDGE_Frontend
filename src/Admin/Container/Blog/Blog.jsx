@@ -163,7 +163,9 @@ function Blog(props) {
         let formData = new FormData();
 
         formData.append('title', val.title);
-        formData.append('subtitle', val.subtitle);
+          formData.append('subtitle', val.subtitle);
+        formData.append('tag', val.tag);
+         formData.append('description', val.description);
         val.content.forEach((v) => {
             if (v instanceof File) {
 
@@ -229,6 +231,8 @@ function Blog(props) {
                                 subtitle: '',
                                 date: '',
                                 instructor: null,
+                                tag:'',
+                                description:'',
                                 content: [],
                             }}
                             enableReinitialize
@@ -245,6 +249,8 @@ function Blog(props) {
                             <Form id="subscription-form">
                                 <TextForm name='title' id='title' label='Title' />
                                 <TextForm name='subtitle' id='subtitle' label='SubTitle' />
+                                 <TextForm name='tag' id='tag' label='Tag' />
+                                  <TextForm name='description' id='description' label='Description' />
                                 <FileUpload name='content' />
                             </Form>
                         </Formik>

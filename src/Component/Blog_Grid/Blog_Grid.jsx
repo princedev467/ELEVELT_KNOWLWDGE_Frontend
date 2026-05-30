@@ -1,6 +1,7 @@
 import React from 'react';
 import { useGetBlogQuery } from '../../Redux/Api/blog.Api';
 import dayjs from 'dayjs';
+import { NavLink } from 'react-router-dom';
 
 function Blog_Grid(props) {
 
@@ -61,32 +62,36 @@ Page content START */}
             {/* Card item START */}
             {
               BlogData?.map((b)=>(
+              
               <div className="col-sm-6 col-lg-4 col-xl-3">
-                <div className="card">
+                  <NavLink to={`/Blog_Detail/${b._id}`}>
+                <div className="card" style={{height:'400px',width:'260px'}}>
                   <div className="overflow-hidden rounded-3">
                    { 
-                    b?.content?.map((c)=>(
-                    <img src={c?.url} className="card-img" alt="course image" />
-                    ))
+                    // b?.content?.map((c)=>(
+                    <img src={b.content[0]?.url} className="card-img" alt="course image" style={{width:'580px',height:'500px',objectFit:'cover'}} />
+                    // ))
                   }  {/* Overlay */}
                     <div className="bg-overlay bg-dark opacity-4" />
                     <div className="card-img-overlay d-flex align-items-start p-3">
                       {/* badge */}
-                      <a href="#" className="badge bg-danger text-white">Student life</a>
+                      <a href="#" className="badge bg-danger text-white">{b.tag}</a>
                     </div>
                   </div>
                   {/* Card body */}
                   <div className="card-body">
                     {/* Title */}
-                    <h5 className="card-title"><a href="#">{b.title}</a></h5>
-                    <p className="text-truncate-2">{b.subtitle}</p>  {/* Info */}
-                    <div className="d-flex justify-content-between">
-                      <h6 className="mb-0"><a href="#">{b?.instructor.name}</a></h6>
+                    <h5 className="card-title text-truncate-1" style={{color:'green'}}>{b.title}</h5>
+                    <p className="text-truncate-2 mt-3">{b.subtitle}</p>  {/* Info */}
+                    <div className="d-flex justify-content-between mb-0 pt-5">
+                      <h6 className="">{b?.instructor.name}</h6>
                       <span className="small"> {dayjs(b.date).format("DD MMM YYYY")}</span>
                     </div>
                   </div>
                 </div>
+                </NavLink>
               </div>
+           
               ))
             }
 

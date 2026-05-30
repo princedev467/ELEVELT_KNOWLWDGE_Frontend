@@ -16,6 +16,7 @@ import QuizContent from '../Admin/Container/Quiz/QuizContent';
 import Content from '../Admin/Container/Content/Content';
 import Coupon from '../Admin/Container/Coupon/Coupon';
 import Blog from '../Admin/Container/Blog/Blog';
+import BlogEditor from '../Admin/Container/BlogEditor/BlogEditor';
 
 function AdminRouts(props) {
 
@@ -53,7 +54,8 @@ function AdminRouts(props) {
           <Route path='/quiz' element={<Quiz />} > </Route>
           <Route path='/content' element={<Content />} > </Route>
           <Route path='/coupon' element={<Coupon />} > </Route>
-          <Route path='/blog' element={<Blog />} > </Route>
+          {/* <Route path='/blog' element={<Blog />} > </Route> */}
+    <Route path='/blog' element={<BlogEditor />} > </Route>
 
           {/* <Route path='/quizPage/:id' element={<QuizPage />} > </Route> */}
           <Route path='/quizContent/:id' element={<QuizContent />} > </Route>

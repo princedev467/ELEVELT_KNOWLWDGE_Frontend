@@ -121,6 +121,7 @@ function UserRouts(props) {
         <Route path='/about/:id' element={< About />} ></Route>
         <Route path='/Become_Instructor' element={< Become_Instructor />} ></Route>
         <Route path='/Blog_Detail' element={< Blog_Detail />} ></Route>
+          <Route path='/Blog_Detail/:id' element={< Blog_Detail />} ></Route>
         <Route path='/Blog_Grid' element={<Blog_Grid />}></Route>
         <Route path='/Blog_Masonry' element={<Blog_Masonry />}></Route>
         <Route path='/Book_Class' element={<Book_Class />}></Route>

@@ -1,6 +1,19 @@
 import React from 'react';
+import { useGetBlogQuery } from '../../Redux/Api/blog.Api';
+import { useParams } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 function Blog_Detail(props) {
+
+  const {id}=useParams();
+  const {data:blog}=useGetBlogQuery();
+console.log(blog);
+
+
+const filterBlog=blog?.data?.find((v)=>v._id===id);
+console.log(filterBlog);
+
+
     return (
       <main>
   {/* =======================
@@ -18,14 +31,14 @@ Main Content START */}
                 <div className="position-relative">
                   {/* Avatar */}
                   <div className="avatar avatar-xxl">
-                    <img className="avatar-img rounded-circle" src="assets/images/avatar/09.jpg" alt="avatar" />
+                    <img className="avatar-img rounded-circle" src="../assets/images/avatar/07.jpg" alt="avatar" />
                   </div>
-                  <a href="#" className="h5 stretched-link mt-2 mb-0 d-block">Frances Guerrero</a>
+                  <a href="#" className="h5 stretched-link mt-2 mb-0 d-block">{filterBlog?.instructor?.name}</a>
                   <p className="mb-2">Editor at Eduport</p>
                 </div>
                 {/* Info */}
                 <ul className="list-inline list-unstyled">
-                  <li className="list-inline-item d-lg-block my-lg-2">Nov 15, 2021</li>
+                  <li className="list-inline-item d-lg-block my-lg-2">{dayjs(filterBlog?.date).format("DD MMM YYYY")}</li>
                   <li className="list-inline-item d-lg-block my-lg-2">5 min read</li>
                   <li className="list-inline-item badge bg-orange text-white"><i className="far text-white fa-heart me-1" />266</li>
                   <li className="list-inline-item badge bg-info text-white"><i className="far fa-eye me-1" />2K</li>
@@ -35,9 +48,9 @@ Main Content START */}
             {/* Content */}
             <div className="col-lg-9 order-1">
               {/* Pre title */}
-              <span>40D ago</span><span className="mx-2">|</span><div className="badge bg-success text-white">Research</div>
+              <div className="badge bg-success text-white">{filterBlog?.tag}</div>
               {/* Title */}
-              <h1 className="mt-2 mb-0 display-5">Never underestimate the influence of Eduport</h1>
+              <h1 className="mt-2 mb-0 display-5">{filterBlog?.title}</h1>
               {/* Info */}
               <p className="mt-2">For who thoroughly her boy estimating conviction. Removed demands expense account in outward tedious do. Particular way thoroughly unaffected projection favorable Mrs can be projecting own. Thirty it matter enable become admire in giving. See resolved goodness felicity shy civility domestic had but. Drawings offended yet answered Jennings perceive laughing six did far.</p>
               <p className="mb-0 mb-lg-3">Perceived end knowledge certainly day sweetness why cordially.  On forth doubt miles of child. Exercise joy man children rejoiced. Yet uncommonly his ten who diminution astonished. Demesne new manners savings staying had. Under folly balls, death own point now men. Match way these she avoids seeing death. She who drift their fat off. Ask a quick six seven offer see among. Handsome met debating sir dwelling age material. As style lived he worse dried. Offered related so visitors we private removed.</p>
@@ -50,19 +63,8 @@ Main Content START */}
               {/* Card item START */}
               <div className="card overflow-hidden h-200px h-sm-300px h-lg-400px h-xl-500px rounded-3 text-center" style={{backgroundImage: 'url(assets/images/event/10.jpg)', backgroundPosition: 'center left', backgroundSize: 'cover'}}>
                 {/* Card Image overlay */}
-                <div className="bg-overlay bg-dark opacity-4" />
-                <div className="card-img-overlay d-flex align-items-center p-2 p-sm-4"> 
-                  <div className="w-100 my-auto">
-                    <div className="row justify-content-center">
-                      {/* Video */}
-                      <div className="col-12">
-                        <a href="https://www.youtube.com/embed/tXHviS-4ygo" className="btn btn-lg text-danger btn-round btn-white-shadow stretched-link position-static mb-0" data-glightbox data-gallery="video-tour">
-                          <i className="fas fa-play" />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                 <img src={filterBlog?.content[0]?.url} alt="" />  
+                       
               </div>
               {/* Card item END */}
             </div>
