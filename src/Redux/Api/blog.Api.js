@@ -9,7 +9,7 @@ export const blogApi = createApi({
   endpoints: (builder) => ({
     getBlog: builder.query({
       query: () => 'blog/getAllblog',
-      providesTags: ['whistlist']
+      providesTags: ['blog']
     }),
     addBlog: builder.mutation({
       query: (data) => ({
@@ -17,7 +17,7 @@ export const blogApi = createApi({
         method: 'POST',
         body: data
       }),
-      invalidatesTags:['whistlist']    
+      invalidatesTags:['blog']    
     }),
     updateBlog: builder.mutation({
       query: (data) => ({
@@ -25,7 +25,7 @@ export const blogApi = createApi({
         method: 'PUT',
         body: data
       }),
-      invalidatesTags:['whistlist']
+      invalidatesTags:['blog']
     }),
     deleteBlog: builder.mutation({
       query: (id) => ({
@@ -33,7 +33,7 @@ export const blogApi = createApi({
         method: 'DELETE',
         body: id
       }),
-      invalidatesTags: ['whistlist']
+      invalidatesTags: ['blog']
     }),
   })
 })

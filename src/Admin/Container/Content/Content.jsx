@@ -338,7 +338,7 @@ function Content(props) {
                     Open form dialog
                 </Button>
                 <Dialog open={open} onClose={handleClose}>
-                    <DialogTitle>Add Quiz</DialogTitle>
+                    <DialogTitle>Add content</DialogTitle>
                     <DialogContent>
                         <Formik
                             initialValues={Object.keys(updatedata).length > 0 ? updatedata : {

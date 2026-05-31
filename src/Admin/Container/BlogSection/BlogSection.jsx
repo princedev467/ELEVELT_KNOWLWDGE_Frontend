@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { useGetCourseQuery } from '../../../Redux/Api/Course.Api';
-import { useGetSectionQuery } from '../../../Redux/Api/Section.Api';
+import { useAddBlogSectionMutation, useDeleteBlogSectionMutation, useGetBlogSectionQuery, useUpdateBlogSectionMutation } from '../../../Redux/Api/blogSection.Api';
+import { useDispatch, useSelector } from 'react-redux';
+import { useGetBlogQuery } from '../../../Redux/Api/blog.Api';
+import { userCheck } from '../../../Redux/slice/auth.slice';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack } from '@mui/material';
 import { object, string } from 'yup';
 import { Form, Formik, useFormikContext } from 'formik';
-import TextForm from '../../Component/TextForm/TextForm';
 import { DataGrid } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { NavLink } from 'react-router-dom';
-import { useAddcontentMutation, useDeletecontentMutation, useGetcontentQuery, useUpdatecontentMutation } from '../../../Redux/Api/Content.Api';
 import FileUpload from '../../Component/FileUpload/FileUpload';
-import { useDispatch, useSelector } from 'react-redux';
-import { userCheck } from '../../../Redux/slice/auth.slice';
-import RadioButton from '../../Component/RadioButton/RadioButton';
-import { useGetPaymentQuery } from '../../../Redux/Api/Payment.Api';
-import { useAddBlogMutation, useDeleteBlogMutation, useGetBlogQuery, useUpdateBlogMutation } from '../../../Redux/Api/blog.Api';
+import TextForm from '../../Component/TextForm/TextForm';
 
 
-function Blog(props) {
+
+function BlogSection(props) {
 
     const [open, setOpen] = useState(false);
     const [updatedata, setUpdateData] = useState({});
@@ -27,22 +24,42 @@ function Blog(props) {
 
     const dispatch = useDispatch();
     //contentData
-    const display = () => {
 
+
+    useEffect(() => {
         dispatch(userCheck())
-    }
+    }, [dispatch])
+
     const { data: blog } = useGetBlogQuery();
     console.log(blog);
 
     let BlogData = blog?.data
 
-    const [addData] = useAddBlogMutation();
 
-    const [updateData] = useUpdateBlogMutation();
+    const { data: blogSection } = useGetBlogSectionQuery();
 
-    const [deleteData] = useDeleteBlogMutation();
+    let blogSectionData = blogSection?.data
+
+    console.log(blogSectionData);
+    
+
+    const [addData] = useAddBlogSectionMutation();
+
+    const [updateData] = useUpdateBlogSectionMutation();
+
+    const [deleteData] = useDeleteBlogSectionMutation();
 
 
+
+    const blogdrop = [{ value: '', label: '---Select blog--' }];
+
+
+    //  Section DropDown
+    BlogData?.map((v) => (
+        blogdrop.push({ value: v._id, label: v.title })
+
+    ));
+    console.log(blogdrop);
 
 
     const handleClickOpen = () => {
@@ -52,7 +69,7 @@ function Blog(props) {
 
     const auth = useSelector(state => state.auth)
     console.log("auth", auth);
-    
+
 
     const handleClose = () => {
         setOpen(false);
@@ -78,21 +95,21 @@ function Blog(props) {
 
     const paginationModel = { pae: 0, pageSize: 5 };
     const columns = [
-        
         { field: 'title', headerName: 'Title', width: 130 },
-        { field: 'subtitle', headerName: 'Sub_Title', width: 80 },
-        { field: 'tag', headerName: 'Tag', width: 80 },
-        { field: 'instructor', headerName: 'Instructor', width: 100,
-        renderCell:(param)=>(
-            <p>{param.row.instructor.name}</p>
-        )},
+        { field: 'heading', headerName: 'Heading', width: 80 },
         {
-            field: 'content',
+            field: 'blog', headerName: 'Blog', width: 100,
+            renderCell: (param) => (
+                <p>{param?.row?.blog?.title}</p>
+            )
+        },
+        {
+            field: 'image',
             headerName: 'Source',
             width: 150,
 
             renderCell: (param) => (
-              <img src={param?.row?.content[0]?.url} alt="" />
+                <img src={param?.row?.image[0]?.url} alt="" />
             )
         },
         { field: 'description', headerName: 'description', width: 200 },
@@ -119,15 +136,12 @@ function Blog(props) {
 
     let subcategorySchema = object({
         title: string()
-           .required('name field is required'),
-    
+            .required('name field is required'),
+
     })
 
 
-    const RadioData = [
-        { label: 'Free', value: 'free' },
-        { label: 'Paid', value: 'paid' },
-    ]
+
     const handlesubmit = async (val) => {
         console.log("submit", val);
         console.log('updatedata:', updatedata);
@@ -135,17 +149,18 @@ function Blog(props) {
 
         let formData = new FormData();
 
+        formData.append('blog', val.blog);
         formData.append('title', val.title);
-        formData.append('subtitle', val.subtitle);
-        formData.append('tag', val.tag);
+        formData.append('heading', val.heading);
         formData.append('description', val.description);
+        formData.append('order', String(val.order));
 
-        val.content.forEach((v) => {
+        val.image.forEach((v) => {
             if (v instanceof File) {
 
-                formData.append('content', v);
+                formData.append('image', v);
             } else {
-                formData.append('content', v.url);
+                formData.append('image', v.url);
             }
         });
 
@@ -166,34 +181,34 @@ function Blog(props) {
 
         if (Object.keys(updatedata).length > 0) {
 
-           
+
             formData.append('_id', updatedata._id);
             updateData(formData)
             setUpdateData({});
         } else {
-           
+
             addData(formData);
-        
+
         }
     }
 
     return (
         <>
-            <h1>Blog</h1>
+            <h1>Blog Section</h1>
             <React.Fragment>
                 <Button variant="outlined" onClick={handleClickOpen}>
                     Open form dialog
                 </Button>
                 <Dialog open={open} onClose={handleClose}>
-                    <DialogTitle>Add Blog</DialogTitle>
+                    <DialogTitle>Add BlogSection</DialogTitle>
                     <DialogContent>
                         <Formik
                             initialValues={Object.keys(updatedata).length > 0 ? updatedata : {
+                                blog: '',
                                 title: '',
-                                subtitle: '',
-                                tag: '',
-                                instructor: null,
-                                content: [],
+                                heading: '',
+                                image: [],
+                                order: '',
                                 description: ''
 
 
@@ -210,14 +225,13 @@ function Blog(props) {
 
                         >
                             <Form id="subscription-form">
-
+                                <TextForm type="select" name='blog' data={blogdrop} label='blog' />
                                 <TextForm name='title' id='title' label='Title' />
-                                <TextForm name='subtitle' id='subtitle' label='Subtitle' />
-                                <TextForm name='tag' id='tag' label='Tag' />
+                                <TextForm name='heading' id='heading' label='heading' />
                                 <TextForm name='description' id='description' label='Description' />
-
-                                <FileUpload name='content' />
-                        </Form>
+                                <TextForm name='order' id='order' label='Order' />
+                                <FileUpload name='image' />
+                            </Form>
 
 
                         </Formik>
@@ -232,7 +246,7 @@ function Blog(props) {
                 </Dialog>
                 <br /><br />
                 <DataGrid
-                    rows={BlogData}
+                    rows={blogSectionData}
                     columns={columns}
                     initialState={{ pagination: { paginationModel } }}
                     pageSizeOptions={[5, 10]}
@@ -247,4 +261,4 @@ function Blog(props) {
     );
 }
 
-export default Blog;
+export default BlogSection;

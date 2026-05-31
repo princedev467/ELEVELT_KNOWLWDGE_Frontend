@@ -28,3 +28,4 @@ src/Component/Register/Verify_user.jsx
 src/Component/Sign_In/Sign_In.jsx
 src/Redux/slice/Register.Slice.js
 
+src/Admin/Container/BlogEditor/BlogEditor.jsx

@@ -17,6 +17,8 @@ import { certificateApi } from "./Api/certificate.Api"
 import { ReviewApi } from "./Api/Review.Api"
 import { WhistlistApi } from "./Api/Whistlist.Api"
 import { blogApi } from "./Api/blog.Api"
+import { blogSectionApi } from "./Api/blogSection.Api"
+
 
 export const confistore = () => {
 
@@ -38,8 +40,9 @@ export const confistore = () => {
             [certificateApi.reducerPath]:certificateApi.reducer,
             [ReviewApi.reducerPath]:ReviewApi.reducer,
             [WhistlistApi.reducerPath]:WhistlistApi.reducer,
-            [blogApi.reducerPath]:blogApi.reducer
-
+            [blogApi.reducerPath]:blogApi.reducer,
+            [blogSectionApi.reducerPath]:blogSectionApi.reducer,
+            
 
         },
         middleware: (getDefaultMiddleware) =>
@@ -57,7 +60,8 @@ export const confistore = () => {
                 certificateApi.middleware,
                 ReviewApi.middleware,
                 WhistlistApi.middleware,
-                blogApi.middleware
+                blogApi.middleware,
+                blogSectionApi.middleware
             ]),
     })
 
