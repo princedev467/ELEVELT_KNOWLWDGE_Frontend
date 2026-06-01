@@ -18,7 +18,7 @@ import { ReviewApi } from "./Api/Review.Api"
 import { WhistlistApi } from "./Api/Whistlist.Api"
 import { blogApi } from "./Api/blog.Api"
 import { blogSectionApi } from "./Api/blogSection.Api"
-
+import { tagApi } from "./Api/tag.Api"
 
 export const confistore = () => {
 
@@ -42,6 +42,7 @@ export const confistore = () => {
             [WhistlistApi.reducerPath]:WhistlistApi.reducer,
             [blogApi.reducerPath]:blogApi.reducer,
             [blogSectionApi.reducerPath]:blogSectionApi.reducer,
+            [tagApi.reducerPath]:tagApi.reducer
             
 
         },
@@ -61,7 +62,8 @@ export const confistore = () => {
                 ReviewApi.middleware,
                 WhistlistApi.middleware,
                 blogApi.middleware,
-                blogSectionApi.middleware
+                blogSectionApi.middleware,
+                tagApi.middleware
             ]),
     })
 

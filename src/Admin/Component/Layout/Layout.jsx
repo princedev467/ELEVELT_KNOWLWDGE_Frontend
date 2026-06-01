@@ -32,7 +32,7 @@ import { useSelector } from 'react-redux';
 import DiscountIcon from '@mui/icons-material/Discount';
 import ArticleIcon from '@mui/icons-material/Article';
 import FeedIcon from '@mui/icons-material/Feed';
-
+import LabelIcon from '@mui/icons-material/Label';
 
 export default function Layout({ children }) {
   const [checked, setChecked] = React.useState(true);
@@ -165,7 +165,7 @@ export default function Layout({ children }) {
   };
 
   const auth = useSelector(state => state.auth)
-  console.log("auth", auth);
+  // console.log("auth", auth);
 
 
 
@@ -179,7 +179,9 @@ export default function Layout({ children }) {
       { label: 'Content', icon: <ContentPasteSearchIcon />, to: '/admin/content' },
       { label: 'Coupon', icon: <DiscountIcon />, to: '/admin/coupon' },
       { label: 'BLog', icon: <ArticleIcon />, to: '/admin/blog' },
-      { label: 'BLogSection', icon: <FeedIcon />, to: '/admin/blogSection' }
+      { label: 'BLogSection', icon: <FeedIcon />, to: '/admin/blogSection' },
+      { label: 'Tag', icon: <LabelIcon />, to: '/admin/tag' }
+
 
     ]
 
@@ -193,7 +195,9 @@ export default function Layout({ children }) {
       { label: 'Content', icon: <ContentPasteSearchIcon />, to: '/admin/content' },
       { label: 'Coupon', icon: <DiscountIcon />, to: '/admin/coupon' },
       { label: 'Blog', icon: <ArticleIcon />, to: '/admin/blog' },
-      { label: 'BLogSection', icon: <FeedIcon />, to: '/admin/blogSection' }
+      { label: 'BLogSection', icon: <FeedIcon />, to: '/admin/blogSection' },
+      { label: 'Tag', icon: <LabelIcon />, to: '/admin/tag' }
+
 
     ];
   }

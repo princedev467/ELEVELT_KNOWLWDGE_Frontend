@@ -17,6 +17,7 @@ import Content from '../Admin/Container/Content/Content';
 import Coupon from '../Admin/Container/Coupon/Coupon';
 import Blog from '../Admin/Container/Blog/Blog';
 import BlogSection from '../Admin/Container/BlogSection/BlogSection';
+import Tag from '../Admin/Container/Tag/Tag';
 
 function AdminRouts(props) {
 
@@ -25,7 +26,7 @@ function AdminRouts(props) {
   console.log(themeData);
 
   const auth = useSelector(state => state.auth)
-  console.log("auth", auth.auth);
+  // console.log("auth", auth.auth);
 
 
   const theme = createTheme({
@@ -57,7 +58,7 @@ function AdminRouts(props) {
           <Route path='/blog' element={<Blog />} > </Route>
           <Route path='/blogSection' element={<BlogSection />} > </Route>
 
-          {/* <Route path='/quizPage/:id' element={<QuizPage />} > </Route> */}
+          <Route path='/tag' element={<Tag />} > </Route>
           <Route path='/quizContent/:id' element={<QuizContent />} > </Route>
         </Routes>
 

@@ -3,8 +3,11 @@ import { useGetBlogQuery } from '../../Redux/Api/blog.Api';
 import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { useGetBlogSectionQuery } from '../../Redux/Api/blogSection.Api';
+import DOMPurify from 'dompurify';
+
 
 function Blog_Detail(props) {
+
 
   const { id } = useParams();
   const { data: blog } = useGetBlogQuery();
@@ -18,6 +21,9 @@ function Blog_Detail(props) {
   const filterBlogSection = blogSection?.data?.filter((v) => v?.blog._id === filterBlog._id);
   console.log(filterBlogSection);
   
+
+const clean = DOMPurify.sanitize(filterBlog?.text);
+console.log(clean);
 
   return (
     <main>
@@ -71,6 +77,8 @@ Main Content START */}
                     <img src={filterBlog?.content[0]?.url} alt="" />
 
                   </div>
+
+                  <div  style={{pt:'20px'}} dangerouslySetInnerHTML={{__html:clean}} />;
                   {/* Card item END */}
                 </div>
               </div>
@@ -124,55 +132,40 @@ Main Content START */}
   ))}
 </div> */}
 
-<div className="mt-5">
-  {filterBlogSection?.map((section, index) => (
-    <div
-      key={section._id}
-      className="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden"
-    >
-      <div className="row g-0 align-items-center">
-        
-        {/* Left Image */}
-        <div className="col-md-4">
-          <img
-            src={section?.image[0]?.url}
-            alt={section?.title}
-            className="w-100 h-100"
-            style={{
-              objectFit: "cover",
-              minHeight: "250px",
-            }}
-          />
-        </div>
 
-        {/* Right Content */}
-        <div className="col-md-8">
-          <div className="p-4">
-            <span className="badge bg-primary mb-2">
-              Section {index + 1}
-            </span>
+      
+   <div>   
+   {filterBlogSection?.map((section) => {
+ 
+      return (
+        <>
+          <h2 style={{color:'blue'}}>{section.title}</h2>
+          <p>{section.description}</p>
+        </>
+      );
 
-            <h3 className="fw-bold mb-3">
-              {section?.title}
-            </h3>
+ 
+      return (
+        <img
+          src={section.image[0].url}
+          alt=""
+          className="w-full rounded-3xl"
+        />
+      );
 
-            <p
-              className="text-muted mb-0"
-              style={{
-                lineHeight: "1.9",
-                fontSize: "16px",
-              }}
-            >
-              {section?.description}
-            </p>
-          </div>
-        </div>
+  
+      return (
+        <blockquote className="border-l-4 border-blue-500 pl-6">
+          {section.quote}
+        </blockquote>
+      );
 
-      </div>
+   
+  
+})}
+    
     </div>
-  ))}
-</div>
-              {/* Quote and content END */}
+            {/* Quote and content END */}
               {/* Image START */}
               <div className="row g-4 mt-4">
                 <div className="col-sm-6 col-md-4">

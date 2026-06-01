@@ -16,6 +16,7 @@ import { userCheck } from '../../../Redux/slice/auth.slice';
 import RadioButton from '../../Component/RadioButton/RadioButton';
 import { useGetPaymentQuery } from '../../../Redux/Api/Payment.Api';
 import { useAddBlogMutation, useDeleteBlogMutation, useGetBlogQuery, useUpdateBlogMutation } from '../../../Redux/Api/blog.Api';
+import TextEditor from '../../Component/TextEditor/TextEditor';
 
 
 function Blog(props) {
@@ -139,6 +140,7 @@ function Blog(props) {
         formData.append('subtitle', val.subtitle);
         formData.append('tag', val.tag);
         formData.append('description', val.description);
+ formData.append('text', val.text);
 
         val.content.forEach((v) => {
             if (v instanceof File) {
@@ -194,7 +196,8 @@ function Blog(props) {
                                 tag: '',
                                 instructor: null,
                                 content: [],
-                                description: ''
+                                description: '',
+                                text:"",
 
 
                             }}
@@ -215,6 +218,7 @@ function Blog(props) {
                                 <TextForm name='subtitle' id='subtitle' label='Subtitle' />
                                 <TextForm name='tag' id='tag' label='Tag' />
                                 <TextForm name='description' id='description' label='Description' />
+                                <TextEditor name='text' id='text' label='text'/>
 
                                 <FileUpload name='content' />
                         </Form>
