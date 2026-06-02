@@ -17,6 +17,7 @@ import RadioButton from '../../Component/RadioButton/RadioButton';
 import { useGetPaymentQuery } from '../../../Redux/Api/Payment.Api';
 import { useAddBlogMutation, useDeleteBlogMutation, useGetBlogQuery, useUpdateBlogMutation } from '../../../Redux/Api/blog.Api';
 import TextEditor from '../../Component/TextEditor/TextEditor';
+import { useGetTagQuery } from '../../../Redux/Api/tag.Api';
 
 
 function Blog(props) {
@@ -44,7 +45,8 @@ function Blog(props) {
     const [deleteData] = useDeleteBlogMutation();
 
 
-
+ const { data: Tag } = useGetTagQuery();
+    console.log("tag", Tag?.data);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -55,6 +57,17 @@ function Blog(props) {
     console.log("auth", auth);
     
 
+     const tagdrop = [{ value: '', label: '---Select tag--' }];
+
+
+    //  Section DropDown
+    Tag?.data?.map((v) => (
+        tagdrop.push({ value: v._id, label: v.tag })
+
+    ));
+
+    console.log(tagdrop);
+    
     const handleClose = () => {
         setOpen(false);
     };
@@ -82,7 +95,9 @@ function Blog(props) {
         
         { field: 'title', headerName: 'Title', width: 130 },
         { field: 'subtitle', headerName: 'Sub_Title', width: 80 },
-        { field: 'tag', headerName: 'Tag', width: 80 },
+        { field: 'tag', headerName: 'Tag', width: 80, renderCell:(param)=>(
+            <p>{param.row.tag.tag}</p>
+        )},
         { field: 'instructor', headerName: 'Instructor', width: 100,
         renderCell:(param)=>(
             <p>{param.row.instructor.name}</p>
@@ -125,10 +140,7 @@ function Blog(props) {
     })
 
 
-    const RadioData = [
-        { label: 'Free', value: 'free' },
-        { label: 'Paid', value: 'paid' },
-    ]
+
     const handlesubmit = async (val) => {
         console.log("submit", val);
         console.log('updatedata:', updatedata);
@@ -216,7 +228,8 @@ function Blog(props) {
 
                                 <TextForm name='title' id='title' label='Title' />
                                 <TextForm name='subtitle' id='subtitle' label='Subtitle' />
-                                <TextForm name='tag' id='tag' label='Tag' />
+                                  <TextForm type="select" name='tag' data={tagdrop} label='Tag' />
+                                                              
                                 <TextForm name='description' id='description' label='Description' />
                                 <TextEditor name='text' id='text' label='text'/>
 

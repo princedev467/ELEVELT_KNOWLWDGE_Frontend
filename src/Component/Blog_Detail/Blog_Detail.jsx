@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { useGetBlogSectionQuery } from '../../Redux/Api/blogSection.Api';
 import DOMPurify from 'dompurify';
+import { useGetTagQuery } from '../../Redux/Api/tag.Api';
 
 
 function Blog_Detail(props) {
@@ -18,12 +19,18 @@ function Blog_Detail(props) {
   const filterBlog = blog?.data?.find((v) => v._id === id);
   console.log(filterBlog);
 
-  const filterBlogSection = blogSection?.data?.filter((v) => v?.blog._id === filterBlog._id);
+  const filterBlogSection = blogSection?.data?.filter((v) => v?.blog?._id === filterBlog._id);
   console.log(filterBlogSection);
   
 
 const clean = DOMPurify.sanitize(filterBlog?.text);
 console.log(clean);
+
+
+
+ const { data: Tag } = useGetTagQuery();
+    console.log("tag", Tag?.data);
+    let TagData=Tag?.data;
 
   return (
     <main>
@@ -59,7 +66,7 @@ Main Content START */}
                 {/* Content */}
                 <div className="col-lg-9 order-1">
                   {/* Pre title */}
-                  <div className="badge bg-success text-white">{filterBlog?.tag}</div>
+                  <div className="badge bg-success text-white">{filterBlog?.tag?.tag}</div>
                   {/* Title */}
                   <h1 className="mt-2 mb-0 display-5">{filterBlog?.title}</h1>
                   {/* Info */}
@@ -77,8 +84,9 @@ Main Content START */}
                     <img src={filterBlog?.content[0]?.url} alt="" />
 
                   </div>
-
-                  <div  style={{pt:'20px'}} dangerouslySetInnerHTML={{__html:clean}} />;
+                  <div className='mt-6'>
+                  <p  style={{pt:'20px'}} dangerouslySetInnerHTML={{__html:clean}} />
+                  </div>
                   {/* Card item END */}
                 </div>
               </div>
@@ -88,7 +96,7 @@ Main Content START */}
                 {/* Content */}
                 {/* <div className="col-12 mt-4 mt-lg-0">
               <p><span className="dropcap h6 mb-0 px-2">S</span> atisfied conveying a dependent contented he gentleman agreeable do be. Water timed folly right aware if oh truth. Imprudence attachment him for sympathize. Large above be to means. Dashwood does provide stronger is. <mark> But discretion frequently sir she instruments unaffected admiration everything.</mark> Meant balls it if up doubt small purse. Required his you put the outlived answered position. A pleasure exertion if believed provided to. All led out world this music while asked. Paid mind even sons does he door no. Attended overcame repeated it is perceived Marianne in. I think on style child of. Servants moreover in sensible it ye possible.</p>
-              List
+              List.slice(0, 4)?
               <ul className="list-group list-group-borderless mb-3">
                 <li className="list-group-item"><i className="fas fa-check-circle text-success me-2" />The copy warned the Little blind text</li>
                 <li className="list-group-item d-flex"><i className="fas fa-check-circle text-success me-2 mt-1" />ThaT where it came from it would have been rewritten a thousand times and everything that was left from origin would be the world</li>
@@ -136,11 +144,14 @@ Main Content START */}
       
    <div>   
    {filterBlogSection?.map((section) => {
- 
+    const cleanDescription = DOMPurify.sanitize(section?.description);
+console.log(cleanDescription);
+
       return (
         <>
           <h2 style={{color:'blue'}}>{section.title}</h2>
-          <p>{section.description}</p>
+         
+                  <p  style={{pt:'20px'}} dangerouslySetInnerHTML={{__html:cleanDescription}} />
         </>
       );
 
@@ -204,11 +215,16 @@ Main Content START */}
                 <div className="align-items-center">
                   <h6 className="mb-2 me-4 d-inline-block">Popular Tags:</h6>
                   <ul className="list-inline mb-0 social-media-btn">
-                    <li className="list-inline-item"> <a className="btn btn-outline-light btn-sm mb-lg-0" href="#">blog</a> </li>
-                    <li className="list-inline-item"> <a className="btn btn-outline-light btn-sm mb-lg-0" href="#">business</a> </li>
+                    {
+                      TagData?.slice(0, 4)?.map((v)=>(
+                         <li className="list-inline-item"> <a className="btn btn-outline-light btn-sm mb-lg-0" href="#">{v.tag}</a> </li>
+                   
+                      ))
+                    }
+                    {/* <li className="list-inline-item"> <a className="btn btn-outline-light btn-sm mb-lg-0" href="#">business</a> </li>
                     <li className="list-inline-item"> <a className="btn btn-outline-light btn-sm mb-lg-0" href="#">bootstrap</a> </li>
                     <li className="list-inline-item"> <a className="btn btn-outline-light btn-sm mb-lg-0" href="#">data science</a> </li>
-                    <li className="list-inline-item"> <a className="btn btn-outline-light btn-sm mb-lg-0" href="#">deep learning</a> </li>
+                    <li className="list-inline-item"> <a className="btn btn-outline-light btn-sm mb-lg-0" href="#">deep learning</a> </li> */}
                   </ul>
                 </div>
               </div>

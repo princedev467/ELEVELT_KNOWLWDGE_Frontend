@@ -1,15 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useGetBlogQuery } from '../../Redux/Api/blog.Api';
 import dayjs from 'dayjs';
 import { NavLink } from 'react-router-dom';
+import { useGetTagQuery } from '../../Redux/Api/tag.Api';
 
 function Blog_Grid(props) {
 
 
   const { data: blog } = useGetBlogQuery();
 
-  let BlogData=blog?.data;
   
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [showAllTags, setShowAllTags] = useState(false);
+
+
+  let BlogData = blog?.data;
+  console.log(BlogData);
+
+
+  const {data:tag}=useGetTagQuery();
+
+  const handleTagChange = (tagId) => {
+    console.log(tagId);
+    
+    if (tagId === "all") {
+      setSelectedTags([]);
+    } else {
+      if (selectedTags.includes(tagId)) {
+        setSelectedTags(selectedTags.filter((id) => id !== tagId));
+      } else {
+        setSelectedTags([...selectedTags, tagId]);
+      }
+    }
+  };
+
+  const filteredBlogs =
+    selectedTags.length === 0
+      ?BlogData
+      : BlogData?.filter((v) => selectedTags.includes(v.tag._id));
+
+      console.log(filteredBlogs);
+      
   return (
     <main>
       {/* =======================
@@ -58,51 +89,106 @@ Page Banner END */}
 Page content START */}
       <section className="position-relative pt-0 pt-lg-5">
         <div className="container">
-          <div className="row g-4">
-            {/* Card item START */}
-            {
-              BlogData?.map((b)=>(
-              
-              <div className="col-sm-6 col-lg-4 col-xl-3">
-                  <NavLink to={`/Blog_Detail/${b._id}`}>
-                <div className="card" style={{height:'400px',width:'260px'}}>
-                  <div className="overflow-hidden rounded-3">
-                   { 
-                    // b?.content?.map((c)=>(
-                    <img src={b.content[0]?.url} className="card-img" alt="course image" style={{width:'580px',height:'500px',objectFit:'cover'}} />
-                    // ))
-                  }  {/* Overlay */}
-                    <div className="bg-overlay bg-dark opacity-4" />
-                    <div className="card-img-overlay d-flex align-items-start p-3">
-                      {/* badge */}
-                      <a href="#" className="badge bg-danger text-white">{b.tag}</a>
-                    </div>
+          <div className='row'>
+            <div className="col-lg-9">
+              {/* Card item START */}
+              <div className="row g-4 ">
+              {
+                filteredBlogs?.map((b) => (
+
+                  <div className="col-md-6 col-xl-4">
+                    <NavLink to={`/Blog_Detail/${b._id}`}>
+                      <div className="card" style={{ height: '400px', width: '260px' }}>
+                        <div className="overflow-hidden rounded-3">
+                          {
+                            // b?.content?.map((c)=>(
+                            <img src={b.content[0]?.url} className="card-img" alt="course image" style={{ width: '580px', height: '500px', objectFit: 'cover' }} />
+                            // ))
+                          }  {/* Overlay */}
+                          <div className="bg-overlay bg-dark opacity-4" />
+                          <div className="card-img-overlay d-flex align-items-start p-3">
+                            {/* badge */}
+                            <a href="#" className="badge bg-danger text-white">{b.tag.tag}</a>
+                          </div>
+                        </div>
+                        {/* Card body */}
+                        <div className="card-body">
+                          {/* Title */}
+                          <h5 className="card-title text-truncate-1" style={{ color: 'green' }}>{b.title}</h5>
+                          <p className="text-truncate-2 mt-3">{b.subtitle}</p>  {/* Info */}
+                          <div className="d-flex justify-content-between mb-0 pt-5">
+                            <h6 className="">{b?.instructor.name}</h6>
+                            <span className="small"> {dayjs(b.date).format("DD MMM YYYY")}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </NavLink>
                   </div>
-                  {/* Card body */}
-                  <div className="card-body">
-                    {/* Title */}
-                    <h5 className="card-title text-truncate-1" style={{color:'green'}}>{b.title}</h5>
-                    <p className="text-truncate-2 mt-3">{b.subtitle}</p>  {/* Info */}
-                    <div className="d-flex justify-content-between mb-0 pt-5">
-                      <h6 className="">{b?.instructor.name}</h6>
-                      <span className="small"> {dayjs(b.date).format("DD MMM YYYY")}</span>
+
+                ))
+              }
+          </div>
+           
+            </div>
+            <div className="col-lg-4 col-xl-3 pt-5 pt-lg-0">
+                {/* Tag Filter Card */}
+                <div className="card card-body shadow p-4 mb-4">
+                  {/* Title */}
+                  <h4 className="mb-3">Tag</h4>
+                  {/* Category group */}
+                  <div className="col-12">
+                    {/* All Checkbox */}
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          checked={selectedTags.length === 0}
+                          onChange={() => handleTagChange("all")}
+                          id="flexCheckDefaultAll"
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="flexCheckDefaultAll"
+                        >
+                          All
+                        </label>
+                      </div>
                     </div>
+
+                    {/* Dynamic Checkboxes */}
+                    {tag?.data?.map((t) => {
+                      const isChecked = selectedTags.includes(t._id);
+                      return (
+                        <div
+                          key={t._id}
+                          className="d-flex justify-content-between align-items-center"
+                        >
+                          <div className="form-check">
+                            <input
+                              className="form-check-input"
+                              type="checkbox"
+                              checked={isChecked}
+                              onChange={() => handleTagChange(t._id)}
+                              id={`flexCheckDefault_${t._id}`}
+                            />
+                            <label
+                              className="form-check-label"
+                              htmlFor={`flexCheckDefault_${t._id}`}
+                            >
+                              {t.tag}
+                            </label>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
-                </NavLink>
               </div>
-           
-              ))
-            }
 
-            {/* Card item END */}
-            {/* Card item START */}
 
-            {/* Card item END */}
-            {/* Card item START */}
-
-            {/* Card item END */}
-          </div> {/* Row end */}
+          </div>
+          {/* Row end */}
           {/* Pagination START */}
           <nav className="d-flex justify-content-center mt-5" aria-label="navigation">
             <ul className="pagination pagination-primary-soft rounded mb-0">

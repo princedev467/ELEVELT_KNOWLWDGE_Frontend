@@ -12,6 +12,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { NavLink } from 'react-router-dom';
 import FileUpload from '../../Component/FileUpload/FileUpload';
 import TextForm from '../../Component/TextForm/TextForm';
+import TextEditor from '../../Component/TextEditor/TextEditor';
 
 
 
@@ -86,11 +87,11 @@ function BlogSection(props) {
 
     const handleedit = (val) => {
 
-
+        console.log(val);
+        
         handleClickOpen();
 
-        setUpdateData(val);
-        setCourseId(val.course);
+        setUpdateData({...val,blog:val.blog._id});
     }
 
     const paginationModel = { pae: 0, pageSize: 5 };
@@ -225,11 +226,11 @@ function BlogSection(props) {
 
                         >
                             <Form id="subscription-form">
-                                <TextForm type="select" name='blog' data={blogdrop} label='blog' />
+                                <TextForm type="select" name='blog' data={blogdrop} id='blog' label='blog' />
                                 <TextForm name='title' id='title' label='Title' />
                                 <TextForm name='heading' id='heading' label='heading' />
-                                <TextForm name='description' id='description' label='Description' />
-                                <TextForm name='order' id='order' label='Order' />
+                                 <TextEditor name='description' id='description' label='description'/>
+                                  <TextForm name='order' id='order' label='Order' />
                                 <FileUpload name='image' />
                             </Form>
 
