@@ -1,28 +1,35 @@
 import React, { useState } from 'react';
 import { useGetBlogQuery } from '../../Redux/Api/blog.Api';
 import dayjs from 'dayjs';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useGetTagQuery } from '../../Redux/Api/tag.Api';
 
 function Blog_Grid(props) {
 
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+
 
   const { data: blog } = useGetBlogQuery();
 
-  
+
   const [selectedTags, setSelectedTags] = useState([]);
   const [showAllTags, setShowAllTags] = useState(false);
-
+  const [isActive, setISActive] = useState(false)
+  const [selectedMonth, setSelectedMonth] = useState(null);
 
   let BlogData = blog?.data;
   console.log(BlogData);
 
 
-  const {data:tag}=useGetTagQuery();
+  const { data: tag } = useGetTagQuery();
 
   const handleTagChange = (tagId) => {
+    setISActive(!isActive);
+
     console.log(tagId);
-    
+
     if (tagId === "all") {
       setSelectedTags([]);
     } else {
@@ -34,13 +41,77 @@ function Blog_Grid(props) {
     }
   };
 
-  const filteredBlogs =
-    selectedTags.length === 0
-      ?BlogData
-      : BlogData?.filter((v) => selectedTags.includes(v.tag._id));
+  const handleMonthChange = (month) => {
+    if (month === "all") {
+      setSelectedMonth(null);
+    } else {
+      setSelectedMonth(
+        selectedMonth === month ? null : month
+      );
+    }
+  };
+  // let filteredBlogs =
 
-      console.log(filteredBlogs);
-      
+  //   selectedTags.length === 0
+  //     ? BlogData
+  //     : BlogData?.filter((v) => selectedTags.includes(v.tag._id));
+
+  // if (id) {
+  //   selectedTags.length !== 0
+  //     ? (filteredBlogs = selectedTags.length === 0
+  //       ? BlogData
+  //       : BlogData?.filter((v) => selectedTags.includes(v.tag._id))
+  //     ) : (filteredBlogs = BlogData?.filter((v) => v.tag._id === id));
+
+  // }
+  // console.log(filteredBlogs);
+
+  let filteredBlogs = BlogData;
+
+  // Tag filter
+  if (selectedTags.length > 0) {
+    filteredBlogs = filteredBlogs?.filter((blog) =>
+      selectedTags.includes(blog.tag._id)
+    );
+  }
+
+  // Month filter
+  if (selectedMonth) {
+    filteredBlogs = filteredBlogs?.filter(
+      (blog) =>
+        dayjs(blog.date).format("MMMM") === selectedMonth
+    );
+  }
+
+  // URL tag filter
+  if (id && selectedTags.length === 0) {
+    filteredBlogs = filteredBlogs?.filter(
+      (blog) => blog.tag._id === id
+    );
+
+    // apply month filter again
+    if (selectedMonth) {
+      filteredBlogs = filteredBlogs?.filter(
+        (blog) =>
+          dayjs(blog.date).format("MMMM") === selectedMonth
+      );
+    }
+  }
+
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
   return (
     <main>
       {/* =======================
@@ -93,98 +164,138 @@ Page content START */}
             <div className="col-lg-9">
               {/* Card item START */}
               <div className="row g-4 ">
-              {
-                filteredBlogs?.map((b) => (
+                {
+                  filteredBlogs?.map((b) => (
 
-                  <div className="col-md-6 col-xl-4">
-                    <NavLink to={`/Blog_Detail/${b._id}`}>
-                      <div className="card" style={{ height: '400px', width: '260px' }}>
-                        <div className="overflow-hidden rounded-3">
-                          {
-                            // b?.content?.map((c)=>(
-                            <img src={b.content[0]?.url} className="card-img" alt="course image" style={{ width: '580px', height: '500px', objectFit: 'cover' }} />
-                            // ))
-                          }  {/* Overlay */}
-                          <div className="bg-overlay bg-dark opacity-4" />
-                          <div className="card-img-overlay d-flex align-items-start p-3">
-                            {/* badge */}
-                            <a href="#" className="badge bg-danger text-white">{b.tag.tag}</a>
+                    <div className="col-md-6 col-xl-4">
+                      <NavLink to={`/Blog_Detail/${b._id}`}>
+                        <div className="card" style={{ height: '400px', width: '260px' }}>
+                          <div className="overflow-hidden rounded-3">
+                            {
+                              // b?.content?.map((c)=>(
+                              <img src={b.content[0]?.url} className="card-img" alt="course image" style={{ width: '580px', height: '500px', objectFit: 'cover' }} />
+                              // ))
+                            }  {/* Overlay */}
+                            <div className="bg-overlay bg-dark opacity-4" />
+                            <div className="card-img-overlay d-flex align-items-start p-3">
+                              {/* badge */}
+                              <a href="#" className="badge bg-danger text-white">{b.tag.tag}</a>
+                            </div>
+                          </div>
+                          {/* Card body */}
+                          <div className="card-body">
+                            {/* Title */}
+                            <h5 className="card-title text-truncate-1" style={{ color: 'green' }}>{b.title}</h5>
+                            <p className="text-truncate-2 mt-3">{b.subtitle}</p>  {/* Info */}
+                            <div className="d-flex justify-content-between mb-0 pt-5">
+                              <h6 className="">{b?.instructor.name}</h6>
+                              <span className="small"> {dayjs(b.date).format("DD MMM YYYY")}</span>
+                            </div>
                           </div>
                         </div>
-                        {/* Card body */}
-                        <div className="card-body">
-                          {/* Title */}
-                          <h5 className="card-title text-truncate-1" style={{ color: 'green' }}>{b.title}</h5>
-                          <p className="text-truncate-2 mt-3">{b.subtitle}</p>  {/* Info */}
-                          <div className="d-flex justify-content-between mb-0 pt-5">
-                            <h6 className="">{b?.instructor.name}</h6>
-                            <span className="small"> {dayjs(b.date).format("DD MMM YYYY")}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </NavLink>
-                  </div>
+                      </NavLink>
+                    </div>
 
-                ))
-              }
-          </div>
-           
+                  ))
+                }
+              </div>
+
             </div>
             <div className="col-lg-4 col-xl-3 pt-5 pt-lg-0">
-                {/* Tag Filter Card */}
-                <div className="card card-body shadow p-4 mb-4">
-                  {/* Title */}
-                  <h4 className="mb-3">Tag</h4>
-                  {/* Category group */}
-                  <div className="col-12">
+              {/* Tag Filter Card */}
+              <div className="card card-body shadow p-4 mb-4">
+                {/* Title */}
+                <h4 className="mb-3">Popular Tags:</h4>
+                {/* Category group */}
+                <div className="col-12">
+                  <ul className="list-inline mb-0">
                     {/* All Checkbox */}
-                    <div className="d-flex justify-content-between align-items-center">
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          checked={selectedTags.length === 0}
-                          onChange={() => handleTagChange("all")}
-                          id="flexCheckDefaultAll"
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="flexCheckDefaultAll"
-                        >
-                          All
-                        </label>
-                      </div>
-                    </div>
+                    <li className="list-inline-item mb-2">
+                      <input
+                        type="checkbox"
+                        className="btn-check"
+                        checked={selectedTags.length === 0}
+                        onChange={() => (handleTagChange("all"), navigate('/Blog_Grid'))}
+                        id="flexCheckDefaultAll"
+                      />
+                      <label
+                        className="btn btn-light btn-primary-soft-check"
+                        htmlFor="flexCheckDefaultAll"
+                      >
+                        All
+                      </label>
+                    </li>
 
                     {/* Dynamic Checkboxes */}
                     {tag?.data?.map((t) => {
                       const isChecked = selectedTags.includes(t._id);
                       return (
-                        <div
-                          key={t._id}
-                          className="d-flex justify-content-between align-items-center"
-                        >
-                          <div className="form-check">
-                            <input
-                              className="form-check-input"
-                              type="checkbox"
-                              checked={isChecked}
-                              onChange={() => handleTagChange(t._id)}
-                              id={`flexCheckDefault_${t._id}`}
-                            />
-                            <label
-                              className="form-check-label"
-                              htmlFor={`flexCheckDefault_${t._id}`}
-                            >
-                              {t.tag}
-                            </label>
-                          </div>
-                        </div>
+                        <li key={t._id} className="list-inline-item mb-2">
+                          <input
+                            type="checkbox"
+                            className="btn-check"
+                            checked={isChecked}
+                            onChange={() => handleTagChange(t._id)}
+                            id={`flexCheckDefault_${t._id}`}
+                          />
+                          <label
+                            className="btn btn-light btn-primary-soft-check"
+                            htmlFor={`flexCheckDefault_${t._id}`}
+                          >
+                            {t?.tag}
+                          </label>
+                        </li>
                       );
                     })}
-                  </div>
+                  </ul>
                 </div>
               </div>
+
+              <div className="card card-body shadow p-4 mb-4">
+                <h4 className="mb-3">Month</h4>
+
+                <div className="col-12">
+                  <ul className="list-inline mb-0">
+
+                    {/* All */}
+                    <li className="list-inline-item mb-2">
+                      <input
+                        type="checkbox"
+                        className="btn-check"
+                        checked={selectedMonth === null}
+                        onChange={() => handleMonthChange("all")}
+                        id="month_all"
+                      />
+                      <label
+                        className="btn btn-light btn-primary-soft-check"
+                        htmlFor="month_all"
+                      >
+                        All
+                      </label>
+                    </li>
+
+                    {/* Months */}
+                    {months.map((month) => (
+                      <li key={month} className="list-inline-item mb-2">
+                        <input
+                          type="checkbox"
+                          className="btn-check"
+                          checked={selectedMonth === month}
+                          onChange={() => handleMonthChange(month)}
+                          id={`month_${month}`}
+                        />
+                        <label
+                          className="btn btn-light btn-primary-soft-check"
+                          htmlFor={`month_${month}`}
+                        >
+                          {month}
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
 
 
           </div>

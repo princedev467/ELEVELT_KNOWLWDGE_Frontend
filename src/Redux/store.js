@@ -19,6 +19,7 @@ import { WhistlistApi } from "./Api/Whistlist.Api"
 import { blogApi } from "./Api/blog.Api"
 import { blogSectionApi } from "./Api/blogSection.Api"
 import { tagApi } from "./Api/tag.Api"
+import { blogLikesApi } from "./Api/blogLikes.Api"
 
 export const confistore = () => {
 
@@ -42,7 +43,9 @@ export const confistore = () => {
             [WhistlistApi.reducerPath]:WhistlistApi.reducer,
             [blogApi.reducerPath]:blogApi.reducer,
             [blogSectionApi.reducerPath]:blogSectionApi.reducer,
-            [tagApi.reducerPath]:tagApi.reducer
+            [tagApi.reducerPath]:tagApi.reducer,
+            [blogLikesApi.reducerPath]:blogLikesApi.reducer
+
             
 
         },
@@ -63,7 +66,9 @@ export const confistore = () => {
                 WhistlistApi.middleware,
                 blogApi.middleware,
                 blogSectionApi.middleware,
-                tagApi.middleware
+                tagApi.middleware,
+                blogLikesApi.middleware
+
             ]),
     })
 
