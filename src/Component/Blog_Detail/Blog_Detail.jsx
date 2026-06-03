@@ -66,7 +66,7 @@ const handleLikes = async (id) => {
   );
 
   if (!BlogLikeExist) {
-    // First like on this blog
+   
     await addData({
       blog: id,
       user: auth?.auth?._id,
