@@ -19,6 +19,14 @@ export const blogApi = createApi({
       }),
       invalidatesTags:['blog']    
     }),
+    viewBlog: builder.mutation({
+      query: (id) => ({
+        url: `blog/viewBlog/${id}`,
+        method: 'PATCH',
+       
+      }),
+      invalidatesTags:['blog']
+    }),
     updateBlog: builder.mutation({
       query: (data) => ({
         url: `blog/updateblog/${data.get('_id')}`,
@@ -39,4 +47,4 @@ export const blogApi = createApi({
 })
 
 
-export const {useGetBlogQuery,useAddBlogMutation,useUpdateBlogMutation,useDeleteBlogMutation} = blogApi
+export const {useGetBlogQuery,useAddBlogMutation,useViewBlogMutation,useUpdateBlogMutation,useDeleteBlogMutation} = blogApi

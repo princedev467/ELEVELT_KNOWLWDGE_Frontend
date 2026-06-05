@@ -61,6 +61,7 @@ import CourseDisplay from '../Component/Course/CourseDisplay';
 // import Category from '../Component/Category/CategoryData';
 import AdminRouts from './AdminRouts';
 import QuizPage from '../Component/QuizData/QuizPage';
+import Edit_Profile from '../Component/Edit_Profile/Edit_Profile';
 
 function UserRouts(props) {
   const themeData = useContext(ThemeContext);
@@ -163,6 +164,8 @@ function UserRouts(props) {
         <Route path='/Student_Course_list' element={< Student_Course_list />} ></Route>
         <Route path='/Student_Payment_Info' element={<Student_Payment_Info />}></Route>
         <Route path='/Wishitlist' element={<Wishitlist />}></Route>
+        <Route path='/Edit_Profile' element={<Edit_Profile />}></Route>
+
 
         <Route>
           <Route path='*' element={<Error_404 />}></Route>

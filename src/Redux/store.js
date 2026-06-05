@@ -20,6 +20,8 @@ import { blogApi } from "./Api/blog.Api"
 import { blogSectionApi } from "./Api/blogSection.Api"
 import { tagApi } from "./Api/tag.Api"
 import { blogLikesApi } from "./Api/blogLikes.Api"
+import { blogCommentApi } from "./Api/blogComment.Api"
+
 
 export const confistore = () => {
 
@@ -44,7 +46,9 @@ export const confistore = () => {
             [blogApi.reducerPath]:blogApi.reducer,
             [blogSectionApi.reducerPath]:blogSectionApi.reducer,
             [tagApi.reducerPath]:tagApi.reducer,
-            [blogLikesApi.reducerPath]:blogLikesApi.reducer
+            [blogLikesApi.reducerPath]:blogLikesApi.reducer,
+            [blogCommentApi.reducerPath]:blogCommentApi.reducer
+
 
             
 
@@ -67,7 +71,9 @@ export const confistore = () => {
                 blogApi.middleware,
                 blogSectionApi.middleware,
                 tagApi.middleware,
-                blogLikesApi.middleware
+                blogLikesApi.middleware,
+                blogCommentApi.middleware
+                
 
             ]),
     })

@@ -8,13 +8,15 @@ import { Switch } from '@mui/material';
 import Course from '../../Admin/Container/Course/Course';
 import logo from '../../../public/assets/images/logo.svg';
 import avatar from '../../../public/assets/images/avatar/01.jpg';
-
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 function Header(props) {
   const [data, setData] = useState()
   const [checked, setChecked] = React.useState(true);
 
   const dispatch = useDispatch()
+
+  
 
   const themeData = useContext(ThemeContext);
   console.log(themeData);
@@ -76,7 +78,7 @@ function Header(props) {
             <ul className="navbar-nav navbar-nav-scroll me-auto">
               {/* Nav item 1 Demos */}
               <li className="nav-item dropdown">
-                <a className={`nav-link dropdown-toggle active flex ${isDark?'text-white':''}`} href="#" id="categoryMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="bi bi-ui-radios-grid me-2" /><span>Explore</span></a>
+                <a className={`nav-link dropdown-toggle active flex ${isDark ? 'text-white' : ''}`} href="#" id="categoryMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="bi bi-ui-radios-grid me-2" /><span>Explore</span></a>
                 <ul className=" dropdown-menu" aria-labelledby="categoryMenu">
                   {
                     firstcategory?.map((v) => {
@@ -133,14 +135,14 @@ function Header(props) {
             {/* Nav Main menu START */}
             <ul className="navbar-nav navbar-nav-scroll me-auto">
               <li>
-                <NavLink className={`nav-link ${isDark?'text-white':''} `} to={'/about'}>About Us</NavLink>
+                <NavLink className={`nav-link ${isDark ? 'text-white' : ''} `} to={'/about'}>About Us</NavLink>
               </li>
 
-              <li> <NavLink  className={`nav-link ${isDark?'text-white':''} `} to={'/course'}>Course</NavLink></li>
+              <li> <NavLink className={`nav-link ${isDark ? 'text-white' : ''} `} to={'/course'}>Course</NavLink></li>
 
-              <li><NavLink  className={`nav-link ${isDark?'text-white':''} `} to={'/Pricing'}>Pricing</NavLink></li>
-              <li>  <NavLink  className={`nav-link ${isDark?'text-white':''} `} to={'/Contact_us'}>Contact Us</NavLink></li>
-                    <li>  <NavLink  className={`nav-link ${isDark?'text-white':''} `} to={'/Blog_Grid'}>Blog</NavLink></li>
+              <li><NavLink className={`nav-link ${isDark ? 'text-white' : ''} `} to={'/Pricing'}>Pricing</NavLink></li>
+              <li>  <NavLink className={`nav-link ${isDark ? 'text-white' : ''} `} to={'/Contact_us'}>Contact Us</NavLink></li>
+              <li>  <NavLink className={`nav-link ${isDark ? 'text-white' : ''} `} to={'/Blog_Grid'}>Blog</NavLink></li>
 
 
               {/* Nav item 1 Demos */}
@@ -496,13 +498,13 @@ function Header(props) {
 
 
           {/* Profile START */}
-           {
-        
-            <NavLink  to={`${auth?.auth?._id? '/cart':'/Auth' }`}> <i className="bi bi-cart3 fa-fw me-2" style={{ fontSize: "1.5rem",color:'white' }}></i></NavLink>
-            
+          {
+
+            <NavLink to={`${auth?.auth?._id ? '/cart' : '/Auth'}`}> <i className="bi bi-cart3 fa-fw me-2" style={{ fontSize: "1.5rem", color: 'white' }}></i></NavLink>
+
 
           }
-          <div className="dropdown ms-1 ms-lg-0 flex">
+          {/* <div className="dropdown ms-1 ms-lg-0 flex">
             {
               auth.auth ? (
                 <a
@@ -511,20 +513,20 @@ function Header(props) {
                     dispatch(dispatch(userLogout(auth.auth._id)));
                     // dispatch(CheakAuthUser());
                   }}
-                 className="btn btn-sm btn-primary-soft me-2 mb-4 mb-sm-0 border-primary rounded"
-                style={{padding:'8px 10px',fontSize:'15px'}}
+                  className="btn btn-sm btn-primary-soft me-2 mb-4 mb-sm-0 border-primary rounded"
+                  style={{ padding: '8px 10px', fontSize: '15px' }}
                 >
                   Sign Out
                 </a>
               ) : (
                 <>
                   <div className="d-sm-flex align-items-center justify-content-center justify-content-lg-start">
-                    <NavLink className="btn btn-sm btn-primary-soft me-2 mb-4 mb-sm-0 border-primary" style={{padding:'6px 8px',fontSize:'15px'}} to="/Auth">
+                    <NavLink className="btn btn-sm btn-primary-soft me-2 mb-4 mb-sm-0 border-primary" style={{ padding: '6px 8px', fontSize: '15px' }} to="/Auth">
                       Sign in as User
                     </NavLink>
 
 
-                    <NavLink className="btn btn-sm btn-primary-soft me-2 mb-4 mb-sm-0 border-primary" style={{padding:'6px 8px',fontSize:'15px'}} to="/Auth/Instructor">
+                    <NavLink className="btn btn-sm btn-primary-soft me-2 mb-4 mb-sm-0 border-primary" style={{ padding: '6px 8px', fontSize: '15px' }} to="/Auth/Instructor">
                       Sign in as Instructor
                     </NavLink>
                   </div>
@@ -532,50 +534,83 @@ function Header(props) {
                 </>
               )
             }
-          </div>
-          {/* <div className="dropdown ms-1 ms-lg-0">
+          </div> */}
+          <div className="dropdown ms-1 ms-lg-0">
             <a className="avatar avatar-sm p-0" href="#" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
-              <img className="avatar-img rounded-circle" src={avatar} alt="avatar" />
-            </a>
+              {auth.auth? 
+                    <img className="avatar-img rounded-circle shadow" src={avatar} alt="avatar" />:
+                 <AccountCircleIcon style={{fontSize:'43px'}}/>
+                    }   </a>
             <ul className="dropdown-menu dropdown-animation dropdown-menu-end shadow pt-3" aria-labelledby="profileDropdown">
-              Profile info
+              {/* Profile info */}
               <li className="px-3">
                 <div className="d-flex align-items-center">
-                  Avatar
+                  {/* Avatar */}
                   <div className="avatar me-3">
-                    <img className="avatar-img rounded-circle shadow" src={avatar} alt="avatar" />
-                  </div>
+                   {auth.auth? 
+                    <img className="avatar-img rounded-circle shadow" src={avatar} alt="avatar" />:
+                 <AccountCircleIcon style={{fontSize:'50px'}}/>
+                    }  
+                </div>
                   <div>
-                    <a className=" h6" href="#">Lori Ferguson</a>
-                    <p className="small m-0">example@gmail.com</p>
+                    <a className=" h6" href="#">{auth.auth? auth?.auth?.name:'user'}</a>
+                    <p className="small m-0">{auth.auth? auth?.auth?.email:'example@gmail.com'}</p>
                   </div>
                 </div>
                 <hr />
               </li>
-              Links
-              <li><a className="dropdown-item" href="#"><i className="bi bi-person fa-fw me-2" />Edit Profile</a></li>
-              <li><a className="dropdown-item" href="#"><i className="bi bi-gear fa-fw me-2" />Account Settings</a></li>
-              <li><a className="dropdown-item" href="#"><i className="bi bi-info-circle fa-fw me-2" />Help</a></li>
-                 <li><a className="dropdown-item" href="#"><i className="bi bi-cart fa-fw me-2" />Cart </a></li>
-                  <li><NavLink className="dropdown-item" to={'/Cart'}><i className="bi bi-cart fa-fw me-2" />Cart </NavLink></li>
-           
+              {/* Links */}
+              <li><NavLink className="dropdown-item" to={'/Edit_Profile'}><i className="bi bi-person fa-fw me-2" />Edit Profile</NavLink></li>
+              <li><NavLink className="dropdown-item" to={'/Cart'}><i className="bi bi-cart fa-fw me-2" />Cart </NavLink></li>
               {
+              auth.auth ? (
+                <a
+                  href="#"
+                  onClick={() => {
+                    dispatch(dispatch(userLogout(auth.auth._id)));
+                    // dispatch(CheakAuthUser());
+                  }}
+                  className={`${themeData.theme === 'light' ? 'profile' : ''} dropdown-item bg-danger-soft-hover`} 
+                   style={{ padding: '8px 10px', fontSize: '15px' }}
+                >
+                  <i className="bi bi-box-arrow-right" style={{marginLeft:'10px',marginRight:'10px'}} />Sign Out
+                </a>
+              ) : (
+                <>
+                  <div className=" align-items-center justify-content-center justify-content-lg-start">
+                   <li> <NavLink className={` ${themeData.theme === 'light' ? 'profile' : ''} dropdown-item bg-danger-soft-hover`} style={{ padding: '6px 8px', fontSize: '15px' }} to="/Auth">
+                      <i className="bi bi-power fa-fw me-2" />
+                      Sign in as User
+                    </NavLink>
+                </li>
+                <li>
+              <NavLink className={` ${themeData.theme === 'light' ? 'profile' : ''} dropdown-item bg-danger-soft-hover`} style={{ padding: '6px 8px', fontSize: '15px' }} to="/Auth/Instructor">
+                      <i className="bi bi-power fa-fw me-2" />
+                      Sign in as Instructor
+                    </NavLink>
+          </li>
+                  </div>
+
+                </>
+              )
+            }
+              {/* {
                 auth.auth ?
-                  <li><a href='#' className={`${themeData.theme==='light'?'profile':''} dropdown-item bg-danger-soft-hover`} onClick={() => dispatch(userLogout(auth.auth._id))}><i className="bi bi-box-arrow-right" />    Sign Out</a></li> :
-                  <li><NavLink className={` ${themeData.theme==='light'?'profile':''} dropdown-item bg-danger-soft-hover`} to={'/Auth'}><i className="bi bi-power fa-fw me-2" />Sign In</NavLink></li>
+                  <li><a href='#' className={`${themeData.theme === 'light' ? 'profile' : ''} dropdown-item bg-danger-soft-hover`} onClick={() => dispatch(userLogout(auth.auth._id))}><i className="bi bi-box-arrow-right" />    Sign Out</a></li> :
+                  <li><NavLink className={` ${themeData.theme === 'light' ? 'profile' : ''} dropdown-item bg-danger-soft-hover`} to={'/Auth'}><i className="bi bi-power fa-fw me-2" />Sign In</NavLink></li>
 
               }
 
               {
                 auth.auth ?
-                  <li><a href='#' className={`${themeData.theme==='light'?'profile':''} dropdown-item bg-danger-soft-hover`} onClick={() => dispatch(userLogout(auth.auth._id))}><i className="bi bi-box-arrow-right" />  Instructor Sign Out</a></li> :
-                  <li><NavLink className={` ${themeData.theme==='light'?'profile':''} dropdown-item bg-danger-soft-hover`} to={'/Auth/Instructor'}><i className="bi bi-power fa-fw me-2" />  Sign As Instructor </NavLink></li>
+                  <li><a href='#' className={`${themeData.theme === 'light' ? 'profile' : ''} dropdown-item bg-danger-soft-hover`} onClick={() => dispatch(userLogout(auth.auth._id))}><i className="bi bi-box-arrow-right" />  Instructor Sign Out</a></li> :
+                  <li><NavLink className={` ${themeData.theme === 'light' ? 'profile' : ''} dropdown-item bg-danger-soft-hover`} to={'/Auth/Instructor'}><i className="bi bi-power fa-fw me-2" />  Sign As Instructor </NavLink></li>
 
-              }
+              } */}
 
 
               <li> <hr className="dropdown-divider" /></li>
-              Dark mode switch START
+              {/* Dark mode switch START */}
               <li>
                 <div className="modeswitch-wrap" id="darkModeSwitch">
                   <Switch
@@ -587,9 +622,9 @@ function Header(props) {
                   <span>Dark mode</span>
                 </div>
               </li>
-              Dark mode switch END
+              {/* Dark mode switch END */}
             </ul>
-          </div> */}
+          </div>
           {/* Profile START */}
         </div>
       </nav>

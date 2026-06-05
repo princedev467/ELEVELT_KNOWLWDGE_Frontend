@@ -3,6 +3,15 @@ import { useGetPaymentQuery } from '../../Redux/Api/Payment.Api';
 import { useSelector } from 'react-redux';
 import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
 import Carousel from 'react-material-ui-carousel';
+import { NavLink } from 'react-router-dom';
+import { useGetSectionQuery } from '../../Redux/Api/Section.Api';
+import { useGetcontentQuery } from '../../Redux/Api/Content.Api';
+import { useGetEnrollmentQuery } from '../../Redux/Api/enrollment.Api';
+import { useGetProgressQuery } from '../../Redux/Api/progress.Api';
+import CheckIcon from '@mui/icons-material/Check';
+import LinearProgress from '@mui/joy/LinearProgress';
+import Typography from '@mui/joy/Typography';
+
 
 function Student_Course_list(props) {
 
@@ -15,10 +24,46 @@ function Student_Course_list(props) {
   const { data: payment } = useGetPaymentQuery();
   console.log(payment?.data);
 
+
+  const { data: enroll } = useGetEnrollmentQuery();
   let PaymentData = payment?.data;
 
-  const userPayment = PaymentData?.find((v) => v.user_id === auth.auth?._id);
+  const userPayment = PaymentData?.filter((v) => v.user_id === auth.auth?._id);
   console.log(userPayment);
+
+
+  const { data: sectionData } = useGetSectionQuery();
+  let section = sectionData?.data
+
+  const enrollmentData = enroll?.data?.find((v) => v.user_id === auth?.auth?._id) || null;
+  const { data: content } = useGetcontentQuery();
+
+
+  const { data: Progress } = useGetProgressQuery();
+
+
+
+  const getCourseProgress = (courseId) => {
+    const filterSectionData = section?.filter((v) => v?.course === courseId && v.Instructor_id !== null) || [];
+
+    let totalLectures = 0;
+    let completedLectures = 0;
+
+    filterSectionData.forEach((s) => {
+      const sectionContent = content?.data?.filter((c) => c?.section === s?._id) || [];
+
+      totalLectures += sectionContent.length;
+
+      completedLectures += sectionContent.filter((v) =>
+        Progress?.data?.some(
+          (p) => p.content_Id === v._id && p.enroll_Id === enrollmentData?._id && p.is_complete === true
+        )
+      ).length;
+    });
+
+    return totalLectures > 0 ? Math.round((completedLectures / totalLectures) * 100) : 0;
+  };
+
 
   return (
     <main>
@@ -103,15 +148,12 @@ Page content START */}
                     <div className="bg-dark border rounded-3 pb-0 p-3 w-100">
                       {/* Dashboard menu */}
                       <div className="list-group list-group-dark list-group-borderless">
-                        <a className="list-group-item" href="student-dashboard.html"><i className="bi bi-ui-checks-grid fa-fw me-2" />Dashboard</a>
-                        <a className="list-group-item" href="student-subscription.html"><i className="bi bi-card-checklist fa-fw me-2" />My Subscriptions</a>
-                        <a className="list-group-item active" href="student-course-list.html"><i className="bi bi-basket fa-fw me-2" />My Courses</a>
-                        <a className="list-group-item" href="student-payment-info.html"><i className="bi bi-credit-card-2-front fa-fw me-2" />Payment info</a>
-                        <a className="list-group-item" href="student-bookmark.html"><i className="bi bi-cart-check fa-fw me-2" />Wishlist</a>
-                        <a className="list-group-item" href="instructor-edit-profile.html"><i className="bi bi-pencil-square fa-fw me-2" />Edit Profile</a>
-                        <a className="list-group-item" href="instructor-setting.html"><i className="bi bi-gear fa-fw me-2" />Settings</a>
-                        <a className="list-group-item" href="instructor-delete-account.html"><i className="bi bi-trash fa-fw me-2" />Delete Profile</a>
-                        <a className="list-group-item text-danger bg-danger-soft-hover" href="#"><i className="fas fa-sign-out-alt fa-fw me-2" />Sign Out</a>
+
+                        <NavLink className="list-group-item" to={'/Student_Dashboard'}><i className="bi bi-ui-checks-grid fa-fw me-2" />Dashboard</NavLink>
+                        <NavLink className="list-group-item active" to={'/Student_Course_list'} ><i className="bi bi-basket fa-fw me-2" />My Courses</NavLink>
+                        <NavLink className="list-group-item" to={'/Wishitlist'}><i className="bi bi-cart-check fa-fw me-2" />Wishlist</NavLink>
+                        <NavLink className="list-group-item" to={'/Edit_Profile'}><i className="bi bi-pencil-square fa-fw me-2" />Edit Profile</NavLink>
+                        <NavLink className="list-group-item text-danger bg-danger-soft-hover" to={'/'}><i className="fas fa-sign-out-alt fa-fw me-2" />Sign Out</NavLink>
                       </div>
                     </div>
                   </div>
@@ -130,138 +172,156 @@ Page content START */}
                 {/* Card header END */}
                 {/* Card body START */}
                 <div className="card-body">
-                  {/* Search and select START */}
+
+                  {/* Search and Sort */}
                   <div className="row g-3 align-items-center justify-content-between mb-4">
-                    {/* Content */}
                     <div className="col-md-8">
                       <form className="rounded position-relative">
-                        <input className="form-control pe-5 bg-transparent" type="search" placeholder="Search" aria-label="Search" />
-                        <button className="btn bg-transparent px-2 py-0 position-absolute top-50 end-0 translate-middle-y" type="submit"><i className="fas fa-search fs-6 " /></button>
+                        <input className="form-control pe-5 bg-transparent" type="search"
+                          placeholder="Search" aria-label="Search" />
+                        <button className="btn bg-transparent px-2 py-0 position-absolute top-50 end-0 translate-middle-y" type="submit">
+                          <i className="fas fa-search fs-6" />
+                        </button>
                       </form>
                     </div>
-                    {/* Select option */}
                     <div className="col-md-3">
-                      {/* Short by filter */}
-                      <form>
-                        <select className="form-select js-choice border-0 z-index-9 bg-transparent" aria-label=".form-select-sm">
-                          <option value>Sort by</option>
-                          <option>Free</option>
-                          <option>Newest</option>
-                          <option>Most popular</option>
-                          <option>Most Viewed</option>
-                        </select>
-                      </form>
+                      <select className="form-select border-0 z-index-9 bg-transparent" aria-label="Sort by">
+                        <option value="">Sort by</option>
+                        <option>Most completed</option>
+                        <option>Least completed</option>
+                        <option>Newest</option>
+                      </select>
                     </div>
                   </div>
-                  {/* Search and select END */}
-                  {/* Course list table START */}
+
+                  {/* Table */}
                   <div className="table-responsive border-0">
                     <table className="table table-dark-gray align-middle p-4 mb-0 table-hover">
-                      {/* Table head */}
                       <thead>
                         <tr>
                           <th scope="col" className="border-0 rounded-start">Course Title</th>
                           <th scope="col" className="border-0">Total Lectures</th>
-                          <th scope="col" className="border-0">Completed Lecture</th>
+                          <th scope="col" className="border-0">Completed</th>
                           <th scope="col" className="border-0 rounded-end">Action</th>
                         </tr>
                       </thead>
-                      {/* Table body START */}
                       <tbody>
-                        {/* Table item */}
+                        {userPayment?.map((v4) =>
+                          v4.purchased_courses?.map((v) => {
+                            const paidCourse = courseData?.data?.filter((c) => c._id === v.course);
 
-                        {/* Table item */}
+                            return paidCourse?.map((v2) => {
+                              const progress = getCourseProgress(v2._id);
+                              const isComplete = progress === 100;
 
-                        {/* Table item */}
-                        {
-                          userPayment?.purchased_courses?.map((v) => {
+                              // Count total and completed lectures for this course
+                              const courseSections = section?.filter(
+                                (s) => s?.course === v2._id && s.Instructor_id !== null
+                              ) || [];
+                              const totalLectures = courseSections.reduce((acc, s) => {
+                                return acc + (content?.data?.filter((c) => c?.section === s?._id)?.length || 0);
+                              }, 0);
+                              const completedLectures = Math.round((progress / 100) * totalLectures);
 
-                            console.log(v);
+                              return (
+                                <tr key={v2._id}>
+                                  {/* Course Title + Progress */}
+                                  <td>
+                                    <div className="d-flex align-items-center gap-3">
+                                      {/* Thumbnail */}
+                                      <div style={{ width: 72, height: 52, flexShrink: 0 }}>
+                                        {v2.course_img?.[0]?.url ? (
+                                          <img
+                                            src={v2.course_img[0].url}
+                                            className="rounded"
+                                            alt="course"
+                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                          />
+                                        ) : (
+                                          <div className="rounded bg-light d-flex align-items-center justify-content-center"
+                                            style={{ width: 72, height: 52 }}>
+                                            <i className="bi bi-book text-muted" />
+                                          </div>
+                                        )}
+                                      </div>
 
-                            let paidCourse = courseData?.data?.filter((c) => c._id === v.course);
-                            console.log(paidCourse);
+                                      {/* Name + progress bar */}
+                                      <div style={{ minWidth: 0 }}>
+                                        <h6 className="mb-2 fw-semibold text-truncate" style={{ maxWidth: 220 }}>
+                                          <a href="#" className="text-decoration-none">{v2.name}</a>
+                                        </h6>
+                                        <div className="d-flex align-items-center gap-2">
+                                          <div className="progress flex-grow-1"
+                                            style={{ height: 7, minWidth: 120, backgroundColor: '#e9ecef', borderRadius: 99 }}>
+                                            <div
+                                              className={`progress-bar ${isComplete ? 'bg-success' : 'bg-primary'}`}
+                                              role="progressbar"
+                                              style={{ width: `${progress}%`, borderRadius: 99 }}
+                                              aria-valuenow={progress}
+                                              aria-valuemin={0}
+                                              aria-valuemax={100}
+                                            />
+                                          </div>
+                                          <small className="fw-bold text-muted" style={{ minWidth: 32 }}>
+                                            {progress}%
+                                          </small>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </td>
 
-                          return (
-                                                    <tr>
-                        
-                                                      <td>
-                                                        {
-                                                          paidCourse?.map((v2) => {
-                        
-                                                            return (
-                                                              <div className="d-lg-flex align-items-center">
-                                                                <div className="w-100px w-md-80px mb-2 mb-md-0">
-                        
-                                                                  {
-                                                                    <Carousel indicators={false}>
-                                                                      {
-                                                                        v2.course_img.map(v3 => (
-                                                                          <img src={v3.url} className="rounded" alt="course image" />
-                        
-                                                                        ))
-                                                                      }
-                        
-                                                                    </Carousel>
-                                                                  }
-                                                                </div>
-                        
-                                                                {/* Title */}
-                                                                <h6 className="mb-0 ms-lg-3 mt-2 mt-lg-0 ">
-                                                                  <a href="#">{v2.name}</a>
-                                                                </h6>
-                                                              </div>
-                                                            )
-                                                          })
-                                                        }
-                                                      </td>
-                                                      {/* Amount item */}
-                                                      <td>
-                                                        <h5 className="text-success mb-0"></h5>
-                                                      </td>
+                                  {/* Total Lectures */}
+                                  <td><span className="fw-500">{totalLectures}</span></td>
 
-                                                       <td>
-                                                        <h5 className="text-success mb-0"></h5>
-                                                      </td>
-                                                      {/* Action item */}
-                                                      <td>
-                                                        <a href="#" className="btn btn-sm btn-success-soft px-2 me-1 mb-1 mb-md-0"><i className="far fa-fw fa-edit" /></a>
-                                                        <button className="btn btn-sm btn-danger-soft px-2 mb-0" onClick={() => handledelete(v._id)}><i className="fas fa-fw fa-times" /></button>
-                                                      </td>
-                                                    </tr>
-                                                  )
+                                  {/* Completed Lectures */}
+                                  <td><span className="fw-500">{completedLectures}</span></td>
+
+                                  {/* Actions */}
+                                  <td>
+                                    {isComplete ? (
+                                      <div className="d-flex gap-2 flex-wrap">
+                                        <button className="btn btn-sm btn-success disabled" style={{ pointerEvents: 'none' }}>
+                                          <i className="bi bi-check me-1" />Complete
+                                        </button>
+                                        <a href="#" className="btn btn-sm btn-light">
+                                          <i className="bi bi-arrow-repeat me-1" />Restart
+                                        </a>
+                                      </div>
+                                    ) : (
+                                      <a href="#" className="btn btn-sm btn-primary-soft">
+                                        <i className="bi bi-play-circle me-1" />Continue
+                                      </a>
+                                    )}
+                                  </td>
+                                </tr>
+                              );
+                            });
                           })
-                        }
-                      {/* Table item */}
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
 
-                    </tbody>
-                    {/* Table body END */}
-                  </table>
-                </div>
-                {/* Course list table END */}
-                {/* Pagination START */}
-                <div className="d-sm-flex justify-content-sm-between align-items-sm-center mt-4 mt-sm-3">
-                  {/* Content */}
-                  <p className="mb-0 text-center text-sm-start">Showing 1 to 8 of 20 entries</p>
                   {/* Pagination */}
-                  <nav className="d-flex justify-content-center mb-0" aria-label="navigation">
-                    <ul className="pagination pagination-sm pagination-primary-soft mb-0 pb-0">
-                      <li className="page-item mb-0"><a className="page-link" href="#" tabIndex={-1}><i className="fas fa-angle-left" /></a></li>
-                      <li className="page-item mb-0"><a className="page-link" href="#">1</a></li>
-                      <li className="page-item mb-0 active"><a className="page-link" href="#">2</a></li>
-                      <li className="page-item mb-0"><a className="page-link" href="#">3</a></li>
-                      <li className="page-item mb-0"><a className="page-link" href="#"><i className="fas fa-angle-right" /></a></li>
-                    </ul>
-                  </nav>
+                  <div className="d-sm-flex justify-content-sm-between align-items-sm-center mt-4">
+                    <p className="mb-0 text-center text-sm-start">Showing entries</p>
+                    <nav aria-label="navigation">
+                      <ul className="pagination pagination-sm pagination-primary-soft mb-0 pb-0">
+                        <li className="page-item"><a className="page-link" href="#"><i className="fas fa-angle-left" /></a></li>
+                        <li className="page-item active"><a className="page-link" href="#">1</a></li>
+                        <li className="page-item"><a className="page-link" href="#"><i className="fas fa-angle-right" /></a></li>
+                      </ul>
+                    </nav>
+                  </div>
+
                 </div>
-                {/* Pagination END */}
+                {/* Card body START */}
               </div>
-              {/* Card body START */}
             </div>
-          </div>
-          {/* Main content END */}
-        </div> {/* Row END */}
-      </div>
-    </section>
+            {/* Main content END */}
+          </div> {/* Row END */}
+        </div>
+      </section>
       {/* =======================
 Page content END */}
     </main >

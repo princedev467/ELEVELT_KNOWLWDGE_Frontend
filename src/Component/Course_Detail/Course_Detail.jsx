@@ -26,7 +26,7 @@ import { useCountUp } from 'use-count-up'
 import DownloadIcon from "@mui/icons-material/Download";
 import { useAddcertificateMutation } from '../../Redux/Api/certificate.Api';
 import { useFormik } from 'formik';
-import { useAddReviewMutation, useDeleteReviewMutation, useGetReviewQuery } from '../../Redux/Api/Review.Api';
+import { useAddReviewMutation, useDeleteReviewMutation, useGetReviewQuery, useUpdateReviewMutation } from '../../Redux/Api/Review.Api';
 
 function Course_Detail(props) {
   const themeData = useContext(ThemeContext);
@@ -45,39 +45,59 @@ function Course_Detail(props) {
     }),
   });
 
+  //state
   const [rating, setRating] = useState()
   const [more, setmore] = useState(true);
   const [text, setText] = useState('');
 
   const [quizid, setQuizid] = useState(null)
 
-  // console.log(quizid);
+  const [editingReviewId, setEditingReviewId] = useState(null);
+  const [editReviewText, setEditReviewText] = useState('');
+  const [editRating, setEditRating] = useState(0);
+
   const videoRef = useRef(null);
   const [durations, setDurations] = useState({});
   const [progress, setProgress] = useState({});
 
-  //auth
-  const auth = useSelector(state => state.auth);
-  console.log(auth);
 
   let isDark = themeData.theme === 'light'
   const { id } = useParams();
-  // console.log("id", id);
+
+  //AUTH
+  const auth = useSelector(state => state.auth);
+
+  //getData
+  const { data: enroll } = useGetEnrollmentQuery();
+  const { data: Progress } = useGetProgressQuery();
+  const { data: courseData, isLoading, isError } = useGetCourseQuery();
+  const { data: sectionData } = useGetSectionQuery();
+  const { data: quizData } = useGetquizQuery();
+  const { data: content } = useGetcontentQuery();
+  const { data: cart } = useGetCartQuery();
+  const { data: payment } = useGetPaymentQuery();
+  const { data: reviewData } = useGetReviewQuery();
 
 
+  //addData
+  const [addProgress] = useAddProgressMutation();
+  const [addData] = useAddCartMutation();
+  const [addCertificate] = useAddcertificateMutation();
+  const [addreview] = useAddReviewMutation();
 
 
-  const { data: enroll } = useGetEnrollmentQuery(); // console.log(enroll?.data);
+  //updateData
+  const [updateProgress] = useUpdateProgressMutation();
+  const [updateData] = useUpdateCartMutation();
+  const [updateReview] = useUpdateReviewMutation();
+
+
+  //deleteData  
+  const [deleteReview] = useDeleteReviewMutation()
+
 
 
   const enrollmentData = enroll?.data?.find((v) => v.user_id === auth?.auth?._id) || null;
-  // console.log(enrollmentData);
-
-
-  const { data: Progress } = useGetProgressQuery()
-  const [addProgress] = useAddProgressMutation();
-  const [updateProgress] = useUpdateProgressMutation();
-
 
   const handleLoadedMetadata = async (e, content_id, section_id) => {
     // console.log("Duration:", e.target.duration);
@@ -94,60 +114,21 @@ function Course_Detail(props) {
       ...prev,
       [content_id]: e.target.duration,
     }));
-
-
-
-    //  let contentFilter = content?.data?.filter((c) => c.section === section_id)
-    //  console.log(contentFilter);
-
-    // let progressContent=contentFilter.filter((v)=>v._id===content_id);
-    // console.log(progressContent);
-
-
   };
 
 
-  // track video position
-
-
-
-  // course
-  const { data: courseData, isLoading, isError } = useGetCourseQuery(); //get Data
-  // console.log("course", courseData);
-
-  // Section
-  const { data: sectionData } = useGetSectionQuery(); //get Data
-  // console.log("Section", sectionData);
-
-  //quiz
-  const { data: quizData } = useGetquizQuery(); //get Data
-  // console.log("quizData", quizData);
-
-  const { data: content } = useGetcontentQuery()
-  // console.log(content?.data);
-
-  //course
+  //data store in variable
   let course = courseData?.data
-  //section
   let section = sectionData?.data
-
-  let quiz = quizData?.data
-  // console.log(quiz);
-
-
-  //cart
-  const { data: cart } = useGetCartQuery()
-  // console.log(cart?.data);
   let cartData = cart?.data
-
-  const [addData] = useAddCartMutation();
-  const [updateData] = useUpdateCartMutation();
-
-
+  let quiz = quizData?.data
   let filterCourseData
-
-
   let filterSectionData
+  let PaymentData = payment?.data;
+  const usermergePurchased = [];
+
+
+
   if (id) {
     filterCourseData = course?.filter((v) => v?._id === id);
     filterSectionData = section?.filter((v) => v?.course === id && v.Instructor_id !== null)
@@ -159,13 +140,10 @@ function Course_Detail(props) {
 
 
   const handleNevigate = (section_id) => {
-    // console.log(section_id);
-
 
     let filterQuizData = quiz?.find((v) => v?.section === section_id)
 
     return filterQuizData?._id;
-
 
   }
 
@@ -173,16 +151,8 @@ function Course_Detail(props) {
 
   // console.log("filterSectionData", filterSectionData);
 
-  const { data: payment } = useGetPaymentQuery();
-  // console.log(payment?.data);
-
-  let PaymentData = payment?.data;
-
   const userPayment = PaymentData?.filter((v) => v.user_id === auth.auth?._id);
   // console.log(userPayment);
-
-
-  const usermergePurchased = [];
 
   userPayment?.map((v) => {
 
@@ -192,16 +162,7 @@ function Course_Detail(props) {
 
   })
 
-  // console.log(usermergePurchased);
-
-
   const purchaseCourse = usermergePurchased?.some(v => v === id)
-
-  // console.log(purchaseCourse);
-  // for(let v of userPayment?.purchased_courses){
-  //     console.log(v);
-
-  // }
 
 
   const handleCart = (val) => {
@@ -215,8 +176,6 @@ function Course_Detail(props) {
     }
 
 
-
-
     let cartUser = cartData?.find((v) => v.user_id === auth.auth._id)
 
     console.log(cartUser);
@@ -226,13 +185,10 @@ function Course_Detail(props) {
 
     if (existData) {
       console.log("you data already exist in cart");
-
       return
     }
 
     const ItemsData = [...(cartUser?.items || [])];
-
-
     ItemsData.push({
       course: val._id,
       price: val.price,
@@ -257,7 +213,10 @@ function Course_Detail(props) {
 
 
   //check allsection complete  return true id all complete otherwise false
-  const allSectionsCompleted = filterSectionData?.every((s) => {
+  const allSectionsCompleted =
+  
+  filterSectionData?.length > 0
+    && filterSectionData?.every((s) => {
     const sectionContent = content?.data?.filter((c) => c.section === s._id) || [];
 
     const totalLectures = sectionContent.length;
@@ -274,13 +233,13 @@ function Course_Detail(props) {
     // console.log(totalLectures);
 
     const percentage = totalLectures > 0 ? Math.round((completedLectures.length / totalLectures) * 100) : 0;
-
+    console.log(percentage);
+    
     return percentage === 100;
   });
-  // console.log(allSectionsCompleted);
 
-  const [addCertificate] = useAddcertificateMutation();
 
+  //cretificate
   const handleCertificate = async (course_id) => {
     console.log(course_id);
 
@@ -301,23 +260,14 @@ function Course_Detail(props) {
     }
 
   }
-
-  const { data: reviewData } = useGetReviewQuery();
   // console.log(reviewData);
 
-  const [addreview] = useAddReviewMutation();
 
   const isUserreview = reviewData?.data?.some((v) => v.user._id === auth.auth._id);
-  // console.log(isUserreview);
-
   const coursereview = reviewData?.data?.filter((v) => v.course === id);
-  // console.log(coursereview);
-
   let avarageRating = coursereview?.reduce((acc, v, i) => acc + v.rating, 0) / coursereview?.length;
-  // console.log(avarageRating);
 
 
-  const [deleteReview] = useDeleteReviewMutation()
   const formik = useFormik({
     initialValues: {
       description: ''
@@ -338,11 +288,22 @@ function Course_Detail(props) {
   });
 
   const handleEditReview = (val) => {
-    console.log(val);
-
-
-
+    setEditingReviewId(val._id);
+    setEditReviewText(val.description);
+    setEditRating(val.rating);
   }
+
+  //for Review
+  const handleReviewSave = async (reviewId) => {
+    await updateReview({
+      _id: reviewId,
+      description: editReviewText,
+      rating: editRating
+    });
+    setEditingReviewId(null);
+    setEditReviewText('');
+    setEditRating(0);
+  };
 
 
 
@@ -366,13 +327,17 @@ function Course_Detail(props) {
   let totalReviews = filterReview?.length
 
 
+
   const ratingProgress = [5, 4, 3, 2, 1].map((star) => ({
     stars: star,
     progress: totalReviews > 0 ? (ratingCount[star] / totalReviews) * 100 : 0,
   }));
-  console.log(ratingProgress);
+  // console.log(ratingProgress);
+
 
   const { handleSubmit, handleChange, handleBlur, values, errors, touched } = formik
+
+
   return (
     <main>
       {/* =======================
@@ -383,11 +348,9 @@ Page intro START */}
             {filterCourseData?.map((v) => (
               <div key={v._id} style={{ display: 'flex', justifyContent: 'space-between' }} className='row g-4'>
                 <div className="position-relative col-5  rounded-3 ">
-
                   {/* Image */}
                   <Carousel indicators={false}>
                     {
-
                       v.course_img.map(v => (
                         <img src={v.url} className="card-img-top" alt="course image"
                           style={{
@@ -396,15 +359,11 @@ Page intro START */}
                             // objectFit: "contain",
                             borderRadius: "8px"
                           }} />
-
                       ))
-
-
                     }
-
                   </Carousel>
-
                 </div>
+
                 <div className="col-6">
                   {/* Badge */}
                   <h6 className="mb-3 font-base bg-primary text-white py-2 px-4 rounded-2 d-inline-block">{v.name}</h6>
@@ -532,18 +491,10 @@ Page content START */}
                     <div className="accordion accordion-icon accordion-bg-light" id="accordionExample2">
                       {/* Item */}
                       {
-
                         filterSectionData?.map((v, i) => {
-
                           let contentFilter = content?.data?.filter((c) => c.section === v._id).sort((a, b) => a.order - b.order);
-                          // console.log(contentFilter);
-
-                          // console.log(contentFilter.length);
-
                           // Total lectures
                           const totalLectures = contentFilter?.length || 0;
-                          // console.log(totalLectures);
-
                           // Completed lectures
                           const completedLectures = contentFilter?.filter((item) => {
                             return Progress?.data?.find(
@@ -553,22 +504,15 @@ Page content START */}
                                 p.is_complete === true
                             );
                           });
-
-                          // console.log(completedLectures.length);
-
                           // Percentage
                           const percentage =
                             totalLectures > 0
                               ? Math.round((completedLectures.length / totalLectures) * 100)
                               : 0;
-
-                          // console.log(percentage);
-
                           return (
 
                             <div className="accordion-item mb-3">
                               {/*  */}
-
                               <h6
                                 className="accordion-header font-base d-flex justify-content-between align-items-center gap-3"
                                 id={"heading-" + i}
@@ -581,28 +525,16 @@ Page content START */}
                                   aria-expanded="true"
                                   aria-controls={`collapse-` + i}
                                 >
-
-                                  <div
-                                    className="d-flex align-items-center justify-content-between w-100"
-                                  >
-
+                                  <div className="d-flex align-items-center justify-content-between w-100">
                                     {/* Left Side */}
                                     <div className="d-flex align-items-center">
                                       <span>{v.name}</span>
-
                                       <span className="small ms-2">
                                         ({totalLectures} Lectures)
                                       </span>
                                     </div>
-
                                     {/* Right Side Progress */}
-                                    <div
-                                      style={{
-                                        width: "220px",
-                                        minWidth: "220px",
-                                        marginRight: "20px",
-                                      }}
-                                    >
+                                    <div style={{ width: "220px", minWidth: "220px", marginRight: "20px" }}>
                                       <LinearProgress
                                         determinate
                                         value={percentage}
@@ -616,9 +548,7 @@ Page content START */}
                                           // Progress color
                                           color: "#d6293e",
                                           position: "relative",
-                                        }}
-
-                                      >
+                                        }}>
                                         <Typography
                                           level="body-sm"
                                           sx={{
@@ -633,13 +563,9 @@ Page content START */}
                                         </Typography>
                                       </LinearProgress>
                                     </div>
-
                                   </div>
                                 </button>
-
                                 {/* Right Side Progress */}
-
-
                               </h6>
 
                               <div id={"collapse-" + i} className="accordion-collapse collapse show" aria-labelledby={"heading-" + i} data-bs-parent="#accordionExample2">
@@ -650,17 +576,6 @@ Page content START */}
                                       const file = v2.contentFile?.[0];
 
                                       let isComplete = Progress?.data?.find((p) => p.content_Id === v2._id && p?.enroll_Id === enrollmentData?._id && p?.is_complete === true);
-                                      // console.log(isComplete);
-
-                                      // console.log(isComplete?.length);
-
-
-
-
-                                      // setProgress((prev) => ({
-                                      //   ...prev,
-                                      //   [v._id]: ,
-                                      // }))
                                       return (
                                         <div>
                                           {file?.resource_type === "video" && (
@@ -670,7 +585,6 @@ Page content START */}
                                               onLoadedMetadata={(e) =>
                                                 handleLoadedMetadata(e, v2._id, v._id)
                                               }
-
                                               src={file.url}
                                             >
                                             </video>
@@ -681,19 +595,15 @@ Page content START */}
                                                 <a href="#" className="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
                                                   <i className="fas fa-play me-0" />
                                                 </a>
-
                                                 <span className="d-inline-block text-truncate ms-2 mb-0 h6 fw-light">
                                                   {v2.name}
                                                 </span>
-
-
                                               </div>
                                               {
                                                 isComplete ? <CheckIcon sx={{ color: 'lightgreen' }} /> : null
                                               }
                                               <div className='d-flex align-items-center'>
                                                 <div style={{ marginRight: '10px' }}>
-
                                                   {file?.resource_type === "video" &&
                                                     (durations[v2._id]
                                                       ? `${Math.floor(durations[v2._id] / 60)}:${Math.floor(
@@ -703,17 +613,9 @@ Page content START */}
                                                         .padStart(2, "0")}`
                                                       : "")
                                                   }
-
-                                                  {/* {file?.resource_type === "image" && "Image"}
-
-                                              {file?.resource_type === "raw" && "PDF / Document"} */}
-
                                                 </div>
                                                 {(v2.content_type === "free" || purchaseCourse) ? (
-                                                  <NavLink
-                                                    to={`/Course_Video_Player/${v2._id}`}
-
-                                                  >
+                                                  <NavLink to={`/Course_Video_Player/${v2._id}`} >
                                                     <PlayCircleFilledOutlinedIcon sx={{ fontSize: '30px', color: '#d6293e' }} />
                                                   </NavLink>
                                                 ) : (
@@ -745,12 +647,8 @@ Page content START */}
                                 </div>
                               </div>
                             </div>
-
-
                           )
-
                         }
-
                         )
                       }
                       {/* Item */}
@@ -873,7 +771,6 @@ Page content START */}
                         </div>
                       </div>
                       {/* Progress-bar and star */}
-
                       {/* Progress bar and Rating */}
                       <div className="col-md-8">
                         {
@@ -889,9 +786,8 @@ Page content START */}
                                 <div className="col-6 col-sm-4">
                                   {/* Star item */}
                                   <ul className="list-inline mb-0">
-                                  {[...Array(totalStars)].map((_, index) => {
-                                    return (
-                                      
+                                    {[...Array(totalStars)].map((_, index) => {
+                                      return (
                                         <li className="list-inline-item me-0 small">
                                           <i
                                             key={index}
@@ -900,26 +796,20 @@ Page content START */}
                                                 ? "fas fa-star text-warning"
                                                 : "far fa-star text-warning"} />
                                         </li>
-                                   
-                                    );
-                                  })}
-                                     </ul>
+                                      );
+                                    })}
+                                  </ul>
                                 </div>
                               </div>
                             )
                           })
                         }
                       </div>
-
-
                     </div>
                     {/* Review END */}
                     {/* Student review START */}
-
-
                     <div className="row">
                       {/* Review item START */}
-
                       {
                         isUserreview ? '' : <div className="mt-2">
                           <h5 className="mb-4">Leave a Review For This Course</h5>
@@ -1009,63 +899,95 @@ Page content START */}
                         </div>}
                       <hr />
                       {filterReview?.map((v) => {
-
-
                         const isMyReview = auth?.auth?._id === v.user._id;
+                        const isEditing = editingReviewId === v._id;
+
                         return (
-                          <div className="d-md-flex my-4">
+                          <div className="d-md-flex my-4" key={v._id}>
                             {/* Avatar */}
                             <div className="avatar avatar-xl me-4 flex-shrink-0">
                               <img className="avatar-img rounded-circle" src="../assets/images/avatar/09.jpg" alt="avatar" />
                             </div>
                             {/* Text */}
-                            <div>
+                            <div style={{ flex: 1 }}>
                               <div className="d-sm-flex mt-1 mt-md-0 align-items-center">
                                 <h5 className="me-3 mb-0">{v.user.name}</h5>
-                                {/* Review star */}
 
-                                {[...Array(totalStars)].map((_, index) => {
-                                  return (
-                                    <ul className="list-inline mb-0">
+                                {/* Stars — editable if editing */}
+                                {isEditing ? (
+                                  // editable stars
+                                  <div>
+                                    {[1, 2, 3, 4, 5].map((star) => (
+                                      <span
+                                        key={star}
+                                        onClick={() => setEditRating(star)}
+                                        style={{ cursor: 'pointer', margin: '0 4px' }}
+                                      >
+                                        <i className={editRating >= star ? "fas fa-star text-warning" : "far fa-star text-warning"} />
+                                      </span>
+                                    ))}
+                                  </div>
+                                ) : (
+                                  // display stars
+                                  <ul className="list-inline mb-0">
+                                    {[...Array(5)].map((_, index) => (
                                       <i
                                         key={index}
-                                        className={
-                                          index < v.rating
-                                            ? "fas fa-star text-warning"
-                                            : "far fa-star text-warning"} />
-                                    </ul>
-                                  );
-                                })}
-                                {/* <ul className="list-inline mb-0">
-                                  <li className="list-inline-item me-0"><i className="fas fa-star text-warning" /></li>
-                                  <li className="list-inline-item me-0"><i className="fas fa-star text-warning" /></li>
-                                  <li className="list-inline-item me-0"><i className="fas fa-star text-warning" /></li>
-                                  <li className="list-inline-item me-0"><i className="fas fa-star text-warning" /></li>
-                                  <li className="list-inline-item me-0"><i className="far fa-star text-warning" /></li>
-                                </ul> */}
+                                        className={index < v.rating ? "fas fa-star text-warning" : "far fa-star text-warning"}
+                                      />
+                                    ))}
+                                  </ul>
+                                )}
                               </div>
-                              {/* Info */}
+
                               <p className="small mb-2">2 days ago</p>
-                              <p className="mb-2">{v.description}.</p>
-                              {/* Like and dislike button */}
-                              {/* {isMyReview && (
-                                <div className="d-flex gap-2">
-                                  <button
-                                    className="btn btn-sm btn-primary"
-                                    onClick={() => handleEditReview(v)}
-                                  >
-                                    Edit Review
-                                  </button>
-
-
-                                </div>
-                              )} */}
-
+                              {isEditing ? (
+                                // ── edit mode ──
+                                <>
+                                  <textarea
+                                    className="form-control mb-2"
+                                    value={editReviewText}
+                                    onChange={(e) => setEditReviewText(e.target.value)}
+                                    rows={3}
+                                    autoFocus
+                                  />
+                                  <div className="d-flex gap-2">
+                                    <button
+                                      className="btn btn-sm btn-primary"
+                                      onClick={() => handleReviewSave(v._id)}
+                                    >
+                                      Save
+                                    </button>
+                                    <button
+                                      className="btn btn-sm btn-outline-secondary"
+                                      onClick={() => setEditingReviewId(null)}
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                </>
+                              ) : (
+                                // ── view mode ──
+                                <>
+                                  <p className="mb-2">{v.description}</p>
+                                  {isMyReview && (
+                                    <button
+                                      className="btn btn-sm btn-outline-primary"
+                                      onClick={() => {
+                                        setEditingReviewId(v._id);
+                                        setEditReviewText(v.description); // pre-fill text
+                                        setEditRating(v.rating);           // pre-fill stars
+                                      }}
+                                    >
+                                      Edit Review
+                                    </button>
+                                  )}
+                                </>
+                              )}
                             </div>
                           </div>
-                        )
-                      })
-                      }
+                        );
+                      })}
                       {/* Comment children level 1 */}
                       {/* <div className="d-md-flex mb-4 ps-4 ps-md-5">
                         Avatar
@@ -1092,11 +1014,6 @@ Page content START */}
                     </div>
                     {/* Student review END */}
                     {/* Leave Review START */}
-
-
-
-
-
                     {/* Leave Review END */}
                   </div>
                   {/* Content END */}
@@ -1244,10 +1161,7 @@ Page content START */}
             {/* Right sidebar START */}
 
             <div className="col-lg-4 pt-5 pt-lg-0">
-
               <div className="row mb-5 mb-lg-0">
-
-
                 <div className="col-md-6 col-lg-12">
                   {/* Video START */}
                   {filterCourseData?.map((v) => (
@@ -1259,11 +1173,9 @@ Page content START */}
                           {
                             v.course_img?.map(v => (
                               <img src={v.url} className="card-img-top" alt="course image" />
-
                             ))
                           }
                         </Carousel>
-
                         {/* <img src="assets/images/courses/4by3/01.jpg" className="card-img" alt="course image" /> */}
                         {/* Overlay */}
                         <div className="bg-overlay bg-dark opacity-6" />

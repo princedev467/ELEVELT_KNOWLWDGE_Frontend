@@ -1,7 +1,10 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 function Student_Dashboard(props) {
+    const auth = useSelector(state => state.auth);
+    console.log(auth);
     return (
       
     <main>
@@ -27,7 +30,7 @@ Page Banner START */}
               {/* Profile info */}
               <div className="col d-sm-flex justify-content-between align-items-center">
                 <div>
-                  <h1 className="my-1 fs-4">Lori Stevens</h1>
+                  <h1 className="my-1 fs-4">{auth.auth?.name}</h1>
                   <ul className="list-inline mb-0">
                     <li className="list-inline-item me-3 mb-1 mb-sm-0">
                       <span className="h6">255</span>
@@ -86,16 +89,11 @@ Page content START */}
                 <div className="bg-dark border rounded-3 pb-0 p-3 w-100">
                   {/* Dashboard menu */}
                   <div className="list-group list-group-dark list-group-borderless">
-                    <a className="list-group-item active" href="student-dashboard.html"><i className="bi bi-ui-checks-grid fa-fw me-2" />Dashboard</a>
-                    <a className="list-group-item" href="student-subscription.html"><i className="bi bi-card-checklist fa-fw me-2" />My Subscriptions</a>
+                    <NavLink className="list-group-item active" href="student-dashboard.html" to={'/Student_Dashboard'}><i className="bi bi-ui-checks-grid fa-fw me-2" />Dashboard</NavLink>
                     <NavLink className="list-group-item" to={'/Student_Course_list'} ><i className="bi bi-basket fa-fw me-2" />My Courses</NavLink>
-                    {/* <a  href="student-course-list.html"></a> */}
-                    <a className="list-group-item" href="student-payment-info.html"><i className="bi bi-credit-card-2-front fa-fw me-2" />Payment info</a>
-                    <a className="list-group-item" href="student-bookmark.html"><i className="bi bi-cart-check fa-fw me-2" />Wishlist</a>
-                    <a className="list-group-item" href="instructor-edit-profile.html"><i className="bi bi-pencil-square fa-fw me-2" />Edit Profile</a>
-                    <a className="list-group-item" href="instructor-setting.html"><i className="bi bi-gear fa-fw me-2" />Settings</a>
-                    <a className="list-group-item" href="instructor-delete-account.html"><i className="bi bi-trash fa-fw me-2" />Delete Profile</a>
-                    <a className="list-group-item text-danger bg-danger-soft-hover" href="#"><i className="fas fa-sign-out-alt fa-fw me-2" />Sign Out</a>
+                     <NavLink className="list-group-item" href="student-bookmark.html" to={'/Wishitlist'}><i className="bi bi-cart-check fa-fw me-2" />Wishlist</NavLink>
+                    <NavLink className="list-group-item" to={'/Edit_Profile'}><i className="bi bi-pencil-square fa-fw me-2" />Edit Profile</NavLink>
+                      <NavLink className="list-group-item text-danger bg-danger-soft-hover"to={'/'}><i className="fas fa-sign-out-alt fa-fw me-2" />Sign Out</NavLink>
                   </div>
                 </div>
               </div>
