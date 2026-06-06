@@ -30,7 +30,7 @@ Page Banner START */}
               {/* Profile info */}
               <div className="col d-sm-flex justify-content-between align-items-center">
                 <div>
-                  <h1 className="my-1 fs-4">{auth.auth?.name}</h1>
+                  <h1 className="my-1 fs-4">{auth?.auth?.name}</h1>
                   <ul className="list-inline mb-0">
                     <li className="list-inline-item me-3 mb-1 mb-sm-0">
                       <span className="h6">255</span>
@@ -91,7 +91,7 @@ Page content START */}
                   <div className="list-group list-group-dark list-group-borderless">
                     <NavLink className="list-group-item active" href="student-dashboard.html" to={'/Student_Dashboard'}><i className="bi bi-ui-checks-grid fa-fw me-2" />Dashboard</NavLink>
                     <NavLink className="list-group-item" to={'/Student_Course_list'} ><i className="bi bi-basket fa-fw me-2" />My Courses</NavLink>
-                     <NavLink className="list-group-item" href="student-bookmark.html" to={'/Wishitlist'}><i className="bi bi-cart-check fa-fw me-2" />Wishlist</NavLink>
+                     <NavLink className="list-group-item"  to={'/Wishitlist'}><i className="bi bi-cart-check fa-fw me-2" />Wishlist</NavLink>
                     <NavLink className="list-group-item" to={'/Edit_Profile'}><i className="bi bi-pencil-square fa-fw me-2" />Edit Profile</NavLink>
                       <NavLink className="list-group-item text-danger bg-danger-soft-hover"to={'/'}><i className="fas fa-sign-out-alt fa-fw me-2" />Sign Out</NavLink>
                   </div>

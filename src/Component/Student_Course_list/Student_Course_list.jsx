@@ -89,7 +89,7 @@ Page Banner START */}
                   {/* Profile info */}
                   <div className="col d-sm-flex justify-content-between align-items-center">
                     <div>
-                      <h1 className="my-1 fs-4">Lori Stevens</h1>
+                      <h1 className="my-1 fs-4">{auth?.auth?.name}</h1>
                       <ul className="list-inline mb-0">
                         <li className="list-inline-item me-3 mb-1 mb-sm-0">
                           <span className="h6">255</span>
@@ -288,9 +288,9 @@ Page content START */}
                                         </a>
                                       </div>
                                     ) : (
-                                      <a href="#" className="btn btn-sm btn-primary-soft">
+                                      <NavLink href="#" className="btn btn-sm btn-primary-soft" to={`/Course_Detail/${v2._id}`}>
                                         <i className="bi bi-play-circle me-1" />Continue
-                                      </a>
+                                      </NavLink>
                                     )}
                                   </td>
                                 </tr>

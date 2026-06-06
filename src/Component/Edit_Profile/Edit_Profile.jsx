@@ -205,40 +205,11 @@ Page content START */}
                                             <div className="bg-dark border rounded-3 pb-0 p-3 w-100">
                                                 {/* Dashboard menu */}
                                                 <div className="list-group list-group-dark list-group-borderless">
-                                                    <NavLink to={"/user-dashboard"}>
-                                                        <a className="list-group-item">
-                                                            <i className="bi bi-ui-checks-grid fa-fw me-2" />
-                                                            Dashboard
-                                                        </a>
-                                                    </NavLink>
-
-                                                    <NavLink to={"/user-course"}>
-                                                        <a className="list-group-item">
-                                                            <i className="bi bi-basket fa-fw me-2" />
-                                                            My Courses
-                                                        </a>
-                                                    </NavLink>
-
-                                                    <NavLink to={"/user-paymentinfo"}>
-                                                        <a className="list-group-item">
-                                                            <i className="bi bi-credit-card-2-front fa-fw me-2" />
-                                                            Payment info
-                                                        </a>
-                                                    </NavLink>
-
-                                                    <NavLink to={"/user-wishlist"}>
-                                                        <a className="list-group-item">
-                                                            <i className="bi bi-cart-check fa-fw me-2" />
-                                                            Wishlist
-                                                        </a>
-                                                    </NavLink>
-
-                                                    <NavLink to={"/user-profilEdit"}>
-                                                        <a className="list-group-item active">
-                                                            <i className="bi bi-pencil-square fa-fw me-2" />
-                                                            Edit Profile
-                                                        </a>
-                                                    </NavLink>
+                                                    <NavLink className="list-group-item " to={'/Student_Dashboard'}><i className="bi bi-ui-checks-grid fa-fw me-2" />Dashboard</NavLink>
+                                                    <NavLink className="list-group-item" to={'/Student_Course_list'} ><i className="bi bi-basket fa-fw me-2" />My Courses</NavLink>
+                                                    <NavLink className="list-group-item" to={'/Wishitlist'}><i className="bi bi-cart-check fa-fw me-2" />Wishlist</NavLink>
+                                                    <NavLink className="list-group-item" to={'/Edit_Profile'}><i className="bi bi-pencil-square fa-fw me-2" />Edit Profile</NavLink>
+                                                  
 
                                                     <a
                                                         className="list-group-item text-danger bg-danger-soft-hover text-start cursor-pointer"
