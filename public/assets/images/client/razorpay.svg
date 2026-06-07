@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 160" width="560" height="160">
+  <!-- Icon: stylized "1" / lightning bolt arrow -->
+  <!-- Dark navy left parallelogram -->
+  <polygon points="10,138  48,22  66,22  28,138" fill="#0D2B6E"/>
+  <!-- Light blue right blade -->
+  <polygon points="44,138  70,48  92,48  62,138" fill="#3D8BD4"/>
+  <!-- Dark navy overlap cut -->
+  <polygon points="62,138  92,48  106,75  74,138" fill="#0D2B6E"/>
+
+  <!-- "Razorpay" bold italic text -->
+  <text
+    x="118"
+    y="118"
+    font-family="'Arial Black', 'Impact', 'Franklin Gothic Heavy', sans-serif"
+    font-size="82"
+    font-weight="900"
+    font-style="italic"
+    fill="#0D2B6E"
+    letter-spacing="-1"
+  >Razorpay</text>
+</svg>

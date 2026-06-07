@@ -89,8 +89,10 @@ Page content START */}
                 <div className="bg-dark border rounded-3 pb-0 p-3 w-100">
                   {/* Dashboard menu */}
                   <div className="list-group list-group-dark list-group-borderless">
-                    <NavLink className="list-group-item active" href="student-dashboard.html" to={'/Student_Dashboard'}><i className="bi bi-ui-checks-grid fa-fw me-2" />Dashboard</NavLink>
+                    <NavLink className="list-group-item active" to={'/Student_Dashboard'}><i className="bi bi-ui-checks-grid fa-fw me-2" />Dashboard</NavLink>
                     <NavLink className="list-group-item" to={'/Student_Course_list'} ><i className="bi bi-basket fa-fw me-2" />My Courses</NavLink>
+                     <NavLink className="list-group-item "  to={'/Student_Payment_Info'}><i className="bi bi-ui-checks-grid fa-fw me-2" />Payment Info</NavLink>
+                   
                      <NavLink className="list-group-item"  to={'/Wishitlist'}><i className="bi bi-cart-check fa-fw me-2" />Wishlist</NavLink>
                     <NavLink className="list-group-item" to={'/Edit_Profile'}><i className="bi bi-pencil-square fa-fw me-2" />Edit Profile</NavLink>
                       <NavLink className="list-group-item text-danger bg-danger-soft-hover"to={'/'}><i className="fas fa-sign-out-alt fa-fw me-2" />Sign Out</NavLink>

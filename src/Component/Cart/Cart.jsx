@@ -23,7 +23,7 @@ function Cart(props) {
   const { data: cart } = useGetCartQuery();
   console.log(cart?.data);
 
-   const { data: payment } = useGetPaymentQuery();
+  const { data: payment } = useGetPaymentQuery();
   console.log(payment?.data);
 
   let PaymentData = payment?.data;
@@ -39,7 +39,7 @@ function Cart(props) {
   let cartUser = cartData?.find((v) => v.user_id === auth.auth?._id)
   console.log(cartUser);
 
-//specific 
+  //specific 
   const userPayment = PaymentData?.filter((v) => v.user_id === auth.auth?._id);
   console.log(userPayment);
 
@@ -53,7 +53,7 @@ function Cart(props) {
   const [updateCoupon] = useUpdateCouponMutation();
 
   const handledelete = (id) => {
-   
+
     // deletecart Items
     let deletdata = cartUser?.items.filter((v) => v._id !== id);
     console.log(deletdata);
@@ -73,14 +73,14 @@ function Cart(props) {
   console.log(coupon?.data);
 
 
-const filteritem = cartUser?.items?.filter(
-  (item) =>
-    !userPayment?.some((payment) =>
-      payment?.purchased_courses?.some(
-        (course) => course.course === item.course
+  const filteritem = cartUser?.items?.filter(
+    (item) =>
+      !userPayment?.some((payment) =>
+        payment?.purchased_courses?.some(
+          (course) => course.course === item.course
+        )
       )
-    )
-);
+  );
 
   const OrignalPrice = filteritem?.reduce((acc, v) => {
     let cur = v.price.replace(/[^\d.]/g, '');
@@ -90,7 +90,7 @@ const filteritem = cartUser?.items?.filter(
   console.log(OrignalPrice);
 
 
- //handle coupon
+  //handle coupon
   const handleCoupon = () => {
 
     const discountper = coupon?.data.find(
@@ -179,7 +179,10 @@ const filteritem = cartUser?.items?.filter(
 
       const rzp = new Razorpay(options);
 
+      
+
       rzp.open();
+
 
     } catch (error) {
 
@@ -259,66 +262,66 @@ Page content START */}
                     <tbody className="border-top-0">
                       {/* Table item */}
                       {
-                      filteritem && filteritem.length>0?
-                        filteritem?.map((v) => {
+                        filteritem && filteritem.length > 0 ?
+                          filteritem?.map((v) => {
 
-                          let cartCourse = courseData?.data?.filter((v1) => v1._id === v.course);
-                          console.log(cartCourse);
+                            let cartCourse = courseData?.data?.filter((v1) => v1._id === v.course);
+                            console.log(cartCourse);
 
-                          return (
-                            <tr>
+                            return (
+                              <tr>
 
-                              <td>
-                                {
-                                  cartCourse?.map((v2) => {
+                                <td>
+                                  {
+                                    cartCourse?.map((v2) => {
 
-                                    return (
-                                      <div className="d-lg-flex align-items-center">
-                                        <div className="w-100px w-md-80px mb-2 mb-md-0">
+                                      return (
+                                        <div className="d-lg-flex align-items-center">
+                                          <div className="w-100px w-md-80px mb-2 mb-md-0">
 
-                                          {
-                                            <Carousel indicators={false}>
-                                              {
-                                                v2.course_img.map(v3 => (
-                                                  <img src={v3.url} className="rounded" alt="course image" />
+                                            {
+                                              <Carousel indicators={false}>
+                                                {
+                                                  v2.course_img.map(v3 => (
+                                                    <img src={v3.url} className="rounded" alt="course image" />
 
-                                                ))
-                                              }
+                                                  ))
+                                                }
 
-                                            </Carousel>
-                                          }
+                                              </Carousel>
+                                            }
+                                          </div>
+
+                                          {/* Title */}
+                                          <h6 className="mb-0 ms-lg-3 mt-2 mt-lg-0">
+                                            <a href="#">{v2.name}</a>
+                                          </h6>
                                         </div>
+                                      )
+                                    })
+                                  }
+                                </td>
+                                {/* Amount item */}
+                                <td>
+                                  <h5 className="text-success mb-0">${v.price}</h5>
+                                </td>
+                                {/* Action item */}
+                                <td>
+                                  <a href="#" className="btn btn-sm btn-success-soft px-2 me-1 mb-1 mb-md-0"><i className="far fa-fw fa-edit" /></a>
+                                  <button className="btn btn-sm btn-danger-soft px-2 mb-0" onClick={() => handledelete(v._id)}><i className="fas fa-fw fa-times" /></button>
+                                </td>
+                              </tr>
+                            )
+                          }) :
 
-                                        {/* Title */}
-                                        <h6 className="mb-0 ms-lg-3 mt-2 mt-lg-0">
-                                          <a href="#">{v2.name}</a>
-                                        </h6>
-                                      </div>
-                                    )
-                                  })
-                                }
-                              </td>
-                              {/* Amount item */}
-                              <td>
-                                <h5 className="text-success mb-0">${v.price}</h5>
-                              </td>
-                              {/* Action item */}
-                              <td>
-                                <a href="#" className="btn btn-sm btn-success-soft px-2 me-1 mb-1 mb-md-0"><i className="far fa-fw fa-edit" /></a>
-                                <button className="btn btn-sm btn-danger-soft px-2 mb-0" onClick={() => handledelete(v._id)}><i className="fas fa-fw fa-times" /></button>
-                              </td>
-                            </tr>
-                          )
-                        }) :
-                        
-                        
-                        <div className="empty-cart-message">
-                          <h2>Your cart is currently empty.</h2>
-                          <p>Before you can proceed to checkout, you must add some products to your shopping cart.</p>
-                          <Link to="/course" className="shop-link">Return to Shop</Link>
-                        </div>
-                        
-                        
+
+                          <div className="empty-cart-message">
+                            <h2>Your cart is currently empty.</h2>
+                            <p>Before you can proceed to checkout, you must add some products to your shopping cart.</p>
+                            <Link to="/course" className="shop-link">Return to Shop</Link>
+                          </div>
+
+
                       }
 
                     </tbody>
@@ -369,7 +372,7 @@ Page content START */}
                   </ul>}
                 {/* Button */}
                 <div className="d-grid">
-                  <a className="btn btn-lg btn-success"  onClick={handleuse} >Proceed to Checkout</a>
+                  <a className="btn btn-lg btn-success" onClick={handleuse} >Proceed to Checkout</a>
                   {/* <a className="btn btn-lg btn-success" onClick={handleuse}>Proceed to Checkout</a> */}
                 </div>
                 {/* Content */}
