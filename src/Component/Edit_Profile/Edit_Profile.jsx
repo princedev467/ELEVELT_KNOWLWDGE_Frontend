@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setAlert } from "../../redux/slice/alert.slice";
+import { setAlert } from "../../redux/slice/alert.Slice";
 import { NavLink, useNavigate } from "react-router-dom";
 import { IMAGE_URL } from "../../utility/url";
 import { editProfile, userLogout } from "../../redux/slice/auth.slice";
