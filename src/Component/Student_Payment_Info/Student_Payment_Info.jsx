@@ -42,14 +42,14 @@ Page Banner START */}
                   {/* Avatar */}
                   <div className="col-auto">
                     <div className="avatar avatar-xxl position-relative mt-n3">
-                      <img className="avatar-img rounded-circle border border-white border-3 shadow" src="assets/images/avatar/09.jpg" alt />
+                      <img className="avatar-img rounded-circle border border-white border-3 shadow"  src={auth?.auth?.PFP[0]?.url || "../assets/images/avatar/01.jpg"} alt />
                       <span className="badge bg-success text-white rounded-pill position-absolute top-50 start-100 translate-middle mt-4 mt-md-5 ms-n3 px-md-3">Pro</span>
                     </div>
                   </div>
                   {/* Profile info */}
                   <div className="col d-sm-flex justify-content-between align-items-center">
                     <div>
-                      <h1 className="my-1 fs-4">Lori Stevens</h1>
+                      <h1 className="my-1 fs-4">{auth?.auth?.name}</h1>
                       <ul className="list-inline mb-0">
                         <li className="list-inline-item me-3 mb-1 mb-sm-0">
                           <span className="h6">255</span>
@@ -66,9 +66,7 @@ Page Banner START */}
                       </ul>
                     </div>
                     {/* Button */}
-                    <div className="mt-2 mt-sm-0">
-                      <a href="student-course-list.html" className="btn btn-outline-primary mb-0">View my courses</a>
-                    </div>
+                   
                   </div>
                 </div>
               </div>

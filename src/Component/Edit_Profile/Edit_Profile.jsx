@@ -1,35 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { userLogout } from "../../redux/slice/auth.slice";
+import { setAlert } from "../../redux/slice/alert.slice";
 import { NavLink, useNavigate } from "react-router-dom";
-import { setAlert } from "../../redux/slice/alert.Slice";
+import { IMAGE_URL } from "../../utility/url";
+import { editProfile, userLogout } from "../../redux/slice/auth.slice";
 
-
-function Edit_Profile(props) {
+function UserEditProfile(props) {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const navigate = useNavigate();
     const auth = useSelector((state) => state.auth);
     const user = auth?.auth;
 
-    // Local state for the edit profile form
+    const [avatarPreview, setAvatarPreview] = useState('')
     const [profileData, setProfileData] = useState({
-        fullName: user?.name,
-        email: user?.email,
-        phone: user?.phone,
-        about: user?.about,
-        facebook: user?.facebook,
-        twitter: user?.twitter,
-        linkedin: user?.linkedin,
-        avatar: user?.avatar
+        fullName: "",
+        email: "",
+        phone: "",
+        about: "",
+        facebook: "",
+        twitter: "",
+        linkedin: "",
+        avatar: ""
     });
 
-    // Local state for password change
-    const [passwordData, setPasswordData] = useState({
-        currentPassword: "",
-        newPassword: "",
-        confirmPassword: ""
-    });
+    const [avatarFile, setAvatarFile] = useState(null);
+
+    useEffect(() => {
+        if (user) {
+            setProfileData({
+                fullName: user.name || "",
+                email: user.email || "",
+                phone: user.mobile_no || "",
+                about: user.about || "",
+                facebook: user.facebookID || "",
+                twitter: user.twitterID || "",
+                linkedin: user.linkedInID || "",
+                avatar: user.PFP || ""
+            });
+        }
+    }, [user]);
+
+
 
     const handleProfileChange = (e) => {
         const { name, value } = e.target;
@@ -39,46 +51,34 @@ function Edit_Profile(props) {
         }));
     };
 
-    const handlePasswordChange = (e) => {
-        const { name, value } = e.target;
-        setPasswordData((prev) => ({
-            ...prev,
-            [name]: value
-        }));
-    };
-
     const handleProfileSubmit = (e) => {
         e.preventDefault();
-        // Simulate updating user profile
-        dispatch(
-            setAlert({ text: "Profile updated successfully!", variant: "success" })
-        );
-    };
-
-    const handlePasswordSubmit = (e) => {
-        e.preventDefault();
-        if (passwordData.newPassword !== passwordData.confirmPassword) {
-            dispatch(
-                setAlert({ text: "New passwords do not match!", variant: "error" })
-            );
+        if (!user?._id) {
+            dispatch(setAlert({ text: "User not logged in!", variant: "error" }));
             return;
         }
-        // Simulate password change
-        dispatch(
-            setAlert({ text: "Password changed successfully!", variant: "success" })
-        );
-        setPasswordData({
-            currentPassword: "",
-            newPassword: "",
-            confirmPassword: ""
-        });
+
+        const updatedData = {
+            _id: user._id,
+            name: profileData.fullName,
+            mobile_no: profileData.phone,
+            about: profileData.about,
+            facebookID: profileData.facebook,
+            twitterID: profileData.twitter,
+            linkedInID: profileData.linkedin,
+            PFP: avatarFile
+        };
+
+        dispatch(editProfile(updatedData));
     };
 
     const handleAvatarChange = (e) => {
-        dispatch(
-            setAlert({ text: "Avatar uploaded successfully!", variant: "success" })
-        );
-    };
+        const file = e.target.files[0];  // ✅ "files" not "file"
+        if (file) {
+            setAvatarFile(file);
+            setAvatarPreview(URL.createObjectURL(file));  // use separate preview state
+        }
+    }
 
     return (
         <div>
@@ -91,7 +91,7 @@ Page Banner START */}
                             className="card bg-blue h-100px h-md-200px rounded-0"
                             style={{
                                 background:
-                                    "url(assets/images/pattern/04.png) no-repeat center center",
+                                    "url(../assets/images/pattern/04.png) no-repeat center center",
                                 backgroundSize: "cover",
                             }}
                         ></div>
@@ -106,7 +106,7 @@ Page Banner START */}
                                             <div className="avatar avatar-xxl position-relative mt-n3">
                                                 <img
                                                     className="avatar-img rounded-circle border border-white border-3 shadow"
-                                                    src={profileData.avatar}
+                                                    src={auth?.auth?.PFP[0]?.url || "../assets/images/avatar/01.jpg"}
                                                     alt="avatar"
                                                 />
                                                 <span className="badge bg-success text-white rounded-pill position-absolute top-50 start-100 translate-middle mt-4 mt-md-5 ms-n3 px-md-3">
@@ -138,14 +138,7 @@ Page Banner START */}
                                                 </ul>
                                             </div>
                                             {/* Button */}
-                                            <div className="mt-2 mt-sm-0">
-                                                <NavLink
-                                                    to="/user-course"
-                                                    className="btn btn-outline-primary mb-0"
-                                                >
-                                                    View my courses
-                                                </NavLink>
-                                            </div>
+                                          
                                         </div>
                                     </div>
                                 </div>
@@ -205,24 +198,17 @@ Page content START */}
                                             <div className="bg-dark border rounded-3 pb-0 p-3 w-100">
                                                 {/* Dashboard menu */}
                                                 <div className="list-group list-group-dark list-group-borderless">
-                                                    <NavLink className="list-group-item " to={'/Student_Dashboard'}><i className="bi bi-ui-checks-grid fa-fw me-2" />Dashboard</NavLink>
-                                                    <NavLink className="list-group-item" to={'/Student_Course_list'} ><i className="bi bi-basket fa-fw me-2" />My Courses</NavLink>
-                                                     <NavLink className="list-group-item "  to={'/Student_Payment_Info'}><i className="bi bi-ui-checks-grid fa-fw me-2" />Payment Info</NavLink>
-                                                                       
+                                                    <NavLink className="list-group-item" to={'/Student_Dashboard'}><i className="bi bi-ui-checks-grid fa-fw me-2" />Dashboard</NavLink>
+                                                    <NavLink className="list-group-item " to={'/Student_Course_list'} ><i className="bi bi-basket fa-fw me-2" />My Courses</NavLink>
+                                                    <NavLink className="list-group-item " to={'/Student_Payment_Info'}><i className="bi bi-ui-checks-grid fa-fw me-2" />Payment Info</NavLink>
                                                     <NavLink className="list-group-item" to={'/Wishitlist'}><i className="bi bi-cart-check fa-fw me-2" />Wishlist</NavLink>
-                                                    <NavLink className="list-group-item" to={'/Edit_Profile'}><i className="bi bi-pencil-square fa-fw me-2" />Edit Profile</NavLink>
-                                                  
+                                                    <NavLink className="list-group-item active" to={'/Edit_Profile'}><i className="bi bi-pencil-square fa-fw me-2" />Edit Profile</NavLink>
+                                                    <NavLink className="list-group-item text-danger bg-danger-soft-hover" onClick={() => (
+                                                        dispatch(userLogout(auth.auth._id)),
+                                                        navigate("/")
+                                                    )} to={'/'}><i className="fas fa-sign-out-alt fa-fw me-2" />Sign Out</NavLink>
 
-                                                    <a
-                                                        className="list-group-item text-danger bg-danger-soft-hover text-start cursor-pointer"
-                                                        onClick={() => (
-                                                            dispatch(userLogout(auth?.auth?._id)),
-                                                            navigate("/")
-                                                        )}
-                                                    >
-                                                        <i className="fas fa-sign-out-alt fa-fw me-2" />
-                                                        Sign Out
-                                                    </a>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -251,7 +237,7 @@ Page content START */}
                                                     <div className="avatar avatar-xl me-3">
                                                         <img
                                                             className="avatar-img rounded-circle border border-white border-3 shadow"
-                                                            src={profileData.avatar}
+                                                            src={avatarPreview || auth?.auth?.PFP[0]?.url || "../assets/images/avatar/01.jpg"}
                                                             alt="avatar"
                                                         />
                                                     </div>
@@ -269,12 +255,13 @@ Page content START */}
                                                         <button
                                                             type="button"
                                                             className="btn btn-ghost-danger mb-0 ms-2"
-                                                            onClick={() =>
+                                                            onClick={() => {
+                                                                setAvatarFile(null);
                                                                 setProfileData((prev) => ({
                                                                     ...prev,
-                                                                    avatar: "assets/images/avatar/09.jpg",
-                                                                }))
-                                                            }
+                                                                    avatar: ""
+                                                                }));
+                                                            }}
                                                         >
                                                             Delete
                                                         </button>
@@ -395,62 +382,6 @@ Page content START */}
                                             </div>
                                         </form>
                                         {/* Form END */}
-
-                                        {/* Change Password START */}
-                                        <div className="row mt-5">
-                                            <div className="col-12">
-                                                <hr />
-                                                <h4 className="mb-3">Change Password</h4>
-                                                <form className="row g-3" onSubmit={handlePasswordSubmit}>
-                                                    {/* Current Password */}
-                                                    <div className="col-md-4">
-                                                        <label className="form-label">Current Password</label>
-                                                        <input
-                                                            type="password"
-                                                            className="form-control"
-                                                            name="currentPassword"
-                                                            value={passwordData.currentPassword}
-                                                            onChange={handlePasswordChange}
-                                                            required
-                                                        />
-                                                    </div>
-
-                                                    {/* New Password */}
-                                                    <div className="col-md-4">
-                                                        <label className="form-label">New Password</label>
-                                                        <input
-                                                            type="password"
-                                                            className="form-control"
-                                                            name="newPassword"
-                                                            value={passwordData.newPassword}
-                                                            onChange={handlePasswordChange}
-                                                            required
-                                                        />
-                                                    </div>
-
-                                                    {/* Confirm New Password */}
-                                                    <div className="col-md-4">
-                                                        <label className="form-label">Confirm New Password</label>
-                                                        <input
-                                                            type="password"
-                                                            className="form-control"
-                                                            name="confirmPassword"
-                                                            value={passwordData.confirmPassword}
-                                                            onChange={handlePasswordChange}
-                                                            required
-                                                        />
-                                                    </div>
-
-                                                    {/* Change Password Button */}
-                                                    <div className="col-12 text-end">
-                                                        <button type="submit" className="btn btn-danger mb-0">
-                                                            Update Password
-                                                        </button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                        {/* Change Password END */}
                                     </div>
                                     {/* Card body END */}
                                 </div>
@@ -468,6 +399,4 @@ Page content END */}
     );
 }
 
-export default Edit_Profile;
-
-
+export default UserEditProfile;

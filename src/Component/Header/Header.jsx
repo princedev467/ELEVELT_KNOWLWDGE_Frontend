@@ -538,7 +538,7 @@ function Header(props) {
           <div className="dropdown ms-1 ms-lg-0">
             <a className="avatar avatar-sm p-0" href="#" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
               {auth.auth? 
-                    <img className="avatar-img rounded-circle shadow" src={avatar} alt="avatar" />:
+                    <img className="avatar-img rounded-circle shadow" src={auth?.auth?.PFP[0]?.url || "../assets/images/avatar/01.jpg"} alt="avatar" />:
                  <AccountCircleIcon style={{fontSize:'43px'}}/>
                     }   </a>
             <ul className="dropdown-menu dropdown-animation dropdown-menu-end shadow pt-3" aria-labelledby="profileDropdown">
@@ -548,7 +548,7 @@ function Header(props) {
                   {/* Avatar */}
                   <div className="avatar me-3">
                    {auth.auth? 
-                    <img className="avatar-img rounded-circle shadow" src={avatar} alt="avatar" />:
+                    <img className="avatar-img rounded-circle shadow" src={auth?.auth?.PFP[0]?.url || "../assets/images/avatar/01.jpg"} alt="avatar" />:
                  <AccountCircleIcon style={{fontSize:'50px'}}/>
                     }  
                 </div>

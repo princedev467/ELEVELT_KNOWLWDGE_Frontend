@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useGetPaymentQuery } from '../../Redux/Api/Payment.Api';
 import { useSelector } from 'react-redux';
 import { useGetCourseQuery } from '../../Redux/Api/Course.Api';
@@ -11,6 +11,7 @@ import { useGetProgressQuery } from '../../Redux/Api/progress.Api';
 import CheckIcon from '@mui/icons-material/Check';
 import LinearProgress from '@mui/joy/LinearProgress';
 import Typography from '@mui/joy/Typography';
+import { ThemeContext } from '../../context/theme.context';
 
 
 function Student_Course_list(props) {
@@ -18,6 +19,11 @@ function Student_Course_list(props) {
   const auth = useSelector(state => state.auth);
   console.log(auth);
 
+      const themeData = useContext(ThemeContext);
+      console.log(themeData);
+    
+      let isDark = themeData.theme === 'light'
+    
   const { data: courseData, isLoading, isError } = useGetCourseQuery(); //get Data
   console.log("course", courseData);
 
@@ -82,7 +88,7 @@ Page Banner START */}
                   {/* Avatar */}
                   <div className="col-auto">
                     <div className="avatar avatar-xxl position-relative mt-n3">
-                      <img className="avatar-img rounded-circle border border-white border-3 shadow" src="assets/images/avatar/09.jpg" alt />
+                      <img className="avatar-img rounded-circle border border-white border-3 shadow" src={auth?.auth?.PFP[0]?.url || "../assets/images/avatar/01.jpg"} alt />
                       <span className="badge bg-success text-white rounded-pill position-absolute top-50 start-100 translate-middle mt-4 mt-md-5 ms-n3 px-md-3">Pro</span>
                     </div>
                   </div>
@@ -106,9 +112,7 @@ Page Banner START */}
                       </ul>
                     </div>
                     {/* Button */}
-                    <div className="mt-2 mt-sm-0">
-                      <a href="student-course-list.html" className="btn btn-outline-primary mb-0">View my courses</a>
-                    </div>
+                    
                   </div>
                 </div>
               </div>
@@ -151,7 +155,7 @@ Page content START */}
 
                         <NavLink className="list-group-item" to={'/Student_Dashboard'}><i className="bi bi-ui-checks-grid fa-fw me-2" />Dashboard</NavLink>
                         <NavLink className="list-group-item active" to={'/Student_Course_list'} ><i className="bi bi-basket fa-fw me-2" />My Courses</NavLink>
-                         <NavLink className="list-group-item "  to={'/Student_Payment_Info'}><i className="bi bi-ui-checks-grid fa-fw me-2" />Payment Info</NavLink>                   
+                        <NavLink className="list-group-item " to={'/Student_Payment_Info'}><i className="bi bi-ui-checks-grid fa-fw me-2" />Payment Info</NavLink>
                         <NavLink className="list-group-item" to={'/Wishitlist'}><i className="bi bi-cart-check fa-fw me-2" />Wishlist</NavLink>
                         <NavLink className="list-group-item" to={'/Edit_Profile'}><i className="bi bi-pencil-square fa-fw me-2" />Edit Profile</NavLink>
                         <NavLink className="list-group-item text-danger bg-danger-soft-hover" to={'/'}><i className="fas fa-sign-out-alt fa-fw me-2" />Sign Out</NavLink>
@@ -272,10 +276,10 @@ Page content START */}
                                   </td>
 
                                   {/* Total Lectures */}
-                                  <td><span className="fw-500">{totalLectures}</span></td>
+                                  <td><span className={`fw-500 ${isDark ? 'text-white' : ''}`}>{totalLectures}</span></td>
 
                                   {/* Completed Lectures */}
-                                  <td><span className="fw-500">{completedLectures}</span></td>
+                                  <td><span className={`fw-500 ${isDark ? 'text-white' : ''}`}>{completedLectures}</span></td>
 
                                   {/* Actions */}
                                   <td>

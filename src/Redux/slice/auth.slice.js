@@ -206,6 +206,49 @@ export const userCheck = createAsyncThunk(
     }
 )
 
+export const editProfile = createAsyncThunk(
+    'auth/editProfile',
+    async (data, { dispatch, rejectWithValue }) => {
+        try {
+            console.log("updatedData", data);
+
+            const formData = new FormData();
+
+            formData.append("name", data.name);
+            if (data.phone_no) {
+                formData.append("mobile_no", Number(data.phone_no));    
+            }
+            formData.append("about", data.about);
+            formData.append("facebookID", data.facebookID);
+            formData.append("twitterID", data.twitterID);
+            formData.append("linkedInID", data.linkedInID);
+
+            // Only append pfp if it is a File object (meaning user selected a new image)
+            if (data.PFP instanceof File) {
+                formData.append("PFP", data.PFP);
+            }
+
+            console.log("formdata", Object.fromEntries(formData.entries()));
+
+            const response = await axiosinstance.put(`user/editProfile/${data._id}`, formData);
+            console.log(response);
+
+            if (response.data.sucess) {
+                dispatch(setAlert({ text: response.data.Message, variant: "success" }))
+                return response.data.data
+            }
+
+            return response.data.data;
+        } catch (error) {
+            console.log(error);
+            const errMsg = error.response?.data?.Message || "Failed to update profile";
+            dispatch(setalert({ text: errMsg, variant: "error" }));
+            return rejectWithValue(errMsg);
+        }
+    }
+)
+
+
 const authSlice = createSlice({
     name: 'auth',
     initialState: initialState,
@@ -325,6 +368,19 @@ const authSlice = createSlice({
             state.isLoading = false;
             state.auth = null;
             state.error = action.payload;
+        })
+        builder.addCase(editProfile.pending, (state, action) => {
+            state.isLoading = true;
+            state.errors = null;
+        })
+        builder.addCase(editProfile.rejected, (state, action) => {
+            state.isLoading = false;
+            state.errors = action.payload;
+        })
+        builder.addCase(editProfile.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.auth =  action.payload    ;
+            state.errors = null;
         })
     }
 })
