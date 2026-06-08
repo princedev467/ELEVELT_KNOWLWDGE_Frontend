@@ -181,7 +181,9 @@ function Auth(props) {
 
   const handleGoogle = () => {
     try {
-      window.location.href = 'http://localhost:2022/api/v1/user/auth/google'
+      
+      // window.location.href = 'http://localhost:2022/api/v1/user/auth/google'
+       window.location.href = 'https://elevelt-knowlwdge-backend.vercel.app/api/v1/user/auth/google'
 
     } catch (error) {
       console.log(error);
@@ -191,7 +193,9 @@ function Auth(props) {
 
   const handleFacebook= ()=>{
     try {
-      window.location.href='http://localhost:2022/api/v1/user/auth/facebook'
+      // window.location.href='http://localhost:2022/api/v1/user/auth/facebook'
+       window.location.href = 'https://elevelt-knowlwdge-backend.vercel.app/api/v1/user/auth/facebook'
+
     } catch (error) {
         console.log(error);
     }
