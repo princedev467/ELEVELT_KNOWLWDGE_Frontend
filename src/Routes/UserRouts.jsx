@@ -39,7 +39,7 @@ import Instructor_Create_Course from '../Component/Instructor_Create_Course/Inst
 import Pricing from '../Component/Pricing/Pricing';
 import Request_Access from '../Component/Request_Access/Request_Access';
 
-import University_Admission_Form from '../Component/University_Admission_Form/University_Admission_Form';
+
 import Student_Dashboard from '../Component/Student_Dashboard/Student_Dashboard';
 import Student_Subscription from '../Component/Student_Subscription/Student_Subscription';
 import Student_Course_list from '../Component/Student_Course_list/Student_Course_list';
@@ -149,7 +149,6 @@ function UserRouts(props) {
         <Route path='/Auth/:Instructor' element={<Auth />}></Route>
 
         <Route path='/NotificationDemo' element={<NotificationDemo />}></Route>
-        <Route path='/University_Admission_Form' element={<University_Admission_Form />}></Route>
         <Route path='/Student_Subscription' element={<Student_Subscription />}></Route>
         <Route path='/Student_Course_list' element={< Student_Course_list />} ></Route>
         <Route path='/Student_Payment_Info' element={<Student_Payment_Info />}></Route>
