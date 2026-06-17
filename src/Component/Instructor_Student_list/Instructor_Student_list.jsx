@@ -29,13 +29,13 @@ Main Banner START */}
                   {/* Avatar */}
                   <div className="col-auto mt-4 mt-md-0">
                     <div className="avatar avatar-xxl mt-n3">
-                      <img className="avatar-img rounded-circle border border-white border-3 shadow" src="assets/images/avatar/01.jpg" alt />
+                      <img className="avatar-img rounded-circle border border-white border-3 shadow"  src={auth?.auth?.PFP[0]?.url || "../assets/images/avatar/01.jpg"} alt />
                     </div>
                   </div>
                   {/* Profile info */}
                   <div className="col d-md-flex justify-content-between align-items-center mt-4">
                     <div>
-                      <h1 className="my-1 fs-4">Lori Stevens <i className="bi bi-patch-check-fill text-info small" /></h1>
+                      <h1 className="my-1 fs-4">{auth?.auth?.name}<i className="bi bi-patch-check-fill text-info small" /></h1>
                       <ul className="list-inline mb-0">
                         <li className="list-inline-item h6 fw-light me-3 mb-1 mb-sm-0"><i className="fas fa-star text-warning me-2" />4.5/5.0</li>
                         <li className="list-inline-item h6 fw-light me-3 mb-1 mb-sm-0"><i className="fas fa-user-graduate text-orange me-2" />12k Enrolled Students</li>

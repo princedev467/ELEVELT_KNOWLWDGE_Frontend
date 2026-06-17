@@ -41,7 +41,7 @@ Main Banner START */}
                   {/* Avatar */}
                   <div className="col-auto mt-4 mt-md-0">
                     <div className="avatar avatar-xxl mt-n3">
-                      <img className="avatar-img rounded-circle border border-white border-3 shadow" src="assets/images/avatar/01.jpg" alt />
+                      <img className="avatar-img rounded-circle border border-white border-3 shadow"  src={auth?.auth?.PFP[0]?.url || "../assets/images/avatar/01.jpg"} alt />
                     </div>
                   </div>
                   {/* Profile info */}
