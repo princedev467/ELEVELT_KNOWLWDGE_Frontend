@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import 'swiper/css';
@@ -17,8 +17,11 @@ function Home(props) {
   const themeData = useContext(ThemeContext);
   console.log(themeData);
 
-  const [category_id, setCategory_id] = useState('');
-  let isDark = themeData.theme === 'dark'
+  const [category_id, setCategory_id] = useState();
+  console.log(category_id);
+  
+  
+  let isDark = themeData.theme === 'light'
 
   const dispatch = useDispatch();
   const Categorydata = useSelector(state => state.category)
@@ -29,31 +32,33 @@ function Home(props) {
     dispatch(getCategory())
   }, [])
 
-  const parentCategoryData = Categorydata?.category?.filter((v) => v.parent_category_id === null);
+  const parentCategoryData = Categorydata?.category?.filter((v) => v?.parent_category_id === null);
 
   const { data: courseData, isLoading, isError } = useGetCourseQuery(); //get Data
   console.log("course", courseData);
 
-  let filterCourseData = courseData?.data?.filter((v) => v.category_id === category_id);
-  console.log(filterCourseData);
+  let filterCourseData =  useMemo(() => {
+  return courseData?.data?.filter(
+    (v) => v?.category_id === category_id
+  );
+}, [courseData, category_id]);
 
+  
   let course = category_id ? filterCourseData : courseData?.data;
   console.log(course);
 
-  
-    const auth = useSelector(state => state.auth);
-    console.log(auth);
 
-    const { data: whistlist } = useGetWhistlistQuery();
-    console.log(whistlist?.data);
-  
+  const auth = useSelector(state => state.auth);
+  console.log(auth);
+
+  const { data: whistlist } = useGetWhistlistQuery();
+  console.log(whistlist?.data);
+
 
   return (
     <main>
-      {/* =======================
-Main Banner START */}
       <section className="position-relative overflow-hidden pt-5 pt-lg-3">
-        {/* SVG START */}
+
         <figure className="position-absolute top-50 start-0 translate-middle-y ms-n7 d-none d-xxl-block">
           <svg className="rotate-74 fill-danger opacity-1">
             <circle cx="180.4" cy="15.5" r="7.7" />
@@ -130,8 +135,6 @@ Main Banner START */}
             <circle cx="16.3" cy="176.2" r="1.6" />
           </svg>
         </figure>
-        {/* SVG END */}
-        {/* SVG START */}
         <span className="position-absolute top-50 end-0 translate-middle-y mt-5 me-n5 d-none d-xxl-inline-flex">
           <svg className="fill-warning rotate-186 opacity-8">
             <path d="m35.4 54.2c0 0.6 0 1.1-0.1 1.7-0.9 9.3-9.2 16.1-18.5 15.1-4.5-0.4-8.5-2.6-11.4-6.1-2.8-3.5-4.2-7.9-3.7-12.4 0.9-9.3 9.2-16.1 18.5-15.1 4.5 0.4 8.5 2.6 11.4 6.1 2.4 3 3.8 6.8 3.8 10.7zm-33.4 0c0 3.8 1.3 7.5 3.8 10.4 2.8 3.4 6.8 5.5 11.2 6 9.1 0.9 17.2-5.8 18.1-14.8 0.4-4.4-0.9-8.7-3.7-12.1s-6.8-5.5-11.2-6c-9.2-0.8-17.3 5.8-18.2 14.9v1.6z" />
@@ -157,56 +160,41 @@ Main Banner START */}
             <path d="m118.3 54.2c0 13-5.1 25.3-14.3 34.5-19 19-50 19-69 0-9.2-9.2-14.3-21.4-14.3-34.5 0-13 5.1-25.3 14.3-34.5 19-19 50-19 69 0l-0.1 0.1 0.1-0.1c9.2 9.2 14.3 21.5 14.3 34.5zm-97.2 0c0 12.9 5 25.1 14.2 34.2 18.9 18.9 49.6 18.9 68.4 0 9.1-9.1 14.2-21.3 14.2-34.2s-5-25.1-14.2-34.2c-18.8-18.9-49.5-18.9-68.4 0-9.2 9.1-14.2 21.3-14.2 34.2z" />
           </svg>
         </span>
-        {/* SVG END */}
-        {/* SVG START */}
         <figure className="position-absolute top-0 start-0 ms-5">
           <svg className="fill-orange opacity-4" width="29px" height="29px">
             <path d="M29.004,14.502 C29.004,22.512 22.511,29.004 14.502,29.004 C6.492,29.004 -0.001,22.512 -0.001,14.502 C-0.001,6.492 6.492,-0.001 14.502,-0.001 C22.511,-0.001 29.004,6.492 29.004,14.502 Z" />
           </svg>
         </figure>
-        {/* SVG END */}
-        {/* Content START */}
         <div className="container">
-          {/* Title */}
           <div className="row align-items-center g-5">
-            {/* Left content START */}
             <div className="col-lg-5 col-xl-6 position-relative z-index-1 text-center text-lg-start mb-5 mb-sm-0">
-              {/* SVG */}
               <figure className="fill-warning position-absolute bottom-0 end-0 me-5 d-none d-xl-block">
                 <svg width="42px" height="42px">
                   <path d="M21.000,-0.001 L28.424,13.575 L41.999,20.999 L28.424,28.424 L21.000,41.998 L13.575,28.424 L-0.000,20.999 L13.575,13.575 L21.000,-0.001 Z" />
                 </svg>
               </figure>
-              {/* SVG */}
               <figure className="fill-success position-absolute top-0 start-50 translate-middle-x mt-n5 ms-5">
                 <svg width="22px" height="21px">
                   <path d="M10.717,4.757 L14.440,-0.001 L14.215,6.023 L20.142,4.757 L16.076,9.228 L21.435,12.046 L15.430,12.873 L17.713,18.457 L12.579,15.252 L10.717,20.988 L8.856,15.252 L3.722,18.457 L6.005,12.873 L-0.000,12.046 L5.359,9.228 L1.292,4.757 L7.220,6.023 L6.995,-0.001 L10.717,4.757 Z" />
                 </svg>
               </figure>
-              {/* Title */}
               <h1 className={`${isDark ? 'text-white' : ''} mb-0 display-6`}>Limitless learning at your
                 <span className="position-relative">fingertips
-                  {/* SVG START */}
                   <span className="position-absolute top-50 start-50 translate-middle ms-3 z-index-n1">
                     <svg width="300px" height="62.1px" enableBackground="new 0 0 366 62.1" viewBox="0 0 366 62.1" xmlns="http://www.w3.org/2000/svg">
                       <path className="fill-warning" d="m322.5 25.3c0 1.4 2.9 0.8 3.1 1.6 0.8 1.1-1.1 1.3-0.6 2.4 13.3 0.9 26.9 1.7 40.2 4-2.5 0.7-4.9 1.6-7.3 1.1-4-0.9-8.2-1-12.2-1.2-8.5-0.5-16.9-1.9-25.5-1.7h-3.1c2.6 0.6 4.8 0.4 5.7 2.2-7.3 0.4-14.1-0.8-21.2-1.1-0.2 0.6-0.5 1.2-0.8 1.8 21.3 0.7 42.5 1.6 64.3 4.6-4.2 1.6-7.7 1-10.8 0.8-6.8-0.5-13.5-1.3-20.3-1.9-0.9-0.1-2.3-0.1-2.9 0.2-2.2 1.6-4.3 0.6-7 0.4 1.4-1 2.5 0.5 3.9-0.8-5.6-1-10.7 0.6-15.9 0s-10.5-0.6-16.6-0.8c2 1.6 4.6 1.3 6.2 1.4 4.9 0 9.9 0.8 14.8 0.7 5.3-0.1 10.4 0.5 15.5 0.9 3.2 0.3 6.7-0.1 9.9-0.4 1.1-0.1 0.5 0.3 0.6 0.6 0.5 0.9 2.2 0.8 3.6 0.8 5.1-0.1 10.1 0.6 14.8 1.5 0.8 0.1 1.5 0 1.7 0.7 0 0.7-0.8 0.6-1.5 0.8-3.9 1.2-7.4-0.2-11.1-0.2-2 0-4.3-1.5-6 0.5-0.3 0.4-1.4 0.1-2.2-0.1-4.5-0.8-9.1-0.5-13.8-1.5-2.3-0.5-5.6 0.1-8.4 0.5-4 0.5-8-0.7-12.1-0.9-3.4-0.2-7.1-0.5-10.5-0.7-7.1-0.3-14.2-1.2-22.3-0.4 4.9 1.1 9.4 1.2 13.8 1.2 9.7 0 19.2 2.3 28.9 1.6 7.3 3.2 15.9 1.5 23.8 2.9 4.9 0.8 10.1 0.8 15.2 1.2 0.5 0 0.8 0.3 1.1 0.9-20-2.1-40.2-1.4-60.8-3 4.9 2.1 10.8-0.3 15.3 2.7-8 1.9-15.8-0.9-23.5-0.1 2.8 1.4 7.1 1.1 9.3 3.3 0.5 0.5 0.2 1.1-1.2 1.3 2.3 1 3.4-2.1 5.7-0.4 0.2-0.6 0.2-1 0.3-1.5 0.8-0.3 2 0.8 1.5 1.5-0.2 0.1 0 0.3 0 0.5 18.7 0.4 37.3 1.7 56.2 3.6-1.7 1.1-2.8 1.2-4.2 1.1-7.1-0.5-14.1-0.9-21.2-1.4-3.1-0.2-6.3-0.4-9.4-0.4-7.6-0.2-15-0.7-22.4-1-9-0.4-17.9-0.1-26.9-0.1-1.2 0-2.9-0.4-3.9 1 14.8 0.3 29.7 0.6 44.4 1.1 14.8 0.6 29.9 1.3 44.2 4.2-4.3 1-8.8 0.9-13 0.5-5.3-0.5-10.5-1.1-15.8-1.2-11.4-0.3-22.9-0.9-34.3-1.2-17.6-0.4-35.4-0.3-53.1-0.4-10.8-0.1-21.7-0.2-32.5 0-17.8 0.4-35.7 0.2-53.5 0.5-13.1 0.3-26.3 0.1-39.4 0.5-11.1 0.3-22.4 0.6-33.6 1-13.1 0.6-26.1 0.2-39.3 0.4-3.9 0.1-7.6 0.2-11.8-0.2 0.9-1.2 2.3-1.3 3.9-1.3 8.4 0.2 16.6-0.4 24.9-0.9 3.9-0.2 7.9-0.4 11.9 0.2 2.5 0.4 5.3-0.3 8-0.4 7.3-0.4 14.7-0.7 22-0.9 11.9-0.5 23.7-1.2 35.6-0.8 7.7 0.2 15.3-0.6 22.9-0.1 2.3 0.2 4.3-0.5 6.5-1h-17.6c-9.6 0-19-0.1-28.6 0-8 0.1-16.1 0.3-24 0.8-2.6 0.2-5.4 0.1-8.2 0.1-10.1 0.3-20.1 0.6-30.2 0.5-5.4 0-10.7-0.1-15.9 0.6-2.3 0.3-4-1.3-6.5-0.6 0.2 0.4 0.5 0.9 0.6 1.5-1.9 0-4 0.4-4.9-0.1-4.2-2.2-9.4-1.5-14.1-2.3-1.7-0.3-3.7-0.1-4.3-1.5-0.5-1.3 1.9-1.5 2.6-2.6-4.2-1.4-4.6-5-8.5-7.2-1.5 0.2-0.9 2.8-4.2 1.3 0.3 2.4 4.5 3.9 2.8 6.4-2.3 0.3-3.2-0.8-4.2-1.7-2.5-4-5.1-8.4-5.1-12.7 0.2-6.8 0.2-13.8 3.6-20.4 0.3-0.5 0.3-1 0.8-1.4 0.9-0.9 1.2-2.4 3.6-2.1 2.2 0.2 2.5 1.5 2.6 2.6 0.2 1.4 1.5 1.8 3.2 2.5 0.9-1.4 0.5-2.9 2.6-3.7 0.2-0.1 0.3-0.4 0.3-0.4-3.1-2.2 1.2-2.2 2.3-3.3-3.1-1.8-4-4.3-3.7-7-1.5-0.3-3.1-0.4-4.5 0-1.7 0.6-2.2-0.5-2.9-1 0.6-0.5 0.8-1.1 2.2-1.3 7.6-0.9 15.2-1.7 22.9-2 20-0.7 39.9-0.9 59.9-1 11.9-0.1 23.8 0.4 35.6 1.1 3.6 0.2 7.1-0.9 10.7-0.5 7.9 0.9 15.8 0.3 23.8 0.5 7.3 0.1 14.4-0.6 21.7-0.1 12.2 0.9 24.4 0.3 36.7 0.6 9.4 0.3 18.9 0.4 28.2 1 11.9 0.7 23.8 1.3 35.6 2 11.1 0.6 22.4 0.5 33.3 2 7.1 1 14.4 1.1 21.3 2.4 4 0.7 8.2 1.6 12.4 1.9 2.2 0.2 0.9 1 1.5 1.5-4-0.8-8-0.8-12.1-1.4-4.3-0.7-8.5-1-12.8 0.4-2.9 1-6.3 0.2-9.3-0.1-10.2-1.1-20.6-1.6-30.8-2.4-12.1-0.9-24.3-1.4-36.4-2.1-9.9-0.6-20-0.5-29.9-1-11.4-0.6-22.7 0-34.2-0.5-6.3-0.3-12.3-0.3-18.5-0.4-4.2-0.1-8.4 1.3-12.8 0.3 0.6 0.2 1.2 0.7 1.9 0.7 10.5 0 20.9 1.9 31.6 1.7 6.5-0.1 13.1 0.2 19.8 0.8 3.2 0.3 6.3-0.4 9.7-0.1 7.6 0.7 15.5 0.5 23 0.8 12.4 0.5 24.7 0.4 37.1 1.1 13.3 0.7 26.8 2.1 39.9 4.1 6.2 0.9 12.7 1.5 19.2 1.7 0.6 0 1.1 0.1 1.5 0.5-4.6 0.1-9.3 0-13.9-0.5-0.6 1.1 1.4 0.9 1.5 1.9-9.7 1.6-19.6-1.4-29.4-0.1 2.2 1.4 5.1 1 7.4 1 7.3 0.1 14.1 1.3 21.2 1.9 2.8 0.3 5.9 0 8.5 0.8 1.5 0.5 4.6-1.1 4.9 1.3 4-0.7 7.3 1.5 11.1 1.2 4-0.3 7.7 0.6 11.6 1.1 0.8 0.1 2.2 0.3 2.3 1.1 0.2 1-1.1 1.2-2 1.5-3.4 1-6.7-0.4-10.1-0.4-0.9 0-2-0.2-2.9-0.2-9.4 0.1-18.8-1.3-28.3-1.8-6-0.4-12.1-0.9-18.1-1.3 0 0.2 0 0.4-0.2 0.6 6.1 0.5 12.1 1.4 18.3 0.7z" />
                     </svg>
                   </span>
-                  {/* SVG END */}
                 </span>
               </h1>
-              {/* Content */}
               <p className="my-4 lead">Online learning and teaching marketplace with 5K+ courses &amp; 10M students. Taught by experts to help you acquire new skills.</p>
-              {/* Info */}
               <ul className="list-inline position-relative justify-content-center justify-content-lg-start mb-4">
                 <li className="list-inline-item me-2"> <i className={`bi bi-patch-check-fill ${isDark ? 'text-white' : ''}h6 me-1`} />Learn with experts</li>
                 <li className="list-inline-item me-2"> <i className={`bi bi-patch-check-fill ${isDark ? 'text-white' : ''}h6 me-1`} />Get certificate</li>
                 <li className="list-inline-item"> <i className={`bi bi-patch-check-fill ${isDark ? 'text-white' : ''}h6 me-1`} />Get membership</li>
               </ul>
               <div className="d-sm-flex align-items-center justify-content-center justify-content-lg-start">
-                {/* Button */}
                 <a href="#" className="btn btn-lg btn-danger-soft me-2 mb-4 mb-sm-0 border-danger">Get Started</a>
-                {/* Video button */}
                 <a data-glightbox data-gallery="office-tour" href="https://www.youtube.com/embed/tXHviS-4ygo" className="ms-0 ms-sm-4 d-block">
                   <div className="btn btn-round btn-primary-shadow mb-0 me-3 align-middle d-inline-block"> <i className="fas fa-play" /></div>
                   <div className="align-middle d-inline-block">
@@ -215,22 +203,17 @@ Main Banner START */}
                 </a>
               </div>
             </div>
-            {/* Left content END */}
-            {/* Right content START */}
             <div className="col-lg-7 col-xl-6 text-center position-relative">
-              {/* SVG decoration */}
               <figure className="position-absolute bottom-0 start-50 translate-middle-x mt-4 mb-0">
                 <svg width="550px" height="538px" viewBox="0 0 554 544" style={{ enableBackground: 'new 0 0 554 544' }} xmlSpace="preserve">
                   <path className="fill-primary" d="M423.3,77.2c49.5,32.5,100.4,67.2,118.4,114.5s3.5,107.1-15.4,165.7c-18.7,58.6-41.8,116.1-84,148.6 c-42.5,32.8-104.2,40.2-163.8,37.3c-59.5-3.2-116.8-17.1-164.7-47.9c-48.3-30.6-87.2-78.2-102-131.6C-3,310.5,6.6,251,25.3,194.7 C43.6,138,70.7,84.3,114.1,49.5C157.2,14.8,216.7-1,270.8,6.4C324.8,14.2,373.4,44.7,423.3,77.2z" />
                 </svg>
               </figure>
-              {/* SVG decoration */}
               <figure className="position-absolute bottom-0 start-50 translate-middle-x mb-n5 z-index-9">
                 <svg width="686px" height="298px">
                   <path className="fill-body" d="M60.971,0.000 L-0.000,0.000 C-0.000,0.000 80.068,266.854 184.934,294.154 C184.934,294.154 568.841,306.828 588.786,286.150 C588.786,286.150 698.888,112.106 684.750,0.000 L611.777,0.000 C611.777,0.000 569.027,161.864 505.816,209.110 C505.816,209.110 394.427,296.341 195.930,203.102 C195.930,203.102 66.072,143.180 60.971,0.000 Z" />
                 </svg>
               </figure>
-              {/* SVG decoration */}
               <figure className="position-absolute top-50 start-50 translate-middle mt-n7">
                 <svg className="fill-warning">
                   <path d="m22.3 57.6v0.1c-0.1 0.3 0.1 0.6 0.3 0.7 0.3 0.2 0.7 0.2 1 0.2h1.4c1.3 0.1 2.6 0.1 3.9 0.1 1.2 0 2.4 0 3.7 0.2s2.6 0.1 3.9 0.2c0.8 0.1 0.8-1.2 0-1.3-1.2-0.1-2.5 0-3.7-0.2-1.2-0.1-2.3-0.2-3.4-0.2-1.2 0-2.4 0-3.6-0.1-0.6 0-1.1-0.1-1.7-0.1-0.2 0-0.7 0.1-0.8 0 0.1 0.2 0.2 0.5 0.3 0.7v-0.1c0.2-0.7-1.1-1-1.3-0.2z" />
@@ -249,7 +232,6 @@ Main Banner START */}
                   <path d="m20.2 49.3c-0.1 0 0 0 0 0 0.1 0.2 0.1 0.3 0.1 0.4 0.1 0.3 0.2 0.6 0.4 0.9 0.3 0.7 0.5 1.5 0.7 2.3s0.2 1.7 0.3 2.5c0.1 0.7 0.1 1.6 0.5 2.2 0.4 0.7 1.6 0.1 1.1-0.7-0.2-0.3-0.2-0.6-0.2-1 0-0.5-0.1-0.9-0.1-1.4-0.1-0.9-0.2-1.8-0.4-2.7-0.2-0.8-0.5-1.5-0.8-2.3-0.2-0.5-0.3-1.2-0.8-1.4-0.3-0.1-0.7-0.1-0.9 0.2-0.3 0.4-0.3 0.9 0.1 1z" />
                 </svg>
               </figure>
-              {/* Icon logos START */}
               <div className="p-2 bg-white shadow rounded-3 position-absolute top-50 start-0 translate-middle-y mt-n7 d-none d-sm-block">
                 <img src="assets/images/client/science.svg" alt="Icon" />
               </div>
@@ -259,23 +241,17 @@ Main Banner START */}
               <div className="p-2 bg-white shadow rounded-3 position-absolute top-50 end-0 translate-middle-y mt-5 ms-5 d-none d-lg-block z-index-9">
                 <img src="assets/images/client/figma.svg" alt="Icon" />
               </div>
-              {/* Icon logos END */}
-              {/* Congratulations message */}
               <div className="p-3 bg-blur border border-light shadow rounded-4 position-absolute bottom-0 start-0 z-index-9 d-none d-xl-block mb-5 ms-5">
                 <div className="d-flex justify-content-between align-items-center">
-                  {/* Icon */}
                   <span className="icon-lg bg-warning rounded-circle"><i className="fas fa-envelope text-white" /></span>
-                  {/* Info */}
                   <div className="text-start ms-3">
                     <h6 className="mb-0 text-white">Congratulations <span className="ms-4"><i className="fas fa-check-circle text-success" /></span></h6>
                     <p className="mb-0 small text-white">Your admission completed</p>
                   </div>
                 </div>
               </div>
-              {/* Active student */}
               <div className="p-3 bg-success d-inline-block rounded-4 shadow-lg position-absolute top-50 end-0 translate-middle-y mt-n7 z-index-1 d-none d-md-block" style={{ background: 'url(assets/images/pattern/01.png) no-repeat center center', backgroundSize: 'cover' }}>
                 <p className="text-white">Our daily new students</p>
-                {/* Avatar group */}
                 <ul className="avatar-group mb-0">
                   <li className="avatar avatar-sm">
                     <img className="avatar-img rounded-circle border-white" src="assets/images/avatar/01.jpg" alt="avatar" />
@@ -296,24 +272,17 @@ Main Banner START */}
                   </li>
                 </ul>
               </div>
-              {/* Image */}
               <div className="position-relative">
                 <img src="assets/images/element/07.png" alt />
               </div>
             </div>
-            {/* Right content END */}
           </div>
         </div>
-        {/* Content END */}
       </section>
-      {/* =======================
-Main Banner END */}
-      {/* =======================
-Counter START */}
+
       <section className="py-0 py-xl-5">
         <div className="container">
           <div className="row g-4">
-            {/* Counter item */}
             <div className="col-sm-6 col-xl-3">
               <div className="d-flex justify-content-center align-items-center p-4 bg-warning bg-opacity-15 rounded-3">
                 <span className="display-6 lh-1 text-warning mb-0"><i className="fas fa-tv" /></span>
@@ -326,7 +295,6 @@ Counter START */}
                 </div>
               </div>
             </div>
-            {/* Counter item */}
             <div className="col-sm-6 col-xl-3">
               <div className="d-flex justify-content-center align-items-center p-4 bg-blue bg-opacity-10 rounded-3">
                 <span className="display-6 lh-1 text-blue mb-0"><i className="fas fa-user-tie" /></span>
@@ -339,7 +307,6 @@ Counter START */}
                 </div>
               </div>
             </div>
-            {/* Counter item */}
             <div className="col-sm-6 col-xl-3">
               <div className="d-flex justify-content-center align-items-center p-4 bg-purple bg-opacity-10 rounded-3">
                 <span className="display-6 lh-1 text-purple mb-0"><i className="fas fa-user-graduate" /></span>
@@ -352,7 +319,6 @@ Counter START */}
                 </div>
               </div>
             </div>
-            {/* Counter item */}
             <div className="col-sm-6 col-xl-3">
               <div className="d-flex justify-content-center align-items-center p-4 bg-info bg-opacity-10 rounded-3">
                 <span className="display-6 lh-1 text-info mb-0"><i className="bi bi-patch-check-fill" /></span>
@@ -368,640 +334,95 @@ Counter START */}
           </div>
         </div>
       </section>
-      {/* =======================
-Counter END */}
-      {/* =======================
-Popular course START */}
+
       <section>
         <div className="container">
-          {/* Title */}
           <div className="row mb-4">
             <div className="col-lg-8 mx-auto text-center">
               <h2 className={`${isDark ? 'text-white' : ''} fs-1`}>Most Popular Courses</h2>
               <p className="mb-0">Choose from hundreds of courses from specialist organizations</p>
             </div>
           </div>
-          {/* Tabs START */}
           <ul className="nav nav-pills nav-pills-bg-soft justify-content-sm-center mb-4 px-3" id="course-pills-tab" role="tablist">
-            {/* Tab item */}
             {
-              parentCategoryData.slice(1, 6).map((v, i) => {
-                console.log(v);
+              parentCategoryData?.slice(1, 6).map((v, i) => {
+                // console.log(v);
 
                 return (
                   <li className="nav-item me-2 me-sm-5">
-                    <button className="nav-link mb-2 mb-md-0" onClick={() => setCategory_id(v._id)}
+                    <button className="nav-link mb-2 mb-md-0" onClick={() => setCategory_id(v?._id)}
                       id={`course-pills-tab-${i}`} data-bs-toggle="pill"
                       data-bs-target={`#course-pills-tabs-${i}`} type="button"
-                      role="tab" aria-controls={`course-pills-tabs-${i}`} aria-selected="false">{v.name.length > 20 ? v.name.slice(0, 20) : v.name}</button>
+                      role="tab" aria-controls={`course-pills-tabs-${i}`} aria-selected="false">{v?.name?.length > 20 ? v?.name?.slice(0, 20) : v?.name}</button>
                   </li>
                 )
               })
 
             }
-
-            {/* Tab item */}
-            {/* <li className="nav-item me-2 me-sm-5">
-              <button className="nav-link mb-2 mb-md-0" id="course-pills-tab-5" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-5" type="button" role="tab" aria-controls="course-pills-tabs-5" aria-selected="false">Finance</button>
-            </li> */}
           </ul>
-          {/* Tabs END */}
-          {/* Tabs content START */}
           <div className="tab-content" id="course-pills-tabContent">
-            {/* Content START */}
             <div className="tab-pane fade show active" id="course-pills-tabs-1" role="tabpanel" aria-labelledby="course-pills-tab-1">
               <div className="row g-4">
-                {/* Card item START */}
                 {
                   course?.slice(0, 8)?.map((v) => {
 
-                       let whistlistUser = whistlist?.data?.find((v) => v?.user_id === auth?.auth?._id);
+                    let whistlistUser = whistlist?.data?.find((v) => v?.user_id === auth?.auth?._id);
 
-                    let existData = whistlistUser?.items?.some((v2) => v2.course === v._id);
-                    console.log(existData);
+                    let existData = whistlistUser?.items?.some((v2) => v2?.course === v?._id);
+                    // console.log(existData);
+                    return (
+                      <div className="col-sm-6 col-lg-4 col-xl-3">
+                        <div className="card  shadow h-100 ">
+                          <Carousel indicators={false}>
+                            {
+                              v?.course_img?.map(v1 => (
+                                <img src={v1?.url} className="card-img-top" alt="course image" style={{
+                                  width: "100%",
+                                  height: "40vh",
+                                  borderRadius: "8px"
+                                }} />
+                              ))
+                            }
+                          </Carousel>
+                          <div className="card-body pb-0">
+                            <div className="d-flex justify-content-between mb-2">
+                              <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
+                              <a href="#" className="h6 fw-light mb-0"><i className={existData ? "fa-solid fa-heart" : "far fa-heart"} style={{ color: '#1C81D2', fontSize: '20px' }} /></a>
 
-
-                    return(
-                    <div className="col-sm-6 col-lg-4 col-xl-3">
-                      <div className="card  shadow h-100 ">
-                        {/* Image */}
-                        <Carousel indicators={false}>
-                          {
-                            v.course_img.map(v1 => (
-                              <img src={v1.url} className="card-img-top" alt="course image" style={{
-                                width: "100%",
-                                height: "40vh",
-                                // objectFit: "contain",
-                                borderRadius: "8px"
-                              }} />
-                            ))
-                          }
-                        </Carousel>
-                        {/* Card body */}
-                        <div className="card-body pb-0">
-                          {/* Badge and favorite */}
-                          <div className="d-flex justify-content-between mb-2">
-                            <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
-                             <a href="#" className="h6 fw-light mb-0"><i className={existData ? "fa-solid fa-heart" : "far fa-heart"} style={{ color: '#1C81D2', fontSize: '20px' }} /></a>
-
-                           </div>
-                          {/* Title */}
-                          <NavLink to={`/Course_Detail/${v._id}`}>
-                          <h5 className="card-title fw-normal">{v.name.length > 10 ? v.name.slice(0, 11) + "..." : v.name}</h5>
-                          <p className="mb-2 text-truncate-2">{v.description}</p>
-                          {/* Rating star */}
-                          <ul className="list-inline mb-0">
-                            <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                            <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                            <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                            <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                            <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                            <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0`}>4.0/5.0</li>
-                          </ul>
-                          </NavLink>
-                        </div>
-                        {/* Card footer */}
-                        <div className="card-footer pt-0 pb-3">
-                          <hr />
-                          <div className="d-flex justify-content-between">
-                            <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />12h 56m</span>
-                            <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />15 lectures</span>
+                            </div>
+                            <NavLink to={`/Course_Detail/${v._id}`}>
+                              <h5 className="card-title fw-normal">{v?.name.length > 10 ? v?.name.slice(0, 11) + "..." : v?.name}</h5>
+                              <p className="mb-2 text-truncate-2">{v?.description}</p>
+                              <ul className="list-inline mb-0">
+                                <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
+                                <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
+                                <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
+                                <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
+                                <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
+                                <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0`}>4.0/5.0</li>
+                              </ul>
+                            </NavLink>
+                          </div>
+                          <div className="card-footer pt-0 pb-3">
+                            <hr />
+                            <div className="d-flex justify-content-between">
+                              <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />12h 56m</span>
+                              <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />15 lectures</span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  )})
-
+                    )
+                  })
                 }
-                {/* Card item END */}
-              </div> {/* Row END */}
-            </div>
-            {/* Content END */}
-            {/* Content START */}
-            <div className="tab-pane fade" id="course-pills-tabs-2" role="tabpanel" aria-labelledby="course-pills-tab-2">
-              <div className="row g-4">
-                {/* Card item START */}
-                {/* <div className="col-sm-6 col-lg-4 col-xl-3">
-                  <div className="card  shadow h-100 ">
-                    Image
-                    <img src="assets/images/courses/4by3/05.jpg" className="card-img-top" alt="course image" />
-                    <div className="card-body pb-0">
-                      Badge and favorite
-                      <div className="d-flex justify-content-between mb-2">
-                        <a href="#" className="badge bg-success bg-opacity-10 text-success">Beginner</a>
-                        <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
-                      </div>
-                      Title
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark ? 'a' : ''}`}>The Complete Web Development in python</a></h5>
-                      <p className="text-truncate-2 mb-2">Mention Mr manners opinion if garrets enabled.</p>
-                      Rating star
-                      <ul className="list-inline mb-0">
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star-half-alt text-warning" /></li>
-                        <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.5/5.0</li>
-                      </ul>
-                    </div>
-                    Card footer
-                    <div className="card-footer pt-0 pb-3">
-                      <hr />
-                      <div className="d-flex justify-content-between mt-2">
-                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />10h 00m</span>
-                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />26 lectures</span>
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
-                {/* Card item END */}
-                {/* Card item START */}
-                {/* <div className="col-sm-6 col-lg-4 col-xl-3">
-                  <div className="card  shadow h-100 ">
-                    Image
-                    <img src="assets/images/courses/4by3/06.jpg" className="card-img-top" alt="course image" />
-                    <div className="card-body pb-0">
-                      Badge and favorite
-                      <div className="d-flex justify-content-between mb-2">
-                        <a href="#" className="badge bg-info bg-opacity-10 text-info">Intermediate</a>
-                        <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
-                      </div>
-                      Title
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark ? 'a' : ''}`}>Angular – The Complete Guider</a></h5>
-                      <p className="text-truncate-2 mb-2">Rooms oh fully taken by worse do. Points afraid but may end.</p>
-                      Rating star
-                      <ul className="list-inline mb-0">
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star-half-alt text-warning" /></li>
-                        <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.5/5.0</li>
-                      </ul>
-                    </div>
-                    Card footer
-                    <div className="card-footer pt-0 pb-3">
-                      <hr />
-                      <div className="d-flex justify-content-between mt-2">
-                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />9h 32m</span>
-                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />42 lectures</span>
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
-                {/* Card item END */}
-                {/* Card item START */}
-                {/* <div className="col-sm-6 col-lg-4 col-xl-3">
-                  <div className="card  shadow h-100 ">
-                    Image
-                    <img src="assets/images/courses/4by3/07.jpg" className="card-img-top" alt="course image" />
-                    <div className="card-body pb-0">
-                      Badge and favorite
-                      <div className="d-flex justify-content-between mb-2">
-                        <a href="#" className="badge bg-success bg-opacity-10 text-success">Beginner</a>
-                        <a href="#" className="text-danger"><i className="fas fa-heart" /></a>
-                      </div>
-                      Title
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark ? 'a' : ''}`}>Deep Learning with React-Native</a></h5>
-                      <p className="text-truncate-2 mb-2">Far advanced settling say finished raillery. Offered chiefly farther</p>
-                      Rating star
-                      <ul className="list-inline mb-0">
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                        <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.0/5.0</li>
-                      </ul>
-                    </div>
-                    Card footer
-                    <div className="card-footer pt-0 pb-3">
-                      <hr />
-                      <div className="d-flex justify-content-between">
-                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />18h 56m</span>
-                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />99 lectures</span>
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
-                {/* Card item END */}
-                {/* Card item START */}
-                {/* <div className="col-sm-6 col-lg-4 col-xl-3">
-                  <div className="card  shadow h-100 ">
-                    Image
-                    <img src="assets/images/courses/4by3/09.jpg" className="card-img-top" alt="course image" />
-                    <div className="card-body pb-0">
-                      Badge and favorite
-                      <div className="d-flex justify-content-between mb-2">
-                        <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
-                        <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
-                      </div>
-                      Title
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark ? 'a' : ''}`}>JavaScript: Full Understanding</a></h5>
-                      <p className="text-truncate-2 mb-2">Far advanced settling say finished raillery. Offered chiefly farther</p>
-                      Rating star
-                      <ul className="list-inline mb-0">
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0 `}>5.0/5.0</li>
-                      </ul>
-                    </div>
-                    Card footer
-                    <div className="card-footer pt-0 pb-3">
-                      <hr />
-                      <div className="d-flex justify-content-between">
-                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />35h 20m</span>
-                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />89 lectures</span>
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
-                {/* Card item END */}
-                {/* Card item START */}
-                {/* <div className="col-sm-6 col-lg-4 col-xl-3">
-                  <div className="card  shadow h-100 ">
-                    Image
-                    <img src="assets/images/courses/4by3/10.jpg" className="card-img-top" alt="course image" />
-                    <div className="card-body pb-0">
-                      Badge and favorite
-                      <div className="d-flex justify-content-between mb-2">
-                        <a href="#" className="badge bg-info bg-opacity-10 text-info">Intermediate</a>
-                        <a href="#" className="text-danger"><i className="fas fa-heart" /></a>
-                      </div>
-                      Title
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark ? 'a' : ''}`}>Bootstrap 5 From Scratch</a></h5>
-                      <p className="text-truncate-2 mb-2">Far advanced settling say finished raillery. Offered chiefly farther</p>
-                      Rating star
-                      <ul className="list-inline mb-0">
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star-half-alt text-warning" /></li>
-                        <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.5/5.0</li>
-                      </ul>
-                    </div>
-                    Card footer
-                    <div className="card-footer pt-0 pb-3">
-                      <hr />
-                      <div className="d-flex justify-content-between mt-2">
-                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0 `}><i className="far fa-clock text-danger me-2" />25h 56m</span>
-                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0 `}><i className="fas fa-table text-orange me-2" />38 lectures</span>
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
-                {/* Card item END */}
-                {/* Card item START */}
-                {/* <div className="col-sm-6 col-lg-4 col-xl-3">
-                  <div className="card  shadow h-100 ">
-                    Image
-                    <img src="assets/images/courses/4by3/13.jpg" className="card-img-top" alt="course image" />
-                    <div className="card-body pb-0">
-                      Badge and favorite
-                      <div className="d-flex justify-content-between mb-2">
-                        <a href="#" className="badge bg-success bg-opacity-10 text-success">Beginner</a>
-                        <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
-                      </div>
-                      Title
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark ? 'a' : ''}`}>PHP with - CMS Project</a></h5>
-                      <p className="text-truncate-2 mb-2">Far advanced settling say finished raillery. Offered chiefly farther</p>
-                      Rating star
-                      <ul className="list-inline mb-0">
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                        <li className={`${isDark ? 'text-white' : ''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.0/5.0</li>
-                      </ul>
-                    </div>
-                    Card footer
-                    <div className="card-footer pt-0 pb-3">
-                      <hr />
-                      <div className="d-flex justify-content-between">
-                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />21h 22m</span>
-                        <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />30 lectures</span>
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
-                {/* Card item END */}
               </div>
             </div>
-            {/* Content END */}
-            {/* Content START */}
-            {/* <div className="tab-pane fade" id="course-pills-tabs-3" role="tabpanel" aria-labelledby="course-pills-tab-3">
-              <div className="row g-4">
-                Card item START
-                <div className="col-sm-6 col-lg-4 col-xl-3">
-                  <div className="card  shadow h-100 ">
-                    Image
-                    <img src="assets/images/courses/4by3/08.jpg" className="card-img-top" alt="course image" />
-                    <div className="card-body pb-0">
-                      Badge and favorite
-                      <div className="d-flex justify-content-between mb-2">
-                        <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
-                        <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
-                      </div>
-                      Title
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Sketch from A to Z: for app designer</a></h5>
-                      <p className="text-truncate-2 mb-2">Proposal indulged no do sociable he throwing settling</p>
-                      Rating star
-                      <ul className="list-inline mb-0">
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                        <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.0/5.0</li>
-                      </ul>
-                    </div>
-                    Card footer
-                    <div className="card-footer pt-0 pb-3">
-                      <hr />
-                      <div className="d-flex justify-content-between">
-                        <span className={ `${isDark?'text-white':''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />12h 56m</span>
-                        <span className={ `${isDark?'text-white':''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />15 lectures</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                Card item END
-                Card item START
-                <div className="col-sm-6 col-lg-4 col-xl-3">
-                  <div className="card  shadow h-100 ">
-                    Image
-                    <img src="assets/images/courses/4by3/04.jpg" className="card-img-top" alt="course image" />
-                    <div className="card-body pb-0">
-                      Badge and favorite
-                      <div className="d-flex justify-content-between mb-2">
-                        <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
-                        <a href="#" className="text-danger"><i className="fas fa-heart" /></a>
-                      </div>
-                      Title
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Learn Invision</a></h5>
-                      <p className="mb-2">Arrived off she elderly beloved him Course regard to up he hardly.</p>
-                      Rating star
-                      <ul className="list-inline mb-0">
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star-half-alt text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                        <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>3.5/5.0</li>
-                      </ul>
-                    </div>
-                    Card footer
-                    <div className="card-footer pt-0 pb-3">
-                      <hr />
-                      <div className="d-flex justify-content-between mt-2">
-                        <span className={ `${isDark?'text-white':''}  h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />6h 56m</span>
-                        <span className={ `${isDark?'text-white':''}  h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />82 lectures</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                Card item END
-                Card item START
-                <div className="col-sm-6 col-lg-4 col-xl-3">
-                  <div className="card  shadow h-100 ">
-                    Image
-                    <img src="assets/images/courses/4by3/02.jpg" className="card-img-top" alt="course image" />
-                    <div className="card-body pb-0">
-                      Badge and favorite
-                      <div className="d-flex justify-content-between mb-2">
-                        <a href="#" className="badge bg-success bg-opacity-10 text-success">Beginner</a>
-                        <a href="#" className="text-danger"><i className="fas fa-heart" /></a>
-                      </div>
-                      Title
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Graphic Design Masterclass</a></h5>
-                      <p className="text-truncate-2 mb-2">Rooms oh fully taken by worse do. Points afraid but may end.</p>
-                      Rating star
-                      <ul className="list-inline mb-0">
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star-half-alt text-warning" /></li>
-                        <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.5/5.0</li>
-                      </ul>
-                    </div>
-                    Card footer
-                    <div className="card-footer pt-0 pb-3">
-                      <hr />
-                      <div className="d-flex justify-content-between">
-                        <span className={ `${isDark?'text-white':''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />9h 56m</span>
-                        <span className={ `${isDark?'text-white':''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />65 lectures</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                Card item END
-                Card item START
-                <div className="col-sm-6 col-lg-4 col-xl-3">
-                  <div className="card  shadow h-100 ">
-                    Image
-                    <img src="assets/images/courses/4by3/03.jpg" className="card-img-top" alt="course image" />
-                    <div className="card-body pb-0">
-                      Badge and favorite
-                      <div className="d-flex justify-content-between mb-2">
-                        <a href="#" className="badge bg-success bg-opacity-10 text-success">Beginner</a>
-                        <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
-                      </div>
-                      Title
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Create a Design System in Figma</a></h5>
-                      <p className="text-truncate-2 mb-2">Rooms oh fully taken by worse do. Points afraid but may end.</p>
-                      Rating star
-                      <ul className="list-inline mb-0">
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star-half-alt text-warning" /></li>
-                        <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.5/5.0</li>
-                      </ul>
-                    </div>
-                    Card footer
-                    <div className="card-footer pt-0 pb-3">
-                      <hr />
-                      <div className="d-flex justify-content-between">
-                        <span className={ `${isDark?'text-white':''}  h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />5h 56m</span>
-                        <span className={ `${isDark?'text-white':''}  h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />32 lectures</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                Card item END
-              </div>
-            </div> */}
-            {/* Content END */}
-            {/* Content START */}
-            {/* <div className="tab-pane fade" id="course-pills-tabs-4" role="tabpanel" aria-labelledby="course-pills-tab-4">
-              <div className="row g-4">
-                Card item START
-                <div className=" col-sm-6 col-lg-4 col-xl-3">
-                  <div className="card  shadow h-100 ">
-                    Image
-                    <img src="assets/images/courses/4by3/01.jpg" className="card-img-top" alt="course image" />
-                    <div className="card-body pb-0">
-                      Badge and favorite
-                      <div className="d-flex justify-content-between mb-2">
-                        <a href="#" className="badge bg-success bg-opacity-10 text-success">Beginner</a>
-                        <a href="#" className="text-danger"><i className="fas fa-heart" /></a>
-                      </div>
-                      Title
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Digital Marketing Masterclass</a></h5>
-                      <p className="text-truncate-2 mb-2">Delivered dejection necessary objection do Mr prevailed.</p>
-                      Rating star
-                      <ul className="list-inline mb-0">
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star-half-alt text-warning" /></li>
-                        <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.5/5.0</li>
-                      </ul>
-                    </div>
-                    Card footer
-                    <div className="card-footer pt-0 pb-3">
-                      <hr />
-                      <div className="d-flex justify-content-between">
-                        <span className={ `${isDark?'text-white':''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />6h 56m</span>
-                        <span className={ `${isDark?'text-white':''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />82 lectures</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                Card item END
-                Card item START
-                <div className="col-sm-6 col-lg-4 col-xl-3">
-                  <div className="card  shadow h-100 ">
-                    Image
-                    <img src="assets/images/courses/4by3/08.jpg" className="card-img-top" alt="course image" />
-                    <div className="card-body pb-0">
-                      Badge and favorite
-                      <div className="d-flex justify-content-between mb-2">
-                        <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
-                        <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
-                      </div>
-                      Title
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Sketch from A to Z: for app designer</a></h5>
-                      <p className="text-truncate-2 mb-2">Proposal indulged no do sociable he throwing settling.</p>
-                      Rating star
-                      <ul className="list-inline mb-0">
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                        <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>4.0/5.0</li>
-                      </ul>
-                    </div>
-                    Card footer
-                    <div className="card-footer pt-0 pb-3">
-                      <hr />
-                      <div className="d-flex justify-content-between">
-                        <span className={ `${isDark?'text-white':''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />12h 56m</span>
-                        <span className={ `${isDark?'text-white':''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />15 lectures</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                Card item END
-              </div>
-            </div> */}
-            {/* Content END */}
-            {/* Content START */}
-            {/* <div className="tab-pane fade" id="course-pills-tabs-5" role="tabpanel" aria-labelledby="course-pills-tab-5">
-              <div className="row g-4">
-                Card item START
-                <div className="col-sm-6 col-lg-4 col-xl-3">
-                  <div className="card  shadow h-100 ">
-                    Image
-                    <img src="assets/images/courses/4by3/04.jpg" className="card-img-top" alt="course image" />
-                    <div className="card-body pb-0">
-                      Badge and favorite
-                      <div className="d-flex justify-content-between mb-2">
-                        <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
-                        <a href="#" className="text-danger"><i className="fas fa-heart" /></a>
-                      </div>
-                      Title
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>Learn Invision</a></h5>
-                      <p className="text-truncate-2 mb-2">Arrived off she elderly beloved him Course regard to up he hardly.</p>
-                      Rating star
-                      <ul className="list-inline mb-0">
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star-half-alt text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                        <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>3.5/5.0</li>
-                      </ul>
-                    </div>
-                    Card footer
-                    <div className="card-footer pt-0 pb-3">
-                      <hr />
-                      <div className="d-flex justify-content-between">
-                        <span className={ `${isDark?'text-white':''}  h6 fw-light mb-0 `}><i className="far fa-clock text-danger me-2" />6h 56m</span>
-                        <span className={ `${isDark?'text-white':''}  h6 fw-light mb-0 `}><i className="fas fa-table text-orange me-2" />82 lectures</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                Card item END
-                Card item START
-                <div className="col-sm-6 col-lg-4 col-xl-3">
-                  <div className="card  shadow h-100 ">
-                    Image
-                    <img src="assets/images/courses/4by3/09.jpg" className="card-img-top" alt="course image" />
-                    <div className="card-body pb-0">
-                      Badge and favorite
-                      <div className="d-flex justify-content-between mb-2">
-                        <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
-                        <a href="#" className="h6 fw-light mb-0"><i className="far fa-heart" /></a>
-                      </div>
-                      Title
-                      <h5 className="card-title fw-normal"><a href="#" className={`${isDark?'a':''}` }>JavaScript: Full Understanding</a></h5>
-                      <p className="text-truncate-2 mb-2">Far advanced settling say finished raillery. Offered chiefly farther.</p>
-                      Rating star
-                      <ul className="list-inline mb-0">
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                        <li className={`${isDark?'text-white':''} list-inline-item ms-2 h6 fw-light mb-0 `}>5.0/5.0</li>
-                      </ul>
-                    </div>
-                    Card footer
-                    <div className="card-footer pt-0 pb-3">
-                      <hr />
-                      <div className="d-flex justify-content-between">
-                        <span className={ `${isDark?'text-white':''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />35h 20m</span>
-                        <span className={ `${isDark?'text-white':''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />89 lectures</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                Card item END
-              </div>
-            </div> */}
-            {/* Content END */}
           </div>
-          {/* Tabs content END */}
         </div>
       </section>
-      {/* =======================
-Popular course END */}
-      {/* =======================
-Action box START */}
+
       <section className="pt-0 pt-lg-5">
         <div className="container position-relative">
-          {/* SVG decoration START */}
           <figure className="position-absolute top-50 start-50 translate-middle ms-2">
             <svg>
               <path className="fill-white opacity-4" d="m496 22.999c0 10.493-8.506 18.999-18.999 18.999s-19-8.506-19-18.999 8.507-18.999 19-18.999 18.999 8.506 18.999 18.999z" />
@@ -1010,44 +431,35 @@ Action box START */}
               <path className="fill-white opacity-4" d="m20.499 10.25c0 5.66-4.589 10.249-10.25 10.249-5.66 0-10.249-4.589-10.249-10.249-0-5.661 4.589-10.25 10.249-10.25 5.661-0 10.25 4.589 10.25 10.25z" />
             </svg>
           </figure>
-          {/* SVG decoration END */}
           <div className="row">
             <div className="col-12">
               <div className="bg-info p-4 p-sm-5 rounded-3">
                 <div className="row position-relative">
-                  {/* Svg decoration */}
                   <figure className="fill-white opacity-1 position-absolute top-50 start-0 translate-middle-y">
                     <svg width="141px" height="141px">
                       <path d="M140.520,70.258 C140.520,109.064 109.062,140.519 70.258,140.519 C31.454,140.519 -0.004,109.064 -0.004,70.258 C-0.004,31.455 31.454,-0.003 70.258,-0.003 C109.062,-0.003 140.520,31.455 140.520,70.258 Z" />
                     </svg>
                   </figure>
-                  {/* Action box */}
                   <div className="col-11 mx-auto position-relative">
                     <div className="row align-items-center">
-                      {/* Title */}
                       <div className="col-lg-7">
                         <h3 className="text-white">Become an Instructor!</h3>
                         <p className="text-white mb-3 mb-lg-0">Speedily say has suitable disposal add boy. On forth doubt miles of child. Exercise joy man children rejoiced. Yet uncommonly his ten who diminution astonished.</p>
                       </div>
-                      {/* Content and input */}
                       <div className="col-lg-5 text-lg-end">
                         <a href="#" className="btn btn-outline-warning mb-0">Start Teaching Today</a>
                       </div>
                     </div>
                   </div>
-                </div> {/* Row END */}
+                </div>
               </div>
             </div>
-          </div> {/* Row END */}
+          </div>
         </div>
       </section>
-      {/* =======================
-Action box END */}
-      {/* =======================
-Trending courses START */}
+
       <section className="pb-5 pt-0 pt-lg-5">
         <div className="container">
-          {/* Title */}
           <div className="row mb-4">
             <div className="col-lg-8 mx-auto text-center">
               <h2 className={`${isDark ? 'text-white' : ''} fs-1`}>Our Trending Courses</h2>
@@ -1055,31 +467,21 @@ Trending courses START */}
             </div>
           </div>
           <div className="row">
-            {/* Slider START */}
             <div className="tiny-slider arrow-round arrow-blur arrow-hover border-gray">
               <div className="tiny-slider-inner pb-1" data-autoplay="true" data-arrow="true" data-edge={2} data-dots="false" data-items={3} data-items-lg={2} data-items-sm={1}>
-                {/* Card item START */}
                 <Swiper
-                  // install Swiper modules
                   modules={[Navigation, Pagination, Scrollbar, A11y]}
                   spaceBetween={50}
                   slidesPerView={3}
                   navigation
-                  // pagination={{ clickable: true }}
-                  // scrollbar={{ draggable: true }}
                   onSwiper={(swiper) => console.log(swiper)}
                   onSlideChange={() => console.log('slide change')}
                 >
                   <SwiperSlide>
-
                     <div className={`${isDark ? 'profile-card ' : 'card'}  action-trigger-hover `}>
-                      {/* Image */}
                       <img src="assets/images/courses/4by3/14.jpg" className="card-img-top" alt="course image" />
-                      {/* Ribbon */}
                       <div className="ribbon mt-3"><span>Free</span></div>
-                      {/* Card body */}
                       <div className="card-body pb-0">
-                        {/* Badge and favorite */}
                         <div className="d-flex justify-content-between mb-3">
                           <span className="hstack gap-2">
                             <a href="#" className="badge bg-primary bg-opacity-10 text-primary">Design</a>
@@ -1087,9 +489,7 @@ Trending courses START */}
                           </span>
                           <a href="#" className={`${isDark ? 'a' : ''} h6 fw-light mb-0`}><i className="far fa-bookmark" /></a>
                         </div>
-                        {/* Title */}
                         <h5 className="card-title"><a href="#" className={`${isDark ? 'a' : ''}`}>The Complete DigitalMarketing Course -8 Course in 1</a></h5>
-                        {/* Rating */}
                         <div className="d-flex justify-content-between mb-2">
                           <div className="hstack gap-2">
                             <p className="text-warning m-0">4.5<i className="fas fa-star text-warning ms-1" /></p>
@@ -1100,25 +500,20 @@ Trending courses START */}
                             <span className="small">(Student)</span>
                           </div>
                         </div>
-                        {/* Time */}
                         <div className="hstack gap-3">
                           <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />6h 56m</span>
                           <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />82 lectures</span>
                         </div>
                       </div>
-                      {/* Card footer */}
                       <div className="card-footer pt-0">
                         <hr />
-                        {/* Avatar and Price */}
                         <div className="d-flex justify-content-between align-items-center">
-                          {/* Avatar */}
                           <div className="d-flex align-items-center">
                             <div className="avatar avatar-sm">
                               <img className="avatar-img rounded-1" src="assets/images/avatar/10.jpg" alt="avatar" />
                             </div>
                             <p className={"mb-0 ms-2"}><a href="#" className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}>Larry Lawson</a></p>
                           </div>
-                          {/* Price */}
                           <div>
                             <h4 className="text-success mb-0 item-show">Free</h4>
                             <a href="#" className="btn-sm btn-success-soft item-show-hover"><i className="fas fa-shopping-cart me-2" />Add to cart</a>
@@ -1128,16 +523,11 @@ Trending courses START */}
                     </div>
 
                   </SwiperSlide>
-                  {/* Card item END */}
-                  {/* Card item START */}
                   <SwiperSlide>
 
                     <div className={`${isDark ? ' profile-card ' : 'card'}  action-trigger-hover border`}>
-                      {/* Image */}
                       <img src="assets/images/courses/4by3/15.jpg" className="card-img-top" alt="course image" />
-                      {/* Card body */}
                       <div className="card-body pb-0">
-                        {/* Badge and favorite */}
                         <div className="d-flex justify-content-between mb-3">
                           <span className="hstack gap-2">
                             <a href="#" className="badge bg-primary bg-opacity-10 text-primary">Development</a>
@@ -1145,9 +535,7 @@ Trending courses START */}
                           </span>
                           <a href="#" className={`${isDark ? 'a' : ''} h6 fw-light mb-0`}><i className="far fa-bookmark" /></a>
                         </div>
-                        {/* Title */}
                         <h5 className="card-title"><a href="#" className={`${isDark ? 'a' : ''}`}>Angular – The Complete Guide (2021 Edition)</a></h5>
-                        {/* Rating */}
                         <div className="d-flex justify-content-between mb-2">
                           <div className="hstack gap-2">
                             <p className="text-warning m-0">4.0<i className="fas fa-star text-warning ms-1" /></p>
@@ -1158,25 +546,20 @@ Trending courses START */}
                             <span className="small">(Student)</span>
                           </div>
                         </div>
-                        {/* Time */}
                         <div className="hstack gap-3">
                           <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />12h 45m</span>
                           <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />65 lectures</span>
                         </div>
                       </div>
-                      {/* Card footer */}
                       <div className="card-footer pt-0">
                         <hr />
-                        {/* Avatar and Price */}
                         <div className="d-flex justify-content-between align-items-center">
-                          {/* Avatar */}
                           <div className="d-flex align-items-center">
                             <div className="avatar avatar-sm">
                               <img className="avatar-img rounded-1" src="assets/images/avatar/04.jpg" alt="avatar" />
                             </div>
                             <p className="mb-0 ms-2"><a href="#" className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}>Billy Vasquez</a></p>
                           </div>
-                          {/* Price */}
                           <div>
                             <h4 className="text-success mb-0 item-show">$255</h4>
                             <a href="#" className="btn-sm btn-success-soft item-show-hover"><i className="fas fa-shopping-cart me-2" />Add to cart</a>
@@ -1184,19 +567,12 @@ Trending courses START */}
                         </div>
                       </div>
                     </div>
-
                   </SwiperSlide>
-
-                  {/* Card item END */}
-                  {/* Card item START */}
                   <SwiperSlide>
 
                     <div className={`${isDark ? ' profile-card ' : 'card'}  action-trigger-hover border`}>
-                      {/* Image */}
                       <img src="assets/images/courses/4by3/17.jpg" className="card-img-top" alt="course image" />
-                      {/* Card body */}
                       <div className="card-body pb-0">
-                        {/* Badge and favorite */}
                         <div className="d-flex justify-content-between mb-3">
                           <span className="hstack gap-2">
                             <a href="#" className="badge bg-primary bg-opacity-10 text-primary">Design</a>
@@ -1204,9 +580,7 @@ Trending courses START */}
                           </span>
                           <a href="#" className={`${isDark ? 'a' : ''} h6 fw-light mb-0`}><i className="far fa-bookmark" /></a>
                         </div>
-                        {/* Title */}
                         <h5 className="card-title"><a href="#" className={`${isDark ? 'a' : ''}`}>Time Management Mastery: Do More,	Stress Less</a></h5>
-                        {/* Rating */}
                         <div className="d-flex justify-content-between mb-2">
                           <div className="hstack gap-2">
                             <p className="text-warning m-0">4.5<i className="fas fa-star text-warning ms-1" /></p>
@@ -1217,25 +591,20 @@ Trending courses START */}
                             <span className="small">(Student)</span>
                           </div>
                         </div>
-                        {/* Time */}
                         <div className="hstack gap-3">
                           <span className={`${isDark ? 'text-white' : ''}  h6 fw-light mb-0 `}><i className="far fa-clock text-danger me-2" />24h 56m</span>
                           <span className={`${isDark ? 'text-white' : ''}  h6 fw-light mb-0 `}><i className="fas fa-table text-orange me-2" />55 lectures</span>
                         </div>
                       </div>
-                      {/* Card footer */}
                       <div className="card-footer pt-0">
                         <hr />
-                        {/* Avatar and Price */}
                         <div className="d-flex justify-content-between align-items-center">
-                          {/* Avatar */}
                           <div className="d-flex align-items-center">
                             <div className="avatar avatar-sm">
                               <img className="avatar-img rounded-1" src="assets/images/avatar/09.jpg" alt="avatar" />
                             </div>
                             <p className="mb-0 ms-2"><a href="#" className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0 `}>Lori Stevens</a></p>
                           </div>
-                          {/* Price */}
                           <div>
                             <h4 className="text-success mb-0 item-show">$500</h4>
                             <a href="#" className="btn-sm btn-success-soft item-show-hover"><i className="fas fa-shopping-cart me-2" />Add to cart</a>
@@ -1245,16 +614,11 @@ Trending courses START */}
                     </div>
 
                   </SwiperSlide>
-                  {/* Card item END */}
-                  {/* Card item START */}
                   <SwiperSlide>
 
                     <div className={`${isDark ? ' profile-card ' : 'card'}  action-trigger-hover border`}>
-                      {/* Image */}
                       <img src="assets/images/courses/4by3/16.jpg" className="card-img-top" alt="course image" />
-                      {/* Card body */}
                       <div className="card-body pb-0">
-                        {/* Badge and favorite */}
                         <div className="d-flex justify-content-between mb-3">
                           <span className="hstack gap-2">
                             <a href="#" className="badge bg-primary bg-opacity-10 text-primary">Design</a>
@@ -1262,9 +626,7 @@ Trending courses START */}
                           </span>
                           <a href="#" className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-bookmark" /></a>
                         </div>
-                        {/* Title */}
                         <h5 className="card-title"><a href="#" className={`${isDark ? 'a' : ''}`}>Time Management Mastery: Do More, Stress Less</a></h5>
-                        {/* Rating */}
                         <div className="d-flex justify-content-between mb-2">
                           <div className="hstack gap-2">
                             <p className="text-warning m-0">4.0<i className="fas fa-star text-warning ms-1" /></p>
@@ -1275,25 +637,20 @@ Trending courses START */}
                             <span className="small">(Student)</span>
                           </div>
                         </div>
-                        {/* Time */}
                         <div className="hstack gap-3">
                           <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="far fa-clock text-danger me-2" />09h 56m</span>
                           <span className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}><i className="fas fa-table text-orange me-2" />21 lectures</span>
                         </div>
                       </div>
-                      {/* Card footer */}
                       <div className="card-footer pt-0">
                         <hr />
-                        {/* Avatar and Price */}
                         <div className="d-flex justify-content-between align-items-center">
-                          {/* Avatar */}
                           <div className="d-flex align-items-center">
                             <div className="avatar avatar-sm">
                               <img className="avatar-img rounded-1" src="assets/images/avatar/01.jpg" alt="avatar" />
                             </div>
                             <p className="mb-0 ms-2"><a href="#" className={`${isDark ? 'text-white' : ''} h6 fw-light mb-0`}>Frances Guerrero</a></p>
                           </div>
-                          {/* Price */}
                           <div>
                             <h4 className="text-success mb-0 item-show">$200</h4>
                             <a href="#" className="btn-sm btn-success-soft item-show-hover"><i className="fas fa-shopping-cart me-2" />Add to cart</a>
@@ -1305,36 +662,27 @@ Trending courses START */}
                   </SwiperSlide>
 
                 </Swiper>
-                {/* Card item END */}
               </div>
             </div>
-            {/* Slider END */}
           </div>
         </div>
       </section>
-      {/* =======================
-Trending courses END */}
-      {/* =======================
-Reviews START */}
+
       <section className="bg-light">
         <div className="container">
           <div className="row g-4 g-lg-5 align-items-center">
             <div className="col-xl-7 order-2 order-xl-1">
               <div className="row mt-0 mt-xl-5">
-                {/* Review */}
                 <div className="col-md-7 position-relative mb-0 mt-0 mt-md-5">
-                  {/* SVG */}
                   <figure className="fill-danger opacity-2 position-absolute top-0 start-0 translate-middle mb-3">
                     <svg width="211px" height="211px">
                       <path d="M210.030,105.011 C210.030,163.014 163.010,210.029 105.012,210.029 C47.013,210.029 -0.005,163.014 -0.005,105.011 C-0.005,47.015 47.013,-0.004 105.012,-0.004 C163.010,-0.004 210.030,47.015 210.030,105.011 Z" />
                     </svg>
                   </figure>
                   <div className="bg-body shadow text-center p-4 rounded-3 position-relative mb-5 mb-md-0">
-                    {/* Avatar */}
                     <div className="avatar avatar-xl mb-3">
                       <img className="avatar-img rounded-circle" src="assets/images/avatar/01.jpg" alt="avatar" />
                     </div>
-                    {/* Content */}
                     <blockquote>
                       <p>
                         <span className="me-1 small"><i className="fas fa-quote-left" /></span>
@@ -1342,7 +690,6 @@ Reviews START */}
                         <span className="ms-1 small"><i className="fas fa-quote-right" /></span>
                       </p>
                     </blockquote>
-                    {/* Rating */}
                     <ul className="list-inline mb-2">
                       <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                       <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
@@ -1350,50 +697,37 @@ Reviews START */}
                       <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                       <li className="list-inline-item me-0 small"><i className="fas fa-star-half-alt text-warning" /></li>
                     </ul>
-                    {/* Info */}
                     <h6 className="mb-0">Carolyn Ortiz</h6>
                   </div>
                 </div>
-                {/* Mentor list */}
                 <div className="col-md-5 mt-5 mt-md-0 d-none d-md-block">
                   <div className="bg-body shadow p-4 rounded-3 d-inline-block position-relative">
-                    {/* Icon */}
                     <div className="icon-lg bg-warning rounded-circle position-absolute top-0 start-100 translate-middle">
                       <i className="bi bi-shield-fill-check text-dark" />
                     </div>
-                    {/* Title */}
                     <h6 className="mb-3">100+ Verified Mentors</h6>
-                    {/* Mentor Item */}
                     <div className="d-flex align-items-center mb-3">
-                      {/* Avatar */}
                       <div className="avatar avatar-sm">
                         <img className="avatar-img rounded-1" src="assets/images/avatar/09.jpg" alt="avatar" />
                       </div>
-                      {/* Info */}
                       <div className="ms-2">
                         <h6 className="mb-0">Lori Stevens</h6>
                         <p className="mb-0 small">Tutor of physic</p>
                       </div>
                     </div>
-                    {/* Mentor Item */}
                     <div className="d-flex align-items-center mb-3">
-                      {/* Avatar */}
                       <div className="avatar avatar-sm">
                         <img className="avatar-img rounded-1" src="assets/images/avatar/04.jpg" alt="avatar" />
                       </div>
-                      {/* Info */}
                       <div className="ms-2">
                         <h6 className="mb-0">Billy Vasquez</h6>
                         <p className="mb-0 small">Tutor of chemistry</p>
                       </div>
                     </div>
-                    {/* Mentor Item */}
                     <div className="d-flex align-items-center">
-                      {/* Avatar */}
                       <div className="avatar avatar-sm">
                         <img className="avatar-img rounded-1" src="assets/images/avatar/02.jpg" alt="avatar" />
                       </div>
-                      {/* Info */}
                       <div className="ms-2">
                         <h6 className="mb-0">Larry Lawson</h6>
                         <p className="mb-0 small">Tutor of technology</p>
@@ -1401,11 +735,9 @@ Reviews START */}
                     </div>
                   </div>
                 </div>
-              </div> {/* Row END */}
+              </div>
               <div className="row mt-5 mt-xl-0">
-                {/* Rating */}
                 <div className="col-7 mt-0 mt-xl-5 text-end position-relative z-index-1 d-none d-md-block">
-                  {/* SVG */}
                   <figure className="fill-danger position-absolute top-0 start-50 mt-n7 ms-6 ps-3 pt-2 z-index-n1 d-none d-lg-block">
                     <svg enableBackground="new 0 0 160.7 159.8" height="180px">
                       <path d="m153.2 114.5c1.2 0 2.1 1 2.1 2.2s-1 2.2-2.1 2.2c-1.2 0-2.1-1-2.1-2.2-0.1-1.2 0.9-2.2 2.1-2.2z" />
@@ -1456,9 +788,7 @@ Reviews START */}
                     </svg>
                   </figure>
                   <div className="p-3 shadow bg-primary d-inline-block rounded-4 shadow-lg text-center" style={{ background: 'url(assets/images/pattern/02.png) no-repeat center center', backgroundSize: 'cover' }}>
-                    {/* Info */}
                     <h5 className="text-white mb-0">4.5/5.0</h5>
-                    {/* Rating */}
                     <ul className="list-inline mb-2">
                       <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                       <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
@@ -1469,14 +799,11 @@ Reviews START */}
                     <p className="text-white mb-0">Based on 3265 ratings</p>
                   </div>
                 </div>
-                {/* Review */}
                 <div className="col-md-5 mt-n6 mb-0 mb-md-5">
                   <div className="bg-body shadow text-center p-4 rounded-3">
-                    {/* Avatar */}
                     <div className="avatar avatar-xl mb-3">
                       <img className="avatar-img rounded-circle" src="assets/images/avatar/03.jpg" alt="avatar" />
                     </div>
-                    {/* Content */}
                     <blockquote>
                       <p>
                         <span className="me-1 small"><i className="fas fa-quote-left" /></span>
@@ -1484,7 +811,6 @@ Reviews START */}
                         <span className="ms-1 small"><i className="fas fa-quote-right" /></span>
                       </p>
                     </blockquote>
-                    {/* Rating */}
                     <ul className="list-inline mb-2">
                       <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                       <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
@@ -1492,23 +818,20 @@ Reviews START */}
                       <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
                       <li className="list-inline-item me-0 small"><i className="fas fa-star-half-alt text-warning" /></li>
                     </ul>
-                    {/* Info */}
                     <h6 className="mb-0">Dennis Barrett</h6>
                   </div>
                 </div>
-              </div> {/* Row END */}
+              </div>
             </div>
             <div className="col-xl-5 order-1 text-center text-xl-start">
-              {/* Title */}
               <h2 className={`${isDark ? 'text-white' : ''} fs-1`}>Some valuable feedback from our students</h2>
               <p>Supposing so be resolving breakfast am or perfectly. It drew a hill from me. Valley by oh twenty direct me so. Departure defective arranging rapturous did believe him all had supported. Family months lasted simple set nature vulgar him. Picture for attempt joy excited ten carried manners talking how.</p>
               <a href="#" className="btn btn-primary mb-0">View Reviews</a>
             </div>
-          </div> {/* Row END */}
+          </div>
         </div>
       </section>
-      {/* =======================
-Reviews END */}
+
     </main>
 
   );

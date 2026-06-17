@@ -1,76 +1,7 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
-
 /* Custom Header Dark Mode Styles */
-.header-dark-mode .navbar-nav > li > .nav-link {
+/* .header-dark-mode .navbar-nav > li > .nav-link {
   color: #ffffff !important;
-}
+} */
 
 .header-dark-mode .navbar-nav > li > .nav-link:hover {
   color: #e9ecef !important;
@@ -166,4 +97,205 @@ button:focus-visible {
 
 .section-image-wrapper:hover img {
   transform: scale(1.05);
+}
+
+/* ==========================================================================
+   Premium Theme Variables and Card Styling Overrides
+   ========================================================================== */
+
+:root {
+  --transition-speed: 0.3s;
+}
+
+/* Global wrapper spacing & alignment */
+.light, .dark {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Light mode overrides */
+.light {
+  background-color: #f5f7f9 !important;
+  color: #24292d !important;
+  
+  --bg: #f5f7f9;
+  --surface: #ffffff;
+  --text-main: #24292d;
+  --text-muted: #5b6272;
+  --border-color: rgba(0, 0, 0, 0.08);
+}
+
+.light .card {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04) !important;
+  border-radius: 16px !important;
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, background-color var(--transition-speed) ease !important;
+}
+
+.light .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08) !important;
+}
+
+.light h1, .light h2, .light h3, .light h4, .light h5, .light h6,
+.light .h1, .light .h2, .light .h3, .light .h4, .light .h5, .light .h6 {
+  color: #24292d !important;
+}
+
+/* .light p, .light span:not(.badge), .light li, .light label, .light td, .light th {
+  color: #24292d !important;
+}
+
+.light .text-muted, .light .small, .light span.small, .light p.small, .light .text-truncate-2, .light span {
+  color: #5b6272 !important;
+} */
+
+.light a:not(.btn):not(.nav-link):not(.badge) {
+  color: #1d3b53 !important;
+}
+
+.light a:not(.btn):not(.nav-link):not(.badge):hover {
+  color: #0b2438 !important;
+}
+
+/* Dark mode overrides */
+.dark {
+  background-color: #0c0f16 !important;
+  color: #e2e8f0 !important;
+  
+  --bg: #0c0f16;
+  --surface: #141822;
+  --text-main: #e2e8f0;
+  --text-muted: #94a3b8;
+  --border-color: rgba(255, 255, 255, 0.07);
+}
+
+.dark .card {
+  background-color: #141822 !important;
+  border: 1px solid rgba(255, 255, 255, 0.07) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+  border-radius: 16px !important;
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, background-color var(--transition-speed) ease !important;
+}
+
+.dark .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3) !important;
+}
+
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6,
+.dark .h1, .dark .h2, .dark .h3, .dark .h4, .dark .h5, .dark .h6 {
+  color: #ffffff !important;
+}
+
+/* .dark p, .dark span:not(.badge), .dark li, .dark label, .dark td, .dark th {
+  color: #e2e8f0 !important;
+} */
+
+/* .dark .text-muted, .dark .small, .dark span.small, .dark p.small, .dark .text-truncate-2, .dark span {
+  color: #94a3b8 !important;
+} */
+
+/* .dark a:not(.btn):not(.nav-link):not(.badge) {
+  color: #38bdf8 !important;
+} */
+
+/* .dark a:not(.btn):not(.nav-link):not(.badge):hover {
+  color: #7dd3fc !important;
+} */
+
+/* Fix background elements in dark mode */
+.dark .bg-light {
+  background-color: #1a1f2c !important;
+}
+
+.dark .bg-body {
+  background-color: #0c0f16 !important;
+}
+
+.dark .border {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.dark hr {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  opacity: 1;
+}
+
+/* Premium Form Input Styling for Light and Dark Modes */
+
+/* Light mode inputs */
+.light .form-control,
+.light .form-select,
+.light input[type="text"],
+.light input[type="search"],
+.light input[type="email"],
+.light input[type="password"],
+.light textarea,
+.light select {
+  background-color: #ffffff !important;
+  border: 1px solid #dcdfe8 !important;
+  color: #24292d !important;
+  border-radius: 8px !important;
+  padding: 10px 16px !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.light .form-control:focus,
+.light .form-select:focus,
+.light input[type="text"]:focus,
+.light input[type="search"]:focus,
+.light input[type="email"]:focus,
+.light input[type="password"]:focus,
+.light textarea:focus,
+.light select:focus {
+  background-color: #ffffff !important;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+  color: #24292d !important;
+}
+
+.light .form-control::placeholder,
+.light input::placeholder,
+.light textarea::placeholder {
+  color: #a0aec0 !important;
+}
+
+/* Dark mode inputs */
+.dark .form-control,
+.dark .form-select,
+.dark input[type="text"],
+.dark input[type="search"],
+.dark input[type="email"],
+.dark input[type="password"],
+.dark textarea,
+.dark select {
+  background-color: #181d29 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+  padding: 10px 16px !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.dark .form-control:focus,
+.dark .form-select:focus,
+.dark input[type="text"]:focus,
+.dark input[type="search"]:focus,
+.dark input[type="email"]:focus,
+.dark input[type="password"]:focus,
+.dark textarea:focus,
+.dark select:focus {
+  background-color: #1c2230 !important;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25) !important;
+  color: #ffffff !important;
+}
+
+.dark .form-control::placeholder,
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #64748b !important;
 }

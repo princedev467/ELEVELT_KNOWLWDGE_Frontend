@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useGetBlogQuery, useViewBlogMutation } from '../../Redux/Api/blog.Api';
 import { NavLink, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -10,22 +10,24 @@ import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import SendIcon from '@mui/icons-material/Send';
 import { useAddBlogCommentMutation, useGetBlogCommentQuery, useUpdateBlogCommentMutation } from '../../Redux/Api/blogComment.Api';
+import { ThemeContext } from '../../context/theme.context';
 
 /* ─── Inline styles ──────────────────────────────────────────────────── */
-const styles = `
+/* ─── Theme-aware inline styles ─────────────────────────────────── */
+const getStyles = (isDark) => `
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&display=swap');
 
-  :root {
-    --bg:        #0d0f14;
-    --surface:   #13161d;
-    --surface2:  #1a1e28;
-    --border:    rgba(255,255,255,0.07);
-    --accent:    #e8a87c;
-    --accent2:   #6c8ef5;
-    --text:      #c9cdd8;
-    --muted:     #5a5f72;
-    --white:     #f0f2f7;
-    --radius:    16px;
+  .bd-root {
+    --bg:       ${isDark ? '#0d0f14' : '#f4f6f9'};
+    --surface:  ${isDark ? '#13161d' : '#ffffff'};
+    --surface2: ${isDark ? '#1a1e28' : '#f1f4f8'};
+    --border:   ${isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.09)'};
+    --accent:   ${isDark ? '#e8a87c' : '#c76b2e'};
+    --accent2:  ${isDark ? '#6c8ef5' : '#4a6fd4'};
+    --text:     ${isDark ? '#c9cdd8' : '#4a5568'};
+    --muted:    ${isDark ? '#5a5f72' : '#8a94a6'};
+    --white:    ${isDark ? '#f0f2f7' : '#1a202c'};
+    --radius:   16px;
   }
 
   .bd-root { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
@@ -292,6 +294,9 @@ const styles = `
 
 function Blog_Detail() {
   const { id } = useParams();
+  const themeData = useContext(ThemeContext);
+  // UserRouts wraps with class='dark' when theme==='light' (inverted), so visual dark = theme 'light'
+  const isVisuallyDark = themeData.theme === 'light';
   const [expandedSections, setExpandedSections] = useState({});
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState('');
@@ -399,7 +404,7 @@ useEffect(() => {
 
   return (
     <>
-      <style>{styles}</style>
+      <style>{getStyles(isVisuallyDark)}</style>
       <main className="bd-root">
 
         {/* ── Hero ── */}
@@ -502,7 +507,7 @@ useEffect(() => {
               )}
 
               {filtercomment?.map((v) => {
-                const isMyComment = auth?.auth?._id === v.user._id;
+                const isMyComment = auth?.auth?._id === v?.user?._id;
                 const isEditing = editingId === v._id;
 
                 return (
@@ -512,7 +517,6 @@ useEffect(() => {
                       <div className="bd-comment-name">{v.user?.name}</div>
 
                       {isEditing ? (
-                        // ── inline edit mode ──
                         <>
                           <textarea
                             className="bd-textarea"
@@ -534,7 +538,6 @@ useEffect(() => {
                           </div>
                         </>
                       ) : (
-                        // ── normal view mode ──
                         <>
                           <div className="bd-comment-text">{v.comment}</div>
                           {isMyComment && (

@@ -46,7 +46,7 @@ function AdminRouts(props) {
     <ThemeProvider theme={theme}>
       <Layout>
         <Routes>
-          <Route path='/Dashboard' element={<Dashboard />}></Route>
+          <Route path='/' element={<Dashboard />}></Route>
           <Route path='/category' element={<Category />} ></Route>
           {/* <Route path='/category/:id' element={<CategoryPage />} ></Route> */}
           <Route path='/Section' element={<Section />} ></Route>

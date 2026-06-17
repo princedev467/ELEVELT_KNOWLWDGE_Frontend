@@ -404,7 +404,7 @@ function Dashboard(props) {
       const themeData = useContext(ThemeContext);
       console.log(themeData);
     
-      let isDark = themeData.theme === 'dark'
+      let isDark = themeData.theme === 'light'
 
     return (
         <Box sx={{ p: 2 }} >

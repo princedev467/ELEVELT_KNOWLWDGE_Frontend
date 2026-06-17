@@ -50,21 +50,7 @@ function Blog_Grid(props) {
       );
     }
   };
-  // let filteredBlogs =
-
-  //   selectedTags.length === 0
-  //     ? BlogData
-  //     : BlogData?.filter((v) => selectedTags.includes(v.tag._id));
-
-  // if (id) {
-  //   selectedTags.length !== 0
-  //     ? (filteredBlogs = selectedTags.length === 0
-  //       ? BlogData
-  //       : BlogData?.filter((v) => selectedTags.includes(v.tag._id))
-  //     ) : (filteredBlogs = BlogData?.filter((v) => v.tag._id === id));
-
-  // }
-  // console.log(filteredBlogs);
+  
 
   let filteredBlogs = BlogData;
 
@@ -114,8 +100,6 @@ function Blog_Grid(props) {
   ];
   return (
     <main>
-      {/* =======================
-Page Banner START */}
       <section className="py-5">
         <div className="container">
           <div className="row position-relative">
@@ -154,15 +138,11 @@ Page Banner START */}
           </div>
         </div>
       </section>
-      {/* =======================
-Page Banner END */}
-      {/* =======================
-Page content START */}
+    
       <section className="position-relative pt-0 pt-lg-5">
         <div className="container">
           <div className='row'>
             <div className="col-lg-9">
-              {/* Card item START */}
               <div className="row g-4 ">
                 {
                   filteredBlogs?.map((b) => (
@@ -185,7 +165,7 @@ Page content START */}
                           {/* Card body */}
                           <div className="card-body">
                             {/* Title */}
-                            <h5 className="card-title text-truncate-1" style={{ color: 'green' }}>{b.title}</h5>
+                            <h5 className="card-title text-truncate-1">{b.title}</h5>
                             <p className="text-truncate-2 mt-3">{b.subtitle}</p>  {/* Info */}
                             <div className="d-flex justify-content-between mb-0 pt-5">
                               <h6 className="">{b?.instructor.name}</h6>
@@ -226,7 +206,6 @@ Page content START */}
                       </label>
                     </li>
 
-                    {/* Dynamic Checkboxes */}
                     {tag?.data?.map((t) => {
                       const isChecked = selectedTags.includes(t._id);
                       return (
@@ -299,19 +278,7 @@ Page content START */}
 
 
           </div>
-          {/* Row end */}
-          {/* Pagination START */}
-          <nav className="d-flex justify-content-center mt-5" aria-label="navigation">
-            <ul className="pagination pagination-primary-soft rounded mb-0">
-              <li className="page-item mb-0"><a className="page-link" href="#" tabIndex={-1}><i className="fas fa-angle-double-left" /></a></li>
-              <li className="page-item mb-0"><a className="page-link" href="#">1</a></li>
-              <li className="page-item mb-0 active"><a className="page-link" href="#">2</a></li>
-              <li className="page-item mb-0"><a className="page-link" href="#">..</a></li>
-              <li className="page-item mb-0"><a className="page-link" href="#">6</a></li>
-              <li className="page-item mb-0"><a className="page-link" href="#"><i className="fas fa-angle-double-right" /></a></li>
-            </ul>
-          </nav>
-          {/* Pagination END */}
+         
         </div>
       </section>
       {/* =======================

@@ -223,13 +223,7 @@ Page Banner START */}
                 <h1 className="m-0">My cart</h1>
                 {/* Breadcrumb */}
                 <div className="d-flex justify-content-center">
-                  <nav aria-label="breadcrumb">
-                    <ol className="breadcrumb breadcrumb-dots mb-0">
-                      <li className="breadcrumb-item"> <a href="#">Home</a></li>
-                      <li className="breadcrumb-item"> <a href="#">Courses</a></li>
-                      <li className="breadcrumb-item active" aria-current="page">Cart</li>
-                    </ol>
-                  </nav>
+                  
                 </div>
               </div>
             </div>

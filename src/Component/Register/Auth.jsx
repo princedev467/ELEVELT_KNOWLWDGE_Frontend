@@ -118,16 +118,18 @@ function Auth(props) {
         }
 
       } else if (type === 'forgotPassword') {
-        const res = await dispatch(forgetPassword(values));
 
-        localStorage.setItem('email', values.email);
+  const res = await dispatch(forgetPassword(values));
 
-        if (res.type === 'auth/forgetPassword/fulfilled') {
-          setType('verify OTP')
-          setOtpType('forgotPassword');
-
-        }
-      } else if (type === 'verify OTP') {
+  localStorage.setItem('email', values.email);
+  if (res.type === 'auth/forgetPassword/fulfilled') {
+  
+    setType('verify OTP');       
+  
+    setOtpType('forgotPassword');
+  
+  }
+} else if (type === 'verify OTP') {
         const res = await dispatch(userVerify({ email: localStorage.getItem("email"), OTP: values.OTP }))
 
         console.log(res);

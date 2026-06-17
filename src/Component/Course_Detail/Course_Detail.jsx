@@ -116,8 +116,6 @@ function Course_Detail(props) {
     }));
   };
 
-
-  //data store in variable
   let course = courseData?.data
   let section = sectionData?.data
   let cartData = cart?.data
@@ -128,6 +126,9 @@ function Course_Detail(props) {
   const usermergePurchased = [];
 
 
+  const popularCourse=course?.map((v)=>{
+    
+  })
 
   if (id) {
     filterCourseData = course?.filter((v) => v?._id === id);
@@ -147,13 +148,8 @@ function Course_Detail(props) {
 
   }
 
-  // console.log(filterQuizData)
-
-  // console.log("filterSectionData", filterSectionData);
-
+  
   const userPayment = PaymentData?.filter((v) => v.user_id === auth.auth?._id);
-  // console.log(userPayment);
-
   userPayment?.map((v) => {
 
     v.purchased_courses.map((v2) => {
@@ -230,8 +226,6 @@ function Course_Detail(props) {
       )
     );
 
-    // console.log(totalLectures);
-
     const percentage = totalLectures > 0 ? Math.round((completedLectures.length / totalLectures) * 100) : 0;
     console.log(percentage);
     
@@ -239,7 +233,7 @@ function Course_Detail(props) {
   });
 
 
-  //cretificate
+ 
   const handleCertificate = async (course_id) => {
     console.log(course_id);
 
@@ -260,10 +254,8 @@ function Course_Detail(props) {
     }
 
   }
-  // console.log(reviewData);
-
-
-  const isUserreview = reviewData?.data?.some((v) => v.user._id === auth.auth._id);
+ 
+  const isUserreview = reviewData?.data?.some((v) => v?.user?._id === auth?.auth?._id);
   const coursereview = reviewData?.data?.filter((v) => v.course === id);
   let avarageRating = coursereview?.reduce((acc, v, i) => acc + v.rating, 0) / coursereview?.length;
 
@@ -899,7 +891,7 @@ Page content START */}
                         </div>}
                       <hr />
                       {filterReview?.map((v) => {
-                        const isMyReview = auth?.auth?._id === v.user._id;
+                        const isMyReview = auth?.auth?._id === v?.user?._id;
                         const isEditing = editingReviewId === v._id;
 
                         return (
@@ -911,7 +903,7 @@ Page content START */}
                             {/* Text */}
                             <div style={{ flex: 1 }}>
                               <div className="d-sm-flex mt-1 mt-md-0 align-items-center">
-                                <h5 className="me-3 mb-0">{v.user.name}</h5>
+                                <h5 className="me-3 mb-0">{v?.user?.name}</h5>
 
                                 {/* Stars — editable if editing */}
                                 {isEditing ? (
@@ -1172,15 +1164,12 @@ Page content START */}
                         <Carousel indicators={false}>
                           {
                             v.course_img?.map(v => (
-                              <img src={v.url} className="card-img-top" alt="course image" />
+                              <img src={v?.url} className="card-img-top"  style={{width: "100%", height: "240px", objectFit:"cover", borderradius: "8px"}} alt="course image" />
                             ))
                           }
                         </Carousel>
-                        {/* <img src="assets/images/courses/4by3/01.jpg" className="card-img" alt="course image" /> */}
-                        {/* Overlay */}
                         <div className="bg-overlay bg-dark opacity-6" />
                         <div className="card-img-overlay d-flex align-items-start flex-column p-3">
-                          {/* Video button and link */}
                           <div className="m-auto">
                             <a href="https://www.youtube.com/embed/tXHviS-4ygo" className="btn btn-lg text-danger btn-round btn-white-shadow mb-0" data-glightbox data-gallery="course-video">
                               <i className="fas fa-play" />
@@ -1264,17 +1253,12 @@ Page content START */}
                   {/* Course info END */}
                 </div>
                 <div className="col-md-6 col-lg-12">
-                  {/* Recently Viewed START */}
                   <div className="card card-body shadow p-4 mb-4">
-                    {/* Title */}
-                    <h4 className="mb-3">Recently Viewed</h4>
-                    {/* Course item START */}
+                    <h4 className="mb-3">Most Popular</h4>
                     <div className="row gx-3 mb-3">
-                      {/* Image */}
                       <div className="col-4">
-                        <img className="rounded" src="assets/images/courses/4by3/21.jpg" alt />
+                        <img className="rounded" src="../assets/images/courses/4by3/21.jpg" alt />
                       </div>
-                      {/* Info */}
                       <div className="col-8">
                         <h6 className="mb-0"><a href="#">Fundamentals of Business Analysis</a></h6>
                         <ul className="list-group list-group-borderless mt-1 d-flex justify-content-between">
@@ -1290,7 +1274,7 @@ Page content START */}
                     <div className="row gx-3">
                       {/* Image */}
                       <div className="col-4">
-                        <img className="rounded" src="assets/images/courses/4by3/18.jpg" alt />
+                        <img className="rounded" src="../assets/images/courses/4by3/18.jpg" alt />
                       </div>
                       {/* Info */}
                       <div className="col-8">
@@ -1306,21 +1290,7 @@ Page content START */}
                     {/* Course item END */}
                   </div>
                   {/* Recently Viewed END */}
-                  {/* Tags START */}
-                  <div className="card card-body shadow p-4">
-                    <h4 className="mb-3">Popular Tags</h4>
-                    <ul className="list-inline mb-0">
-                      <li className="list-inline-item"> <a className="btn btn-outline-light btn-sm" href="#">blog</a> </li>
-                      <li className="list-inline-item"> <a className="btn btn-outline-light btn-sm" href="#">business</a> </li>
-                      <li className="list-inline-item"> <a className="btn btn-outline-light btn-sm" href="#">theme</a> </li>
-                      <li className="list-inline-item"> <a className="btn btn-outline-light btn-sm" href="#">bootstrap</a> </li>
-                      <li className="list-inline-item"> <a className="btn btn-outline-light btn-sm" href="#">data science</a> </li>
-                      <li className="list-inline-item"> <a className="btn btn-outline-light btn-sm" href="#">web development</a> </li>
-                      <li className="list-inline-item"> <a className="btn btn-outline-light btn-sm" href="#">tips</a> </li>
-                      <li className="list-inline-item"> <a className="btn btn-outline-light btn-sm" href="#">machine learning</a> </li>
-                    </ul>
-                  </div>
-                  {/* Tags END */}
+                
                 </div>
               </div>{/* Row End */}
             </div>
@@ -1344,13 +1314,10 @@ Listed courses START */}
               <div className="tiny-slider-inner" data-autoplay="false" data-arrow="true" data-edge={2} data-dots="false" data-items={3} data-items-lg={2} data-items-sm={1}>
 
                 <Swiper
-                  // install Swiper modules
                   modules={[Navigation, Pagination, Scrollbar, A11y]}
                   spaceBetween={50}
                   slidesPerView={3}
                   navigation
-                  // pagination={{ clickable: true }}
-                  // scrollbar={{ draggable: true }}
                   onSwiper={(swiper) => console.log(swiper)}
                   onSlideChange={() => console.log('slide change')}
                 >
@@ -1362,11 +1329,9 @@ Listed courses START */}
                       <div className="card p-2 border">
                         <div className="rounded-top overflow-hidden">
                           <div className="card-overlay-hover">
-
-
-
-
-                          </div>
+                                <img src="../assets/images/courses/4by3/17.jpg" className="card-img-top" alt="course image" />
+                        
+                 </div>
                           {/* Hover element */}
                           <div className="card-img-overlay">
                             <div className="card-element-hover d-flex justify-content-end">
@@ -1396,7 +1361,7 @@ Listed courses START */}
                             </ul>
                             {/* Avatar */}
                             <div className="avatar avatar-sm">
-                              <img className="avatar-img rounded-circle" src="assets/images/avatar/09.jpg" alt="avatar" />
+                              <img className="avatar-img rounded-circle" src="../assets/images/avatar/09.jpg" alt="avatar" />
                             </div>
                           </div>
                           {/* Divider */}
@@ -1423,7 +1388,7 @@ Listed courses START */}
                       <div className="card p-2 border">
                         <div className="rounded-top overflow-hidden">
                           <div className="card-overlay-hover">
-                            <img src="assets/images/courses/4by3/18.jpg" className="card-img-top" alt="course image" />
+                            <img src="../assets/images/courses/4by3/18.jpg" className="card-img-top" alt="course image" />
                           </div>
                           {/* Hover element */}
                           <div className="card-img-overlay">
@@ -1454,7 +1419,7 @@ Listed courses START */}
                             </ul>
                             {/* Avatar */}
                             <div className="avatar avatar-sm">
-                              <img className="avatar-img rounded-circle" src="assets/images/avatar/07.jpg" alt="avatar" />
+                              <img className="avatar-img rounded-circle" src="../assets/images/avatar/07.jpg" alt="avatar" />
                             </div>
                           </div>
                           {/* Divider */}
@@ -1480,7 +1445,7 @@ Listed courses START */}
                       <div className="card p-2 border">
                         <div className="rounded-top overflow-hidden">
                           <div className="card-overlay-hover">
-                            <img src="assets/images/courses/4by3/21.jpg" className="card-img-top" alt="course image" />
+                            <img src="../assets/images/courses/4by3/21.jpg" className="card-img-top" alt="course image" />
                           </div>
                           {/* Hover element */}
                           <div className="card-img-overlay">
@@ -1511,7 +1476,7 @@ Listed courses START */}
                             </ul>
                             {/* Avatar */}
                             <div className="avatar avatar-sm">
-                              <img className="avatar-img rounded-circle" src="assets/images/avatar/05.jpg" alt="avatar" />
+                              <img className="avatar-img rounded-circle" src="../assets/images/avatar/05.jpg" alt="avatar" />
                             </div>
                           </div>
                           {/* Divider */}
@@ -1537,7 +1502,7 @@ Listed courses START */}
                       <div className="card p-2 border">
                         <div className="rounded-top overflow-hidden">
                           <div className="card-overlay-hover">
-                            <img src="assets/images/courses/4by3/20.jpg" className="card-img-top" alt="course image" />
+                            <img src="../assets/images/courses/4by3/20.jpg" className="card-img-top" alt="course image" />
                           </div>
                           {/* Hover element */}
                           <div className="card-img-overlay">
@@ -1568,7 +1533,7 @@ Listed courses START */}
                             </ul>
                             {/* Avatar */}
                             <div className="avatar avatar-sm">
-                              <img className="avatar-img rounded-circle" src="assets/images/avatar/02.jpg" alt="avatar" />
+                              <img className="avatar-img rounded-circle" src="../assets/images/avatar/02.jpg" alt="avatar" />
                             </div>
                           </div>
                           {/* Divider */}

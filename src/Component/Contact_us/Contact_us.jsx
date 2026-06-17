@@ -140,7 +140,7 @@ Image and contact form START */}
 Image and contact form END */}
   {/* =======================
 Map START */}
-  <section className="pt-0">
+  {/* <section className="pt-0">
     <div className="container">
       <div className="row">
         <div className="col-12">
@@ -148,7 +148,7 @@ Map START */}
         </div>
       </div>
     </div>
-  </section>
+  </section> */}
   {/* =======================
 Map END */}
 </main>

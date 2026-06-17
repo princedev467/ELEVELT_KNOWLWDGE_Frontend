@@ -62,6 +62,7 @@ import CourseDisplay from '../Component/Course/CourseDisplay';
 import AdminRouts from './AdminRouts';
 import QuizPage from '../Component/QuizData/QuizPage';
 import Edit_Profile from '../Component/Edit_Profile/Edit_Profile';
+import Dashboard from '../Component/Dashboard/Dashboard';
 
 function UserRouts(props) {
   const themeData = useContext(ThemeContext);
@@ -82,34 +83,34 @@ function UserRouts(props) {
     <div className={themeData.theme === 'light' ? 'dark' : 'light'}>
       <Header />
       <Routes>
-        <Route path='/' element={<Home />} ></Route>
-        {/* <Route path='/CategoryPage' element={<CategoryPage/>} ></Route> */}
-        {/* category */}
-        <Route path='/category' element={<CategoryData />} ></Route>
-        <Route path='/category/:id' element={<CategoryData />} ></Route>
 
-        {/* course */}
+        {/* completed Routes */}
+        <Route path='/' element={<Home />} ></Route>
+        <Route path='/about' element={< About />} ></Route>
+        <Route path='/about/:id' element={< About />} ></Route>
         <Route path='/course' element={<CourseDisplay />} ></Route>
         <Route path='/course/:id' element={<CourseDisplay />} ></Route>
-
-        {/* course Detail*/}
         <Route path='/Course_Detail' element={<Course_Detail />}></Route>
         <Route path='/Course_Detail/:id' element={<Course_Detail />}></Route>
+        <Route path='/Blog_Grid' element={<Blog_Grid />}></Route>
+        <Route path='/Blog_Grid/:id' element={<Blog_Grid />}></Route>
+        <Route path='/Course_Video_Player/:id' element={< Course_Video_Player />} ></Route>
+        <Route path='/Pricing' element={<Pricing />}></Route>
+        <Route path='/Edit_Profile' element={<Edit_Profile />}></Route>
+        <Route path='/Blog_Detail' element={< Blog_Detail />} ></Route>
+        <Route path='/Blog_Detail/:id' element={< Blog_Detail />} ></Route>
+        <Route path='/Cart' element={<Cart />}></Route>
+        <Route path='/Dashboard' element={<Dashboard />}></Route>
 
+
+        {/* non-completed Routes */}
+        <Route path='/category' element={<CategoryData />} ></Route>
+        <Route path='/category/:id' element={<CategoryData />} ></Route>
         {/* quizPage */}
         <Route path='/quiz' element={< QuizPage />} ></Route>
         <Route path='/quiz/:id' element={< QuizPage />} ></Route>
-
-        {/* video player */}
-        <Route path='/Course_Video_Player/:id' element={< Course_Video_Player />} ></Route>
-
-
-
-        <Route path='/Blog_Grid' element={<Blog_Grid />}></Route>
-        <Route path='/Blog_Grid/:id' element={<Blog_Grid />}></Route>
         {/* <Route path='/category/:id' element={<CategoryPage />} /> */}
 
-        {/* Instructor */}
         <Route path='/Instructor_Create_Course' element={<Instructor_Create_Course />}></Route>
         <Route path='/Instructor_Create_Course/:id' element={<Instructor_Create_Course />}></Route>
         <Route path='/Instructor_Earning' element={< Instructor_Earning />} ></Route>
@@ -121,15 +122,10 @@ function UserRouts(props) {
         <Route path='/Instructor_List' element={< Instructor_List />} ></Route>
         <Route path='/Instructor_Student_list' element={<Instructor_Student_list />}></Route>
 
-        <Route path='/about' element={< About />} ></Route>
-        <Route path='/chat' element={<Chat />} ></Route>
-        <Route path='/about/:id' element={< About />} ></Route>
+        {/* <Route path='/chat' element={<Chat />} ></Route> */}
         <Route path='/Become_Instructor' element={< Become_Instructor />} ></Route>
-        <Route path='/Blog_Detail' element={< Blog_Detail />} ></Route>
-          <Route path='/Blog_Detail/:id' element={< Blog_Detail />} ></Route>
         <Route path='/Blog_Masonry' element={<Blog_Masonry />}></Route>
         <Route path='/Book_Class' element={<Book_Class />}></Route>
-        <Route path='/Cart' element={<Cart />}></Route>
         <Route path='/Coming_Soon' element={< Coming_Soon />} ></Route>
         <Route path='/Contact_us' element={<Contact_us />}></Route>
         <Route path='/Checkout' element={<Checkout />}></Route>
@@ -146,45 +142,27 @@ function UserRouts(props) {
         <Route path='/Faq' element={<Faq />}></Route>
         <Route path='/Forget_Password' element={<Forget_Password />}></Route>
 
-        <Route path='/Pricing' element={<Pricing />}></Route>
         <Route path='/Request_Access' element={< Request_Access />} ></Route>
         <Route path='/Request_Demo' element={<Request_Demo />}></Route>
-
-        {/* Auth */}
 
         <Route path='/Auth' element={<Auth />}></Route>
         <Route path='/Auth/:Instructor' element={<Auth />}></Route>
 
-        {/* Notification */}
-
-        {/* NotificationDemo */}
         <Route path='/NotificationDemo' element={<NotificationDemo />}></Route>
         <Route path='/University_Admission_Form' element={<University_Admission_Form />}></Route>
         <Route path='/Student_Subscription' element={<Student_Subscription />}></Route>
         <Route path='/Student_Course_list' element={< Student_Course_list />} ></Route>
         <Route path='/Student_Payment_Info' element={<Student_Payment_Info />}></Route>
         <Route path='/Wishitlist' element={<Wishitlist />}></Route>
-        <Route path='/Edit_Profile' element={<Edit_Profile />}></Route>
-
 
         <Route>
           <Route path='*' element={<Error_404 />}></Route>
         </Route>
-
-
-{/* Student Routes */}
- 
-   <Route path='/Student_Dashboard' element={<Student_Dashboard />}></Route>
-
-         <Route element={<PrivateRouts />}>
-        
-          <Route path='/Instructor_Dashboard' element={< Instructor_Dashboard />} ></Route>
-        </Route> 
-
+        <Route path='/Student_Dashboard' element={<Student_Dashboard />}></Route>
+        <Route path='/Instructor_Dashboard' element={< Instructor_Dashboard />} ></Route>
 
       </Routes>
       <Footer />
-
 
     </div>
   );

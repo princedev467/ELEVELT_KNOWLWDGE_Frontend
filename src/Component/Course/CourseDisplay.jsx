@@ -9,8 +9,6 @@ import { useSelector } from 'react-redux';
 
 function CourseDisplay(props) {
 
-  // const [search, setSearch]=useState('')
-
   const { id } = useParams();
   console.log(id);
 
@@ -35,9 +33,6 @@ function CourseDisplay(props) {
   const { search, setSearch, filterData } = useSearch(filterCourseData, ["name", "description"])
 
 
-  // let catfilter=search?filterData:category
-
-
   let filterCourse = search ? filterData : filterCourseData
 
 
@@ -46,34 +41,26 @@ function CourseDisplay(props) {
 
   const [addWhistlist] = useAddWhistlistMutation();
   const [updateWhitlist] = useUpdateWhistlistMutation();
-  const[deleteWhistlist] =useDeleteWhistlistMutation();
+  const [deleteWhistlist] = useDeleteWhistlistMutation();
 
   const handlewhistlist = async (course_id) => {
-
-
-
     let whistlistUser = whistlist?.data?.find((v) => v.user_id === auth.auth._id);
-
 
     let existData = whistlistUser?.items?.find((v) => v.course === course_id);
     console.log(existData);
-    
 
-    
-    //if existdata remove from whistlist beacuse 
     if (existData) {
-        let deletdata = whistlistUser?.items.filter((v) => v._id !== existData._id);
-    console.log(deletdata);
+      let deletdata = whistlistUser?.items.filter((v) => v._id !== existData._id);
+      console.log(deletdata);
 
-
-     await updateWhitlist({
+      await updateWhitlist({
         _id: whistlistUser._id,
         user_id: auth.auth._id,
         items: deletdata
       })
 
       return;
-      
+
     }
 
     const ItemsData = [...(whistlistUser?.items || [])];
@@ -81,13 +68,8 @@ function CourseDisplay(props) {
 
     ItemsData.push({
       course: course_id,
-
     });
 
-    console.log(ItemsData);
-
-
-    //if user alredy exist obly
     if (whistlistUser) {
       await updateWhitlist({
         _id: whistlistUser._id,
@@ -101,8 +83,8 @@ function CourseDisplay(props) {
       });
     }
 
-
   }
+
   return (
     <main>
       <section className="py-4">
@@ -111,14 +93,7 @@ function CourseDisplay(props) {
             <div className="col-12">
               <div className="bg-light p-4 text-center rounded-3  shadow">
                 <h1 className="m-0">Course</h1>
-                {/* Breadcrumb */}
                 <div className="d-flex justify-content-center">
-                  {/* <nav aria-label="breadcrumb">
-                    <ol className="breadcrumb breadcrumb-dots mb-0">
-                      <li className="breadcrumb-item"><a href="#">Home</a></li>
-                      <li className="breadcrumb-item active" aria-current="page">Course minimal</li>
-                    </ol>
-                  </nav> */}
                 </div>
               </div>
             </div>
@@ -127,18 +102,14 @@ function CourseDisplay(props) {
       </section>
       <section className="pt-0">
         <div className="container">
-          {/* Filter bar START */}
           <form className="bg-light border p-4 rounded-3 my-4 z-index-9 position-relative">
             <div className="row g-3">
-              {/* Input */}
-              <div className="col-xl-3">
+              <div className="col-xl-4">
                 <input className="form-control me-1" type="search" w onChange={(e) => { setSearch(e.target.value) }} placeholder="Search..."
                   value={search} />
               </div>
-              {/* Select item */}
-              <div className="col-xl-8">
+              <div className="col-xl-7">
                 <div className="row g-3">
-                  {/* Select items */}
                   <div className="col-sm-6 col-md-3 pb-2 pb-md-0">
                     <select className="form-select form-select-sm js-choice" aria-label=".form-select-sm example">
                       <option value>Categories</option>
@@ -154,7 +125,6 @@ function CourseDisplay(props) {
                       <option>Marketing</option>
                     </select>
                   </div>
-                  {/* Search item */}
                   <div className="col-sm-6 col-md-3 pb-2 pb-md-0">
                     <select className="form-select form-select-sm js-choice" aria-label=".form-select-sm example">
                       <option value>Price level</option>
@@ -163,49 +133,20 @@ function CourseDisplay(props) {
                       <option>Paid</option>
                     </select>
                   </div>
-                  {/* Search item */}
-                  <div className="col-sm-6 col-md-3 pb-2 pb-md-0">
-                    <select className="form-select form-select-sm js-choice" aria-label=".form-select-sm example">
-                      <option value>Skill level</option>
-                      <option>All levels</option>
-                      <option>Beginner</option>
-                      <option>Intermediate</option>
-                      <option>Advanced</option>
-                    </select>
-                  </div>
-                  {/* Search item */}
-                  <div className="col-sm-6 col-md-3 pb-2 pb-md-0">
-                    <select className="form-select form-select-sm js-choice" aria-label=".form-select-sm example">
-                      <option value>Language</option>
-                      <option>English</option>
-                      <option>Francas</option>
-                      <option>Russian</option>
-                      <option>Hindi</option>
-                      <option>Bengali</option>
-                      <option>Spanish</option>
-                    </select>
-                  </div>
-                </div> {/* Row END */}
+
+                </div>
               </div>
               {/* Button */}
               <div className="col-xl-1">
                 <button type="button" className="btn btn-primary mb-0 rounded z-index-1 w-100"><i className="fas fa-search" /></button>
               </div>
-            </div> {/* Row END */}
+            </div>
           </form>
-          {/* Filter bar END */}
           <div className="row mt-3">
-            {/* Main content START */}
             <div className="col-12">
-              {/* Course Grid START */}
               <div className="row g-4">
-                {/* Card item START */}
-
                 {
                   filterCourse?.slice(0, 8).map((v) => {
-
-
-
                     let whistlistUser = whistlist?.data?.find((v) => v.user_id === auth.auth._id);
 
                     let existData = whistlistUser?.items?.some((v2) => v2.course === v._id);
@@ -213,9 +154,7 @@ function CourseDisplay(props) {
 
                     return (
                       <div className="col-sm-6 col-lg-4 col-xl-3">
-
                         <div className="card shadow h-100">
-                          {/* Image */}
                           <Carousel indicators={false}>
                             {
                               v.course_img.map(v => (
@@ -230,32 +169,25 @@ function CourseDisplay(props) {
                               ))
                             }
                           </Carousel>
-                          {/* Card body */}
                           <div className="card-body pb-0">
-                            {/* Badge and favorite */}
                             <div className="d-flex justify-content-between mb-2">
                               <a href="#" className="badge bg-purple bg-opacity-10 text-purple">All level</a>
+     <a href="#" className="h6 fw-light mb-0" onClick={() => handlewhistlist(v._id)}><i className={existData ? "fa-solid fa-heart" : "far fa-heart"} style={{ color: '#FF0542', fontSize: '20px' }} /></a>
 
-
-                              <a href="#" className="h6 fw-light mb-0" onClick={() => handlewhistlist(v._id)}><i className={existData ? "fa-solid fa-heart" : "far fa-heart"} style={{ color: '#FF0542', fontSize: '20px' }} /></a>
-
-                               </div>
-                            {/* Title */}
+                            </div>
                             <NavLink to={`/Course_Detail/${v._id}`}>
-                            <h5 className="card-title"> {v.name.length > 10 ? v.name.slice(0, 11) + "..." : v.name}</h5>
-                            <p className="mb-2 text-truncate-2">{v.description}</p>
-                            {/* Rating star */}
-                            <ul className="list-inline mb-0">
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
-                              <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
-                              <li className="list-inline-item ms-2 h6 fw-light mb-0">4.0/5.0</li>
-                            </ul>
+                              <h5 className="card-title"> {v.name.length > 10 ? v.name.slice(0, 11) + "..." : v.name}</h5>
+                              <p className="mb-2 text-truncate-2">{v.description}</p>
+                              <ul className="list-inline mb-0">
+                                <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
+                                <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
+                                <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
+                                <li className="list-inline-item me-0 small"><i className="fas fa-star text-warning" /></li>
+                                <li className="list-inline-item me-0 small"><i className="far fa-star text-warning" /></li>
+                                <li className="list-inline-item ms-2 h6 fw-light mb-0">4.0/5.0</li>
+                              </ul>
                             </NavLink>
                           </div>
-                          {/* Card footer */}
                           <div className="card-footer pt-0 pb-3">
                             <hr />
                             <div className="d-flex justify-content-between">
@@ -264,16 +196,13 @@ function CourseDisplay(props) {
                             </div>
                           </div>
                         </div>
-
                       </div>
                     )
                   })
                 }
-                {/* Card item END */}
-              </div>
-              {/* Course Grid END */}
-              {/* Pagination START */}
-              <div className="col-12">
+               </div>
+              
+              {/* <div className="col-12">
                 <nav className="mt-4 d-flex justify-content-center" aria-label="navigation">
                   <ul className="pagination pagination-primary-soft rounded mb-0">
                     <li className="page-item mb-0"><a className="page-link" href="#" tabIndex={-1}><i className="fas fa-angle-double-left" /></a></li>
@@ -284,68 +213,13 @@ function CourseDisplay(props) {
                     <li className="page-item mb-0"><a className="page-link" href="#"><i className="fas fa-angle-double-right" /></a></li>
                   </ul>
                 </nav>
-              </div>
-              {/* Pagination END */}
+              </div> */}
             </div>
-            {/* Main content END */}
-          </div>{/* Row END */}
+            </div>
         </div>
       </section>
 
-      {/* <section className="pt-5">
-    <div className="container">
-      <div className="row">
-    <Box sx={{ paddingTop: 5, paddingLeft: 22, paddingBottom: 5 }}>
-          <div>
-            <input type="text" onChange={(e)=>{setSearch(e.target.value)}}   placeholder="Search..."
-            value={search} style={{backgroundColor:'#24292e' ,color:'#fff'}}/>
-          </div>
-          <br /><br />
-          {
-             <Grid container spacing={4} >
-            {filterCourse?.map((v) => (
-    
-              <Card
-              className='col-4'
-                sx={{
-                  width: '280px',
-                  justifyContent: 'space-between',
-    
-                }}
-              >
-                  <Carousel>
-
-                  </Carousel>
-    
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography variant="h6" fontWeight="bold" gutterBottom>
-                    {v.name}
-                  </Typography>
-    
-                  <Typography variant="body2" color="text.secondary">
-                    {v.description}
-                  </Typography>
-                </CardContent>
-    
-                <CardActions sx={{ justifyContent: 'space-between', px: 2, paddingBottom: 2 }}>
-                  <Button size="small" variant="outlined">
-                    Learn More
-                  </Button>
-                  <Button size="small" variant="contained">
-                    Buy
-                  </Button>
-                </CardActions>
-              </Card>
-    
-            ))}
-          </Grid>
-          }
-          
-        </Box>
-        </div>
-        </div>
-        </section> */}
-    </main>
+     </main>
   );
 }
 

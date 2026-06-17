@@ -187,7 +187,7 @@ export default function Layout({ children }) {
 
   } else {
     listBox = [
-      { label: 'Dashboard', icon: <DashboardIcon />, to: '/admin/Dashboard' },
+      { label: 'Dashboard', icon: <DashboardIcon />, to: '/admin/' },
       { label: 'Category', icon: <CategoryIcon />, to: '/admin/category' },
       { label: 'Section', icon: <AppsIcon />, to: '/admin/Section' },
       { label: 'Course', icon: <FoundationIcon />, to: '/admin/course' },
