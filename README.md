@@ -53,6 +53,7 @@ The platform allows students to:
 * Enroll in learning programs
 * Attempt quizzes
 * Track learning progress
+* Generate Certificate After complete Course
 * Access real-time dashboards
 
 Built with a strong focus on:
@@ -90,18 +91,68 @@ Built with a strong focus on:
 * Enrollment System
 * Course Progress Tracking
 
+
+## 💳 Payment System
+
+* Razorpay Payment Gateway Integration
+* Secure Online Payments
+* Course Purchase & Enrollment
+* Payment Verification
+* Order Management
+
+
+## 🏆 Certificate Generation
+
+* Auto Generate Certificate After Course Completion
+* Download Certificate as PDF
+* Unique Certificate Verification
+* Professional Certificate Design
+
+
 ## 🧠 Quiz System
 
 * Interactive Quizzes
 * Instant Score Feedback
 * Quiz History
 
-## 📊 Dashboard
+## 📊Role-Based Dashboard
 
-* Student Dashboard
-* Instructor Dashboard
-* Analytics & Charts
-* Real-time Notifications
+A single dashboard dynamically adapts based on the authenticated user's role.
+
+## 👨‍🎓Student Features
+* Access Purchased Courses
+* Continue Learning Progress
+* Track Course Completion
+* Download Course Certificates
+* Manage Wishlist
+* View Purchase History
+* Submit Course Reviews & Ratings
+* Update Profile Information
+* Access Quiz Results
+
+  
+## 👨‍🏫 Instructor Features
+* Create New Courses
+* Edit Existing Courses
+* Manage Course Content
+* View Student Enrollments
+* Manage Reviews & Feedback
+* Update Profile Information
+
+## 🔐 Role-Based Access Control
+Single Dashboard Interface
+Dynamic Navigation Based on User Role
+Protected Routes
+JWT Authentication
+Secure Permission Management
+
+
+## ⭐ Review & Rating System
+
+* Course Reviews
+* Student Ratings
+* Feedback Submission
+* Review Management
 
 ## 🎨 UI/UX
 
